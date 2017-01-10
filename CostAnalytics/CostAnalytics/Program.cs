@@ -7,7 +7,7 @@ using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Spreadsheet;
 using SpreadsheetLight;
 
-namespace CostAnalytics
+namespace CABusiness
 {
     class Program
     {
@@ -67,9 +67,11 @@ namespace CostAnalytics
 
             sl.SetCellValue(9, 6, "Perhaps a phenomenal growth in something?");
 
+            var path = "C:\\Users\\Dominic_Bett\\Desktop\\HelloWorld.xlsx";
             sl.SaveAs("C:\\Users\\Dominic_Bett\\Desktop\\HelloWorld.xlsx");
 
             Console.WriteLine("End of program");
+            Console.WriteLine($"File has been saved to {path}");
             Console.ReadLine();
         }
     }
