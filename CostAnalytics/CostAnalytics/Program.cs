@@ -7,7 +7,7 @@ using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Spreadsheet;
 using SpreadsheetLight;
 
-namespace CABusiness
+namespace CostAnalytics
 {
     class Program
     {

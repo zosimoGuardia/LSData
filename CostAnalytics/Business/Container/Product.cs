@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CABusiness.Container
+namespace Business.Container
 {
-    class Configuration
+    class Product
     {
         public int ID { get; set; }
         public string Name { get; set; }
-        public string Type { get; set; }
-        public string CommonConfig { get; set; }
+        public string LOB { get; set; }
+        public string ProductLine { get; set; }
+        public string Series { get; set; }
     }
 }
