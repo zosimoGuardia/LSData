@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Container\Configuration.cs" />
     <Compile Include="Container\Cost.cs" />
+    <Compile Include="Container\Phase.cs" />
     <Compile Include="Container\Product.cs" />
     <Compile Include="Container\Region.cs" />
     <Compile Include="Container\SKU.cs" />

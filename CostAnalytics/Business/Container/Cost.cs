@@ -9,12 +9,11 @@ namespace Business.Container
     class Cost
     {
         public int ID { get; set; }
-        public int SKUID { get; set; }
-        public int RegionID { get; set; }
+        public int IterationID { get; set; }
         public DateTime Date { get; set; }
         public double CurrentCost { get; set; }
-        public double Next1Cost { get; set; }
-        public double Next2Cost { get; set; }
-        public double Next3Cost { get; set; }
+        public double CostNext1 { get; set; }
+        public double CostNext2 { get; set; }
+        public double CostNext3 { get; set; }
     }
 }

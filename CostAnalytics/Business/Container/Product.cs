@@ -11,7 +11,7 @@ namespace Business.Container
         public int ID { get; set; }
         public string Name { get; set; }
         public string LOB { get; set; }
-        public string ProductLine { get; set; }
-        public string Series { get; set; }
+        public int Model { get; set; }
+        public string Variant { get; set; }
     }
 }
