@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CostAnalytics", "CostAnalyt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Business", "Business\Business.csproj", "{4ECB5D6D-0E4A-43FA-B6B0-BDF71F5CC54F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataFactory", "DataFactory\DataFactory.csproj", "{88B7A009-F173-4E4F-B02F-09335BBF7B3A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataFactoryTest", "DataFactoryTest\DataFactoryTest.csproj", "{484D1290-7B0D-43EE-A3A0-47B8518B87C5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{4ECB5D6D-0E4A-43FA-B6B0-BDF71F5CC54F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4ECB5D6D-0E4A-43FA-B6B0-BDF71F5CC54F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4ECB5D6D-0E4A-43FA-B6B0-BDF71F5CC54F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88B7A009-F173-4E4F-B02F-09335BBF7B3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88B7A009-F173-4E4F-B02F-09335BBF7B3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88B7A009-F173-4E4F-B02F-09335BBF7B3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88B7A009-F173-4E4F-B02F-09335BBF7B3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{484D1290-7B0D-43EE-A3A0-47B8518B87C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{484D1290-7B0D-43EE-A3A0-47B8518B87C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{484D1290-7B0D-43EE-A3A0-47B8518B87C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{484D1290-7B0D-43EE-A3A0-47B8518B87C5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
