@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Dell.CostAnalytics.Business.Container
 {
-    class Cost
+    public class Cost
     {
         public int ID { get; set; }
-        public int IterationID { get; set; }
+        public Iteration Iteration { get; set; }
         public DateTime Date { get; set; }
         public double CurrentCost { get; set; }
         public double CostNext1 { get; set; }
