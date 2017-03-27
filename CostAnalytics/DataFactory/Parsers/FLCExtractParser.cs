@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DataAccess;
+using Cont = Dell.CostAnalytics.Business.Container;
 
 namespace Dell.CostAnalytics.DataFactory.Parsers
 {
@@ -20,6 +21,7 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
         public FLCExtractParser(string flcExtractFileName)
         {
             this.flcExtractFileName = flcExtractFileName;
+            this.InitializeDataModel();
         }
         #endregion
 
@@ -32,7 +34,9 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
         {
             DataTable dt = DataTable.New.ReadCsv(flcExtractFileName);
 
-            var validPlatforms = consolidatedFilter.SelectMany(x => x.PlatformName).ToList();
+            var validPlatforms = from filter in consolidatedFilter
+                                 select filter.PlatformName;
+                //consolidatedFilter.Select(x => x.PlatformName).ToList();
             var validConfigurations = consolidatedFilter.SelectMany(x => x.Configuration).ToList();
 
             //Headers
@@ -49,17 +53,73 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
                                where validConfigurations.Contains(row["Config Name"])
                                select row;
 
-            var prodLines = from row in dt.Rows select row["Product Line"].ToString();
+
+
+
+
+
+            foreach (var row in filteredRows)
+            {
+                Cont.Iteration iteration = new Cont.Iteration();
+                var platform = consolidatedFilter.First(x => x.PlatformName == row["Platform"]);
+                Cont.Product product = new Cont.Product(0, platform.Platform, row["LOB"], Convert.ToInt32(platform.Model), "");
+
+                
+                iteration.ID = 0;
+                iteration.Product = product;
+            }
+
+            var configurationData = from row in filteredRows
+                                    group row by new
+                                    {
+                                        Configuration = row["Config Name"]
+                                    } into topSlice
+                                    select new
+                                    {
+                                        Configuration = topSlice.Select(x => x["Config Name"]),
+                                        Region = topSlice.Select(x => x["Region"]),
+                                        Country = topSlice.Select(x => x["Country"])
+                                    };
+
+            foreach(var config in configurationData)
+            {
+                Console.WriteLine(config.Configuration);
+            }
+
+            var prodLines = from row in filteredRows select row["Product Line"].ToString();
 
             foreach (var prodLine in prodLines)
             {
                 Console.WriteLine(prodLine);
             }
         }//end method
+        
+        /// <summary>
+        /// Get existing data from the database and populate the business model
+        /// </summary>
+        private void InitializeDataModel()
+        {
+          this.configurations = null;
+            this.costs = null;
+            this.measures = null;
+            this.phases = null;
+            this.products = null;
+            this.regions = null;
+            this.skus = null;
+        }//end method
         #endregion
 
         #region Members
         private string flcExtractFileName;
+        
+        //Data from database
+        private  List<Cont.Configuration> configurations;
+        private  List<Cont.Cost> costs;
+        private  List<Cont.Measure> measures;
+        private  List<Cont.Phase> phases;
+        private  List<Cont.Product> products;
+        private  List<Cont.Region> regions;
+        private  List<Cont.SKU> skus;
         #endregion
     }//end class
 }//end namespace

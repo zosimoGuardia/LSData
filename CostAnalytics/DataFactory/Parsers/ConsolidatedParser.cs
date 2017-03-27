@@ -43,9 +43,9 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
                             {
                                 var raw = line.Split(':');
                                 toReturn.Add(new ConsolidatedFilter() {
-                                    PlatformName = raw[0].Split(','),
+                                    PlatformName = raw[0],
                                     Platform = raw[1].Split(',').First(),
-                                    Series = raw[1].Split(',').Last(),
+                                    Model = raw[1].Split(',').Last(),
                                     Configuration = raw[2].Split('|')
                             });
                             } catch (Exception exc)
@@ -73,9 +73,9 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
         /// </summary>
         public class ConsolidatedFilter
         {
-            public string[] PlatformName { get; set; }
+            public string PlatformName { get; set; }
             public string Platform { get; set; }
-            public string Series { get; set; }
+            public string Model { get; set; }
             public string[] Configuration { get; set; }
         }//end subclass
         #endregion

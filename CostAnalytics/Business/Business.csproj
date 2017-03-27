@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Container\Configuration.cs" />
     <Compile Include="Container\Cost.cs" />
+    <Compile Include="Container\Iteration.cs" />
     <Compile Include="Container\Measure.cs" />
     <Compile Include="Container\Phase.cs" />
     <Compile Include="Container\Product.cs" />

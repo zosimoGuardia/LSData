@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Dell.CostAnalytics.Business.Container
 {
-    class Region
+    public class Region
     {
         public int ID { get; set; }
         public string RegionName { get; set; }

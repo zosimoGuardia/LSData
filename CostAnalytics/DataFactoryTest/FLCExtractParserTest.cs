@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Factory = Dell.CostAnalytics.DataFactory;
+using System.Collections.Generic;
 
 namespace DataFactoryTest
 {
