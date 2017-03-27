@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Dell.CostAnalytics.Business.Container
 {
-    class Configuration
+    public class Configuration
     {
         public int ID { get; set; }
         public string Name { get; set; }
