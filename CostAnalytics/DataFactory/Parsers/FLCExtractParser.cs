@@ -20,9 +20,8 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
         /// </summary>
         public FLCExtractParser(string flcExtractFileName)
         {
-            this.flcExtractFileName = flcExtractFileName;
-            this.InitializeDataModel();
-        }
+            this.m_FLCExtractFileName = flcExtractFileName;
+        }//end constructor
         #endregion
 
         #region Methods
@@ -32,11 +31,11 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
         /// <param name="fileName"></param>
         public void ParseData(List<ConsolidatedParser.ConsolidatedFilter> consolidatedFilter)
         {
-            DataTable dt = DataTable.New.ReadCsv(flcExtractFileName);
+            DataTable dt = DataTable.New.ReadCsv(m_FLCExtractFileName);
 
             var validPlatforms = from filter in consolidatedFilter
                                  select filter.PlatformName;
-                //consolidatedFilter.Select(x => x.PlatformName).ToList();
+            //consolidatedFilter.Select(x => x.PlatformName).ToList();
             var validConfigurations = consolidatedFilter.SelectMany(x => x.Configuration).ToList();
 
             //Headers
@@ -64,7 +63,7 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
                 var platform = consolidatedFilter.First(x => x.PlatformName == row["Platform"]);
                 Cont.Product product = new Cont.Product(0, platform.Platform, row["LOB"], Convert.ToInt32(platform.Model), "");
 
-                
+
                 iteration.ID = 0;
                 iteration.Product = product;
             }
@@ -81,7 +80,7 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
                                         Country = topSlice.Select(x => x["Country"])
                                     };
 
-            foreach(var config in configurationData)
+            foreach (var config in configurationData)
             {
                 Console.WriteLine(config.Configuration);
             }
@@ -93,33 +92,173 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
                 Console.WriteLine(prodLine);
             }
         }//end method
-        
+
+        #region SubClasses
         /// <summary>
-        /// Get existing data from the database and populate the business model
+        /// Has Getter Methods that returns Database Objects
+        /// equivalent to the one passed in
         /// </summary>
-        private void InitializeDataModel()
+        class DatabaseObject
         {
-          this.configurations = null;
-            this.costs = null;
-            this.measures = null;
-            this.phases = null;
-            this.products = null;
-            this.regions = null;
-            this.skus = null;
-        }//end method
+            #region Constructors
+            /// <summary>
+            /// Comstructor: Initializes the database objects
+            /// </summary>
+            public DatabaseObject()
+            {
+                //TODO: Get data from DB
+                this.m_Configurations = null;
+                this.m_Measures = null;
+                this.m_Phases = null;
+                this.m_Products = null;
+                this.m_Regions = null;
+                this.m_SKUs = null;
+            }//end constructor
+            #endregion
+
+            #region Methods
+            /// <summary>
+            /// Get Configuration
+            /// </summary>
+            /// <param name="configuration"></param>
+            /// <returns></returns>
+            public Cont.Configuration getConfiguration(Cont.Configuration configuration)
+            {
+                Cont.Configuration toReturn = null;
+
+                toReturn = this.m_Configurations.FirstOrDefault(x => x.Name == configuration.Name && x.Type == configuration.Type);
+                if (toReturn == null)
+                {
+                    //TODO: Add to DB
+                    //  -Returns ID
+                    //  -Add ID to configuration Object
+                    this.m_Configurations.Add(configuration);
+                    toReturn = configuration;
+                }//end if
+                return toReturn;
+            }// End Getter
+
+            /// <summary>
+            /// Get Measure
+            /// </summary>
+            /// <param name="measure"></param>
+            /// <returns></returns>
+            public Cont.Measure getMeasure(Cont.Measure measure)
+            {
+                Cont.Measure toReturn = null;
+
+                toReturn = this.m_Measures.FirstOrDefault(x => x.Name == measure.Name);
+                if (toReturn == null)
+                {
+                    //TODO: Add to DB
+                    //  -Returns ID
+                    //  -Add ID to measure Object
+                    this.m_Measures.Add(measure);
+                    toReturn = measure;
+                }//end if
+                return toReturn;
+            }// End Getter
+
+            /// <summary>
+            /// Get Phase
+            /// </summary>
+            /// <param name="phase"></param>
+            /// <returns></returns>
+            public Cont.Phase getPhase(Cont.Phase phase)
+            {
+                Cont.Phase toReturn = null;
+
+                toReturn = this.m_Phases.FirstOrDefault(x => x.Name == phase.Name && x.ProductID == phase.ProductID);
+                if (toReturn == null)
+                {
+                    //TODO: Add to DB
+                    //  -Returns ID
+                    //  -Add ID to phase Object
+                    this.m_Phases.Add(phase);
+                    toReturn = phase;
+                }//end if
+                return toReturn;
+            }// End Getter
+
+            /// <summary>
+            /// Get Product
+            /// </summary>
+            /// <param name="product"></param>
+            /// <returns></returns>
+            public Cont.Product getProduct(Cont.Product product)
+            {
+                Cont.Product toReturn = null;
+
+                toReturn = this.m_Products.FirstOrDefault(x => x.Name == product.Name && x.LOB == product.LOB && x.Model == product.Model && x.Variant == product.Variant);
+                if (toReturn == null)
+                {
+                    //TODO: Add to DB
+                    //  -Returns ID
+                    //  -Add ID to product Object
+                    this.m_Products.Add(product);
+                    toReturn = product;
+                }//end if
+                return toReturn;
+            }// End Getter
+
+            /// <summary>
+            /// Get Region
+            /// </summary>
+            /// <param name="region"></param>
+            /// <returns></returns>
+            public Cont.Region getRegion(Cont.Region region)
+            {
+                Cont.Region toReturn = null;
+
+                toReturn = this.m_Regions.FirstOrDefault(x => x.RegionName == region.RegionName && x.Country == region.Country && x.CountryCode == region.CountryCode);
+                if (toReturn == null)
+                {
+                    //TODO: Add to DB
+                    //  -Returns ID
+                    //  -Add ID to region Object
+                    this.m_Regions.Add(region);
+                    toReturn = region;
+                }//end if
+                return toReturn;
+            }// End Getter
+
+            /// <summary>
+            /// GetSKU
+            /// </summary>
+            /// <param name="sku"></param>
+            /// <returns></returns>
+            public Cont.SKU getSKU(Cont.SKU sku)
+            {
+                Cont.SKU toReturn = null;
+
+                toReturn = this.m_SKUs.FirstOrDefault(x => x.Name == sku.Name && x.Description == sku.Description && x.Commodity == sku.Commodity);
+                if (toReturn == null)
+                {
+                    //TODO: Add to DB
+                    //  -Returns ID
+                    //  -Add ID to sku Object
+                    this.m_SKUs.Add(sku);
+                    toReturn = sku;
+                }//end if
+                return toReturn;
+            }// End Getter
+            #endregion
+
+            #region Members
+            //Data from database
+            List<Cont.Configuration> m_Configurations;
+            List<Cont.Measure> m_Measures;
+            List<Cont.Phase> m_Phases;
+            List<Cont.Product> m_Products;
+            List<Cont.Region> m_Regions;
+            List<Cont.SKU> m_SKUs;
+            #endregion
+        }//end class
+        #endregion
         #endregion
 
         #region Members
-        private string flcExtractFileName;
-        
-        //Data from database
-        private  List<Cont.Configuration> configurations;
-        private  List<Cont.Cost> costs;
-        private  List<Cont.Measure> measures;
-        private  List<Cont.Phase> phases;
-        private  List<Cont.Product> products;
-        private  List<Cont.Region> regions;
-        private  List<Cont.SKU> skus;
+        string m_FLCExtractFileName = String.Empty;
         #endregion
     }//end class
 }//end namespace
