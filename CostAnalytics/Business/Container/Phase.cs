@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Business.Container
+namespace Dell.CostAnalytics.Business.Container
 {
-    class Phase
+    public class Phase
     {
         public int ID { get; set; }
         public string Name { get; set; }

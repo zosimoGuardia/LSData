@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace Dell.CostAnalytics.Business.Container
 {
-    public class Region
+    public class Measure
     {
         public int ID { get; set; }
-        public string RegionName { get; set; }
-        public string Country { get; set; }
-        public string CountryCode { get; set; }
+        public string Name { get; set; }
     }
 }
