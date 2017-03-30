@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IContainer = Dell.CostAnalytics.Business.Containers.Interfaces;
 
-namespace Dell.CostAnalytics.Business.Container
+namespace Dell.CostAnalytics.Business.Containers
 {
-    public class Region
+    public class Region:IContainer.IRegion
     {
         public int ID { get; set; }
         public string RegionName { get; set; }
