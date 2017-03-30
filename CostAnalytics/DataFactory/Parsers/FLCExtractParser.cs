@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DataAccess;
-using Cont = Dell.CostAnalytics.Business.Container;
+using Cont = Dell.CostAnalytics.Business.Containers;
 
 namespace Dell.CostAnalytics.DataFactory.Parsers
 {
@@ -168,7 +168,7 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
             {
                 Cont.Phase toReturn = null;
 
-                toReturn = this.m_Phases.FirstOrDefault(x => x.Name == phase.Name && x.ProductID == phase.ProductID);
+                toReturn = this.m_Phases.FirstOrDefault(x => x.Name == phase.Name && x.Product.ID == phase.Product.ID);
                 if (toReturn == null)
                 {
                     //TODO: Add to DB
