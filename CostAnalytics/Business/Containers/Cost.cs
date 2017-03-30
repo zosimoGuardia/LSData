@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IContainer = Dell.CostAnalytics.Business.Containers.Interfaces;
 
-namespace Dell.CostAnalytics.Business.Container
+namespace Dell.CostAnalytics.Business.Containers
 {
-    public class Cost
+    public class Cost : IContainer.ICost
     {
         public int ID { get; set; }
         public Iteration Iteration { get; set; }

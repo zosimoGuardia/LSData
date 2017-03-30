@@ -4,17 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4ECB5D6D-0E4A-43FA-B6B0-BDF71F5CC54F}</ProjectGuid>
+    <ProjectGuid>{31B0EAC9-D7E5-4039-B008-3BBA35286B83}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Dell.CostAnalytics.Business</RootNamespace>
-    <AssemblyName>Business</AssemblyName>
+    <RootNamespace>Dell.CostAnalytics.Data</RootNamespace>
+    <AssemblyName>Data</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,16 +22,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -46,30 +40,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Containers\Configuration.cs" />
-    <Compile Include="Containers\Cost.cs" />
-    <Compile Include="Containers\Iteration.cs" />
-    <Compile Include="Containers\Iterfaces\IConfiguration.cs" />
-    <Compile Include="Containers\Iterfaces\ICost.cs" />
-    <Compile Include="Containers\Iterfaces\IIteration.cs" />
-    <Compile Include="Containers\Iterfaces\IMeasure.cs" />
-    <Compile Include="Containers\Iterfaces\IPhase.cs" />
-    <Compile Include="Containers\Iterfaces\IProduct.cs" />
-    <Compile Include="Containers\Iterfaces\IRegion.cs" />
-    <Compile Include="Containers\Iterfaces\ISKU.cs" />
-    <Compile Include="Containers\Measure.cs" />
-    <Compile Include="Containers\Phase.cs" />
+    <Compile Include="Containers\Interfaces\IConfiguration.cs" />
+    <Compile Include="Containers\Interfaces\ICost.cs" />
+    <Compile Include="Containers\Interfaces\IIteration.cs" />
+    <Compile Include="Containers\Interfaces\IMeasure.cs" />
+    <Compile Include="Containers\Interfaces\IPhase.cs" />
+    <Compile Include="Containers\Interfaces\IRegion.cs" />
+    <Compile Include="Containers\Interfaces\ISKU.cs" />
     <Compile Include="Containers\Product.cs" />
-    <Compile Include="Containers\Region.cs" />
-    <Compile Include="Containers\SKU.cs" />
+    <Compile Include="Containers\Interfaces\IProduct.cs" />
+    <Compile Include="Sql\Interfaces\Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Handlers\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
