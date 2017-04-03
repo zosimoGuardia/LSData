@@ -11,35 +11,27 @@ namespace Dell.CostAnalytics.Business.Containers
     {
         #region Constructors
         /// <summary> Default constructor for class Iteration </summary>
-        public Iteration() { }; //End default constructor
+        public Iteration() { } //End default constructor
 
-        /** <summary> Constructor that initializes class with pre-specified members. </summary>
-          * <param name="_id"> The Iteration ID </param>
-          * <param name="_region"> Object that contains region information. </param>
-          * <param name="_product"> Object that contains product information. </param>
-          * <param name="_config"> Object that contains configuration information. </param>
-          * <param name="_sku"> Object that contains SKU information. </param>
-          * <param name="_measure"> Object that contain Cost Adder information. </param>
-          **/
-        public Iteration(int _id, Region _region, Product _product, Configuration _config,
-                         SKU _sku, Measure _measure)
+        /// <summary>
+        /// Constructor that initializes class with pre-specified members.
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <param name="Region"></param>
+        /// <param name="Product"></param>
+        /// <param name="Configuration"></param>
+        /// <param name="SKU"></param>
+        /// <param name="Measure"></param>
+        public Iteration(int ID, Region Region, Product Product, Configuration Configuration,
+                         SKU SKU, Measure Measure)
         {
-            m_ID = _id;
-            m_Region = _region;
-            m_Product = _product;
-            m_Configuration = _config;
-            m_SKU = _sku;
-            m_Measure = _measure;
+            m_ID = ID;
+            m_Region = Region;
+            m_Product = Product;
+            m_Configuration = Configuration;
+            m_SKU = SKU;
+            m_Measure = Measure;
         } //End constructor (int, Region, Product, Configuration, SKU, Measure)
-        #endregion
-
-        #region Members
-        private int m_ID;
-        private Region m_Region;
-        private Product m_Product;
-        private Configuration m_Configuration;
-        private SKU m_SKU;
-        private Measure m_Measure;
         #endregion
 
         #region Properties
@@ -56,9 +48,8 @@ namespace Dell.CostAnalytics.Business.Containers
             get
             {
                 if (m_Region == null)
-                { return new Region(); }
-                else
-                { return m_Region; }
+                    m_Region = new Region();
+                return m_Region;
             }
             set { m_Region = value; }
         } //End property Region
@@ -69,9 +60,8 @@ namespace Dell.CostAnalytics.Business.Containers
             get
             {
                 if (m_Product == null)
-                { return new Product(); }
-                else
-                { return m_Product; }
+                    m_Product = new Product();
+                return m_Product;
             }
             set { m_Product = value; }
         } //End property Product
@@ -82,9 +72,8 @@ namespace Dell.CostAnalytics.Business.Containers
             get
             {
                 if (m_Configuration == null)
-                { return new Configuration(); }
-                else
-                { return m_Configuration; }
+                    m_Configuration = new Configuration();
+                return m_Configuration;
             }
             set { m_Configuration = value; }
         } //End property Configuration
@@ -95,9 +84,8 @@ namespace Dell.CostAnalytics.Business.Containers
             get
             {
                 if (m_SKU == null)
-                { return new SKU(); }
-                else
-                { return m_SKU; }
+                    m_SKU = new SKU();
+                return m_SKU;
             }
             set { m_SKU = value; }
         } //End property SKU
@@ -108,13 +96,22 @@ namespace Dell.CostAnalytics.Business.Containers
             get
             {
                 if (m_Measure == null)
-                { return new Measure(); }
-                else
-                { return m_Measure; }
+                    m_Measure = new Measure();
+                return m_Measure;
             }
             set { m_Measure = value; }
         } //End property Measure
         #endregion
 
+        #region Members
+        private int m_ID;
+        private Region m_Region;
+        private Product m_Product;
+        private Configuration m_Configuration;
+        private SKU m_SKU;
+        private Measure m_Measure;
+        #endregion
+
+
     } //End class Iteration
-}
+}//end namespace

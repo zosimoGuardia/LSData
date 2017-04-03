@@ -15,13 +15,14 @@ namespace Dell.CostAnalytics.Business.Containers
         {
         } //end constructor
 
-        /** <summary> Instantiates a Product Object with specified properties </summary>
-          * <param name="ID"> The Product ID </param>
-          * <param name="Name"> The internal name of the product. </param>
-          * <param name="LOB"> The Line of Business the product belongs to. </param>
-          * <param name="Model"> The external name of the product (Model number). </param>
-          * <param name="Variant"> The product's form factor (if more than one is available). </param>
-          **/
+        /// <summary>
+        /// Instantiates a Product Object with specified properties
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <param name="Name"></param>
+        /// <param name="LOB"></param>
+        /// <param name="Model"></param>
+        /// <param name="Variant"></param>
         public Product(int ID, string Name, string LOB, int Model, string Variant)
         {
             m_ID = ID;
@@ -63,7 +64,6 @@ namespace Dell.CostAnalytics.Business.Containers
             set { m_Variant = value; }
         } //End property Variant
         #endregion
-
 
         #region Members
         //<summary> Members of Product class </summary>
