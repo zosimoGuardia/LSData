@@ -14,22 +14,16 @@ namespace Dell.CostAnalytics.Business.Containers
         public Configuration() { }//End default constructor
 
         /** <summary> Instantiates a configuration object with specified parameters. </summary>
-          * <param name="_id"> The configuration ID </param>
-          * <param name="_name"> The configuration name. </param>
-          * <param name="_type"> The configuration type (Min, Avg, etc.) </param>
+          * <param name="ID"> The configuration ID </param>
+          * <param name="Name"> The configuration name. </param>
+          * <param name="Type"> The configuration type (Min, Avg, etc.) </param>
           **/
-        public Configuration(int _id, string _name, string _type)
+        public Configuration(int ID, string Name, string Type)
         {
-            m_ID = _id;
-            m_Name = _name;
-            m_Type = _type;
+            m_ID = ID;
+            m_Name = Name;
+            m_Type = Type;
         } //End constructor (int, string, string)
-        #endregion
-
-        #region Members
-        private int m_ID;
-        private string m_Name;
-        private string m_Type;
         #endregion
 
         #region Properties
@@ -53,6 +47,12 @@ namespace Dell.CostAnalytics.Business.Containers
             get { return m_Type; }
             set { m_Type = value; }
         } //End property Type
+        #endregion
+
+        #region Members
+        private int m_ID;
+        private string m_Name;
+        private string m_Type;
         #endregion
     } //End class Configuration
 } //End namespace Dell.CostAnalytics.Business.Containers

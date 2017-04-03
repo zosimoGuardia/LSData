@@ -47,10 +47,24 @@
     <Compile Include="Containers\Interfaces\IPhase.cs" />
     <Compile Include="Containers\Interfaces\IRegion.cs" />
     <Compile Include="Containers\Interfaces\ISKU.cs" />
+    <Compile Include="Containers\Cost.cs" />
+    <Compile Include="Containers\Measure.cs" />
+    <Compile Include="Containers\Iteration.cs" />
+    <Compile Include="Containers\SKU.cs" />
+    <Compile Include="Containers\Phase.cs" />
+    <Compile Include="Containers\Configuration.cs" />
+    <Compile Include="Containers\Region.cs" />
     <Compile Include="Containers\Product.cs" />
     <Compile Include="Containers\Interfaces\IProduct.cs" />
-    <Compile Include="Sql\Interfaces\Product.cs" />
+    <Compile Include="Sql\Interfaces\IConfigurationSql.cs" />
+    <Compile Include="Sql\Interfaces\ICostSql.cs" />
+    <Compile Include="Sql\Interfaces\IIterationSql.cs" />
+    <Compile Include="Sql\Interfaces\IMeasureSql.cs" />
+    <Compile Include="Sql\Interfaces\IPhaseSql.cs" />
+    <Compile Include="Sql\Interfaces\IProductSql.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sql\Interfaces\IRegionSql.cs" />
+    <Compile Include="Sql\Interfaces\ISKUSql.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
