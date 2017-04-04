@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
+using System.Data;
 using Dell.CostAnalytics.Data.Sql.Common;
 using Cont = Dell.CostAnalytics.Data.Containers;
 
@@ -30,6 +31,128 @@ namespace Dell.CostAnalytics.Data.Sql
         #endregion
 
         #region Methods
+        public int Add(Cont.Measure info, SqlTransaction transaction = null)
+        {
+            SqlService sql = null;
+            try
+            {
+                sql = new SqlService(transaction);
+                sql.AddParameter("@ID", SqlDbType.Int, info.ID, ParameterDirection.InputOutput, true);
+                sql.AddParameter("@Name", SqlDbType.VarChar, info.Name, 50, ParameterDirection.Input, true);
+
+                sql.ExecuteSP(""); //TODO: Pass in the Stored Procedure Name
+                SqlParameter param = sql.ResultParameters["@ID"];
+                info.ID = Convert.ToInt32(param.Value);
+
+                // Update cached values
+                CachedValues.Value.Add(info);
+            }//end try
+            catch (Exception exc)
+            {
+                throw exc;
+            }//end catch
+            finally
+            {
+                if (sql != null)
+                    sql.Disconnect();
+            }//end finally
+
+            return info.ID;
+        }
+
+        public void Update(Cont.Measure info, SqlTransaction transaction = null)
+        {
+            SqlService sql = null;
+            try
+            {
+                sql = new SqlService(transaction);
+                sql.AddParameter("@ID", SqlDbType.Int, info.ID, ParameterDirection.Input, true);
+                sql.AddParameter("@Name", SqlDbType.VarChar, info.Name, 50, ParameterDirection.Input, true);
+
+                sql.ExecuteSP(""); //TODO: Pass in the Stored Procedure Name
+
+                // Update cached values
+                Cont.Measure cacheItemToRemove = CachedValues.Value.FirstOrDefault(x => x.ID == info.ID && !x.Equals(info));
+                if (cacheItemToRemove != null)
+                {
+                    CachedValues.Value.Remove(cacheItemToRemove);  //Remove item
+                    CachedValues.Value.Add(info);  //Add item
+                }//end if
+            }//end try
+            catch (Exception exc)
+            {
+                throw exc;
+            }//end catch
+            finally
+            {
+                if (sql != null)
+                    sql.Disconnect();
+            }//end finally
+        }
+
+        public void Delete(int ID, SqlTransaction transaction = null)
+        {
+            SqlService sql = null;
+            try
+            {
+                sql = new SqlService(transaction);
+                sql.AddParameter("@ID", SqlDbType.Int, ID, ParameterDirection.Input, true);
+                sql.ExecuteSP(""); //TODO: Pass in the Stored Procedure Name
+
+                // Update cached values
+                Cont.Measure cacheItemToRemove = CachedValues.Value.FirstOrDefault(x => x.ID == ID);
+                if (cacheItemToRemove != null)
+                {
+                    CachedValues.Value.Remove(cacheItemToRemove);  //Remove item
+                }//end if
+            }//end try
+            catch (Exception exc)
+            {
+                throw exc;
+            }//end catch
+            finally
+            {
+                if (sql != null)
+                    sql.Disconnect();
+            }//end finally
+        }
+
+        public Cont.Measure GetByID(int ID)
+        {
+            Cont.Measure toReturn = CachedValues.Value.FirstOrDefault(x => x.ID == ID);
+            if (toReturn == null)
+            {
+                SqlService sql = null;
+                SqlDataReader reader = null;
+                try
+                {
+                    sql = new SqlService();
+                    sql.AddParameter("@ID", SqlDbType.Int, ID, ParameterDirection.Input, true);
+
+                    reader = sql.ExecuteSPReader(""); //TODO: Pass in the Stored Procedure Name
+                    toReturn = ConvertToContainer(reader).FirstOrDefault(); //MARK: Make sure row IDs corresponds to Database fields
+
+                    //Append to cached values
+                    if (toReturn != null)
+                    {
+                        CachedValues.Value.Add(toReturn);
+                    }//endif
+                }//end try
+                catch (Exception exc)
+                {
+                    throw exc;
+                }//end catch
+                finally
+                {
+                    if (reader != null && !reader.IsClosed)
+                        reader.Close();
+                    if (sql != null)
+                        sql.Disconnect();
+                }//end finally
+            }
+            return toReturn;
+        }
+
         public Cont.Measure[] GetAll()
         {
             Cont.Measure[] toReturn = new Cont.Measure[0];
@@ -54,26 +177,6 @@ namespace Dell.CostAnalytics.Data.Sql
             }//end finally
 
             return toReturn;
-        }
-
-        public int Add(Cont.Measure info, SqlTransaction transaction = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Update(Cont.Measure info, SqlTransaction transaction = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Delete(int ID, SqlTransaction transaction = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Cont.Measure GetByID(int ID)
-        {
-            throw new NotImplementedException();
         }
         #endregion
 
