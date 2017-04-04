@@ -13,20 +13,16 @@ namespace Dell.CostAnalytics.Business.Containers
         /// <summary> Default constructor for Measure </summary>
         public Measure() { } //End default constructor
 
-        /** <summary> Constructor that initializes a Measure object with specified parameters. </summary>
-          * <param name="_id"> The Measure ID </param>
-          * <param name="_name"> The name of the Cost Adder </param>
-          **/
-        public Measure(int _id, string _name)
+        /// <summary>
+        /// Constructor that initializes a Measure object with specified parameters.
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <param name="Name"></param>
+        public Measure(int ID, string Name)
         {
-            m_ID = _id;
-            m_Name = _name;
+            m_ID = ID;
+            m_Name = Name;
         } //End constructor (int, string)
-        #endregion
-
-        #region Members
-        private int m_ID;
-        private string m_Name;
         #endregion
 
         #region Properties
@@ -45,5 +41,10 @@ namespace Dell.CostAnalytics.Business.Containers
         } //End property Name
         #endregion
 
+        #region Members
+        private int m_ID;
+        private string m_Name;
+        #endregion
+
     } //End class Measure
-}
+}//end namespace

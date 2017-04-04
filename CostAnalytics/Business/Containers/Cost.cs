@@ -14,35 +14,25 @@ namespace Dell.CostAnalytics.Business.Containers
         public Cost() { } //End default constructor
 
         /** <summary> Constructor that initializes class with specified parameters </summary>
-          * <param name="_id"> The Cost ID </param>
-          * <param name="_iteration"> Iteration ID that references this Cost ID </param>
-          * <param name="_date"> Date of Cost information </param>
-          * <param name="_currentCost"> Cost at Date _date </param>
-          * <param name="_costPlus1"> Next month's predicted cost. </param>
-          * <param name="_costPlus2"> Predicted costs two months down the line. </param>
-          * <param name="_costPlus3"> Predicted costs three months down the line. </param>
+          * <param name="ID"> The Cost ID </param>
+          * <param name="Iteration"> Iteration ID that references this Cost ID </param>
+          * <param name="Date"> Date of Cost information </param>
+          * <param name="CurrentCost"> Cost at Date _date </param>
+          * <param name="CostNext1"> Next month's predicted cost. </param>
+          * <param name="CostNext2"> Predicted costs two months down the line. </param>
+          * <param name="CostNext3"> Predicted costs three months down the line. </param>
           **/
-        public Cost(int _id, Iteration _iteration, DateTime _date, double _currentCost,
-                    double _costPlus1, double _costPlus2, double _costPlus3)
+        public Cost(int ID, Iteration Iteration, DateTime Date, double CurrentCost,
+                    double CostNext1, double CostNext2, double CostNext3)
         {
-            m_ID = _id;
-            m_Iteration = _iteration;
-            m_Date = _date;
-            m_CurrentCost = _currentCost;
-            m_CostNext1 = _costPlus1;
-            m_CostNext2 = _costPlus2;
-            m_CostNext3 = _costPlus3;
+            m_ID = ID;
+            m_Iteration = Iteration;
+            m_Date = Date;
+            m_CurrentCost = CurrentCost;
+            m_CostNext1 = CostNext1;
+            m_CostNext2 = CostNext2;
+            m_CostNext3 = CostNext3;
         } //End constructor (int, Iteration, Datetime, double, double, double, double)
-        #endregion
-
-        #region Members
-        private int m_ID;
-        private Iteration m_Iteration;
-        private DateTime m_Date;
-        private double m_CurrentCost;
-        private double m_CostNext1;
-        private double m_CostNext2;
-        private double m_CostNext3;
         #endregion
 
         #region Properties
@@ -59,9 +49,8 @@ namespace Dell.CostAnalytics.Business.Containers
             get
             {
                 if (m_Iteration == null)
-                { return new Iteration(); }
-                else
-                { return m_Iteration; }
+                    m_Iteration = new Iteration();
+                return m_Iteration;
             }
             set { m_Iteration = value; }
         } //End property Iteration
@@ -89,24 +78,34 @@ namespace Dell.CostAnalytics.Business.Containers
         /// <summary> Property for next month's predicted cost </summary>
         public double CostNext1
         {
-            get { return m_CostPlus1; }
-            set { m_CostPlus1 = value; }
+            get { return m_CostNext1; }
+            set { m_CostNext1 = value; }
         } //End property CostPlus1
 
         /// <summary> Property for two month forecasted cost</summary>
         public double CostNext2
         {
-            get { return m_CostPlus2; }
-            set { m_CostPlus2 = value; }
+            get { return m_CostNext2; }
+            set { m_CostNext2 = value; }
         } //End property CostPlus2
 
         /// <summary> Property for 3-month predicted cost </summary>
         public double CostNext3
         {
-            get { return m_CostPlus3; }
-            set { m_CostPlus3 = value; }
+            get { return m_CostNext3; }
+            set { m_CostNext3 = value; }
         } //End property CostPlus3
         #endregion
 
+        #region Members
+        private int m_ID;
+        private Iteration m_Iteration;
+        private DateTime m_Date;
+        private double m_CurrentCost;
+        private double m_CostNext1;
+        private double m_CostNext2;
+        private double m_CostNext3;
+        #endregion
+
     } //End class Cost
-}
+}//end namespace

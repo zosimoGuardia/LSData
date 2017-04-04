@@ -7,32 +7,26 @@ using IContainer = Dell.CostAnalytics.Business.Containers.Interfaces;
 
 namespace Dell.CostAnalytics.Business.Containers
 {
-    public class SKU:IContainer.ISKU
+    public class SKU : IContainer.ISKU
     {
         #region Constructors
         /// <summary> Default constructor for SKU class. </summary>
         public SKU() { } //End default constructor
 
-        /** <summary> Instantiates a SKU object with specified parameters. </summary>
-          * <param name="_id"> The SKU ID. </param>
-          * <param name="_name"> The name of the SKU (Ex. 998-CIND) </param>
-          * <param name="_description"> The SKU Description. </param>
-          * <param name="_commodity"> The SKU Type (SSD, Memory, Base, etc.) </param>
-          **/
-        public SKU(int _id, string _name, string _description, string _commodity)
+        /// <summary>
+        /// Instantiates a SKU object with specified parameters
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <param name="Name"></param>
+        /// <param name="Descriptor"></param>
+        /// <param name="Commodity"></param>
+        public SKU(int ID, string Name, string Descriptor, string Commodity)
         {
-            m_ID          = _id;
-            m_Name        = _name;
-            m_Description = _description;
-            m_Commodity   = _commodity;
+            m_ID = ID;
+            m_Name = Name;
+            m_Description = Descriptor;
+            m_Commodity = Commodity;
         } //End SKU constructor (int, string, string, string)
-        #endregion
-
-        #region Members
-        private int m_ID;
-        private string m_Name;
-        private string m_Description;
-        private string m_Commodity;
         #endregion
 
         #region Properties
@@ -63,6 +57,13 @@ namespace Dell.CostAnalytics.Business.Containers
             get { return m_Commodity; }
             set { m_Commodity = value; }
         } //End property Commodity
+        #endregion
+
+        #region Members
+        private int m_ID;
+        private string m_Name;
+        private string m_Description;
+        private string m_Commodity;
         #endregion
     } //End class SKU
 } //End namespace Dell.CostAnalytics.Business.Containers

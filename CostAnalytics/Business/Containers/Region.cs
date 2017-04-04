@@ -7,32 +7,26 @@ using IContainer = Dell.CostAnalytics.Business.Containers.Interfaces;
 
 namespace Dell.CostAnalytics.Business.Containers
 {
-    public class Region:IContainer.IRegion
+    public class Region : IContainer.IRegion
     {
         #region Constructors
         /// <summary> Default constructor for the Region class. </summary>
         public Region() { } //End default constructor
 
-        /** <summary> Constructor that instantiates a Region object with specified parameters. </summary>
-          * <param name="_id"> The Region ID </param>
-          * <param name="_regionName"> The region name </param>
-          * <param name="_country"> The country name </param>
-          * <param name="_countryCode"> The country code </param>
-          **/
-        public Region(int _id, string _regionName, string _country, string _countryCode)
+        /// <summary>
+        /// Constructor that instantiates a Region object with specified parameters.
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <param name="RegionName"></param>
+        /// <param name="Country"></param>
+        /// <param name="CountryCode"></param>
+        public Region(int ID, string RegionName, string Country, string CountryCode)
         {
-            m_ID = _id;
-            m_regionName = _regionName;
-            m_Country = _country;
-            m_countryCode = _countryCode;
+            m_ID = ID;
+            m_regionName = RegionName;
+            m_Country = Country;
+            m_countryCode = CountryCode;
         } //End constructor (int, string, string, string)
-        #endregion
-
-        #region Members
-        private int m_ID;
-        private string m_regionName;
-        private string m_Country;
-        private string m_countryCode;
         #endregion
 
         #region Properties
@@ -64,5 +58,13 @@ namespace Dell.CostAnalytics.Business.Containers
             set { m_countryCode = value; }
         } //End property countryCode
         #endregion
+
+        #region Members
+        private int m_ID;
+        private string m_regionName;
+        private string m_Country;
+        private string m_countryCode;
+        #endregion
+
     } //End class Region
-}
+}//end namespace
