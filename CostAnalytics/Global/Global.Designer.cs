@@ -121,5 +121,25 @@ namespace Dell.CostAnalytics.Global {
                 return ((string)(this["ImpersonationPassword"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\\\Users\\\\Dominic_Bett\\\\Desktop\\\\Desktop Items\\\\PROJECTS\\\\Cost Analysis\\\\FLC_EXT" +
+            "RACT_EUC_PC_20161207051244.csv")]
+        public string FLCExtractPath {
+            get {
+                return ((string)(this["FLCExtractPath"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\\\Users\\\\Dominic_Bett\\\\Desktop\\\\Desktop Items\\\\PROJECTS\\\\Cost Analysis\\\\consoli" +
+            "dated.txt")]
+        public string ConsolidatedFilePath {
+            get {
+                return ((string)(this["ConsolidatedFilePath"]));
+            }
+        }
     }
 }

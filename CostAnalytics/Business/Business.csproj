@@ -62,13 +62,18 @@
     <Compile Include="Containers\Product.cs" />
     <Compile Include="Containers\Region.cs" />
     <Compile Include="Containers\SKU.cs" />
+    <Compile Include="Handlers\Measure.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Handlers\" />
+    <ProjectReference Include="..\Data\Data.csproj">
+      <Project>{31b0eac9-d7e5-4039-b008-3bba35286b83}</Project>
+      <Name>Data</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
