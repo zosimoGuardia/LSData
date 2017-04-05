@@ -48,6 +48,16 @@ namespace Dell.CostAnalytics.Global
         {
             get { return Global.Default.DBDefaultTimeout; }
         }
+
+        public static string FLCExtractPath
+        {
+            get { return Global.Default.FLCExtractPath; }
+        }
+
+        public static string ConsolidatedFilePath
+        {
+            get { return Global.Default.ConsolidatedFilePath; }
+        }
         #endregion
     }
 }

@@ -35,5 +35,11 @@
     <Setting Name="ImpersonationPassword" Type="System.String" Scope="Application">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="FLCExtractPath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">C:\\Users\\Dominic_Bett\\Desktop\\Desktop Items\\PROJECTS\\Cost Analysis\\FLC_EXTRACT_EUC_PC_20161207051244.csv</Value>
+    </Setting>
+    <Setting Name="ConsolidatedFilePath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">C:\\Users\\Dominic_Bett\\Desktop\\Desktop Items\\PROJECTS\\Cost Analysis\\consolidated.txt</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
