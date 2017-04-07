@@ -10,14 +10,12 @@ using System.Threading.Tasks;
 
 namespace Dell.CostAnalytics.Data.Sql
 {
-    class PhaseSql
+    public class PhaseSql: BaseSql, Interfaces.IPhaseSql
     {
-        #region Members
-        static Lazy<List<Cont.Phase>> m_CachedValues = null;
-        #endregion
-
         #region Properties
-        // <summary> Property for m_CachedValues </summary>
+        /// <summary>
+        /// Property for m_CachedValues
+        /// </summary>
         public static Lazy<List<Cont.Phase>> CachedValues
         {
             get
@@ -34,11 +32,12 @@ namespace Dell.CostAnalytics.Data.Sql
         #endregion
 
         #region Standard Methods
-        /** <summary> Adds a Phase record to the database. </summary>
-          * <param name="info"> The Phase record that needs adding. </param>
-          * <param name="transaction"> The SQL transaction object. </param>
-          * <returns> The DB record ID. </returns>
-          **/
+        /// <summary>
+        ///  Adds a Phase record to the database. 
+        /// </summary>
+        /// <param name="info"> The Phase record that needs adding. </param>
+        /// <param name="transaction"> The SQL transaction object. </param>
+        /// <returns> The DB record ID. </returns>
         public int Add(Cont.Phase info, SqlTransaction transaction = null)
         {
             SqlService sql = null;
@@ -69,10 +68,11 @@ namespace Dell.CostAnalytics.Data.Sql
             return info.ID;
         } //End Add method
 
-        /** <summary> Updates an existing DB record with provided information. </summary>
-          * <param name="info"> The Phase record that needs updating. </param>
-          * <param name="transaction"> The SQL transaction object. </param>
-          **/
+        /// <summary>
+        ///  Updates an existing DB record with provided information. 
+        /// </summary>
+        /// <param name="info"> The Phase record that needs updating. </param>
+        /// <param name="transaction"> The SQL transaction object. </param>
         public void Update(Cont.Phase info, SqlTransaction transaction = null)
         {
             SqlService sql = null;
@@ -104,10 +104,11 @@ namespace Dell.CostAnalytics.Data.Sql
             }//end finally
         } //End update method
 
-        /** <summary> This method deletes a Phase DB record. </summary>
-          * <param name="ID"> The record ID you want removed. </param>
-          * <param name="transaction"> The SQL Transaction object. </param>
-          **/
+        /// <summary>
+        ///  This method deletes a Phase DB record. 
+        /// </summary>
+        /// <param name="ID"> The record ID you want removed. </param>
+        /// <param name="transaction"> The SQL Transaction object. </param>
         public void Delete(int ID, SqlTransaction transaction = null)
         {
             SqlService sql = null;
@@ -135,10 +136,11 @@ namespace Dell.CostAnalytics.Data.Sql
             }//end finally
         } //End Delete method.
 
-        /** <summary> This method gets a Phase Record by ID. </summary>
-          * <param name="ID"> The DB ID of the record you want to retrieve. </param>
-          * <returns> The Phase record in Object-Oriented form. </returns>
-          **/
+        /// <summary>
+        /// This method gets a Phase Record by ID. 
+        /// </summary>
+        /// <param name="ID"> The DB ID of the record you want to retrieve. </param>
+        /// <returns> The Phase record in Object-Oriented form. </returns>
         public Cont.Phase GetByID(int ID)
         {
             Cont.Phase toReturn = CachedValues.Value.FirstOrDefault(x => x.ID == ID);
@@ -175,9 +177,10 @@ namespace Dell.CostAnalytics.Data.Sql
             return toReturn;
         } //End method getByID
 
-        /** <summary> This method gets all Phase records from DB. </summary>
-          * <returns> A list of Phase records in Object-Oriented form. </returns>
-          **/
+        /// <summary>
+        ///  This method gets all Phase records from DB. 
+        /// </summary>
+        /// <returns> A list of Phase records in Object-Oriented form. </returns>
         public Cont.Phase[] GetAll()
         {
             Cont.Phase[] toReturn = new Cont.Phase[0];
@@ -206,10 +209,10 @@ namespace Dell.CostAnalytics.Data.Sql
         #endregion
 
         #region Custom Methods
-        /** <summary> This method converts DB output to an Object-Oriented form. </summary>
-          * <param name="reader"> The SQL Data reader object. </param>
-          * <returns> An array of Phase objects. </returns>
-          **/
+        /// This method converts DB output to an Object-Oriented form.
+        /// </summary>
+        /// <param name="reader">The SQL Data reader object.</param>
+        /// <returns>An array of Phase objects.</returns>
         private Cont.Phase[] ConvertToContainer(SqlDataReader reader)
         {
             var toReturn = (from row in reader.Cast<System.Data.Common.DbDataRecord>()
@@ -224,6 +227,8 @@ namespace Dell.CostAnalytics.Data.Sql
         }//end method
         #endregion
 
+        #region Members
+        private static Lazy<List<Cont.Phase>> m_CachedValues = null;
+        #endregion
     } //end class
-
 } //end namespace
