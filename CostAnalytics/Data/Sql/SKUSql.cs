@@ -1,43 +1,45 @@
-﻿using System;
+﻿using Dell.CostAnalytics.Data.Sql.Common;
+using Cont = Dell.CostAnalytics.Data.Containers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data;
+using System.Data.SqlClient;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.SqlClient;
-using System.Data;
-using Dell.CostAnalytics.Data.Sql.Common;
-using Cont = Dell.CostAnalytics.Data.Containers;
 
 namespace Dell.CostAnalytics.Data.Sql
 {
-    public class MeasureSql: BaseSql, Interfaces.IMeasureSql
+    class SKUSql
     {
+        #region Members
+        static Lazy<List<Cont.SKU>> m_CachedValues = null;
+        #endregion
 
         #region Properties
-        /// <summary> Property for CachedValues </summary>
-        public static Lazy<List<Cont.Measure>> CachedValues
+        // <summary> Property for m_CachedValues </summary>
+        public static Lazy<List<Cont.SKU>> CachedValues
         {
             get
             {
                 if (m_CachedValues == null)
                 {
-                    MeasureSql sql = new MeasureSql();
-                    m_CachedValues = new Lazy<List<Cont.Measure>>(()=>new List<Cont.Measure>(sql.GetAll()));
+                    SKUSql sql = new SKUSql();
+                    m_CachedValues = new Lazy<List<Cont.SKU>>(() => new List<Cont.SKU>(sql.GetAll()));
                 }
                 return m_CachedValues;
             }
-
             set { m_CachedValues = value; }
         }
         #endregion
 
         #region Standard Methods
-        /** <summary> Adds a Measure record to the DB. </summary>
-          * <param name="info"> The Measure object that needs adding. </param>
+        /** <summary> Adds a SKU record to the database. </summary>
+          * <param name="info"> The SKU record that needs adding. </param>
           * <param name="transaction"> The SQL transaction object. </param>
           * <returns> The DB record ID. </returns>
           **/
-        public int Add(Cont.Measure info, SqlTransaction transaction = null)
+        public int Add(Cont.SKU info, SqlTransaction transaction = null)
         {
             SqlService sql = null;
             try
@@ -45,6 +47,8 @@ namespace Dell.CostAnalytics.Data.Sql
                 sql = new SqlService(transaction);
                 sql.AddParameter("@ID", SqlDbType.Int, info.ID, ParameterDirection.InputOutput, true);
                 sql.AddParameter("@Name", SqlDbType.VarChar, info.Name, 50, ParameterDirection.Input, true);
+                sql.AddParameter("@Description", SqlDbType.VarChar, info.Description, 50, ParameterDirection.Input, true);
+                sql.AddParameter("@Commodity", SqlDbType.VarChar, info.Commodity, 50, ParameterDirection.Input, true);
 
                 sql.ExecuteSP(""); //TODO: Pass in the Stored Procedure Name
                 SqlParameter param = sql.ResultParameters["@ID"];
@@ -66,11 +70,11 @@ namespace Dell.CostAnalytics.Data.Sql
             return info.ID;
         } //End Add method
 
-        /** <summary> Updates a DB record with provided information. </summary>
-          * <param name="info"> The Measure record that needs updating. </param>
-          * <param name="transaction">The SQL Transaction object. </param>
+        /** <summary> Updates an existing DB record with provided information. </summary>
+          * <param name="info"> The SKU record that needs updating. </param>
+          * <param name="transaction"> The SQL transaction object. </param>
           **/
-        public void Update(Cont.Measure info, SqlTransaction transaction = null)
+        public void Update(Cont.SKU info, SqlTransaction transaction = null)
         {
             SqlService sql = null;
             try
@@ -78,11 +82,13 @@ namespace Dell.CostAnalytics.Data.Sql
                 sql = new SqlService(transaction);
                 sql.AddParameter("@ID", SqlDbType.Int, info.ID, ParameterDirection.Input, true);
                 sql.AddParameter("@Name", SqlDbType.VarChar, info.Name, 50, ParameterDirection.Input, true);
+                sql.AddParameter("@Description", SqlDbType.VarChar, info.Description, 50, ParameterDirection.Input, true);
+                sql.AddParameter("@Commodity", SqlDbType.VarChar, info.Commodity, 50, ParameterDirection.Input, true);
 
                 sql.ExecuteSP(""); //TODO: Pass in the Stored Procedure Name
 
                 // Update cached values
-                Cont.Measure cacheItemToRemove = CachedValues.Value.FirstOrDefault(x => x.ID == info.ID && !x.Equals(info));
+                Cont.SKU cacheItemToRemove = CachedValues.Value.FirstOrDefault(x => x.ID == info.ID && !x.Equals(info));
                 if (cacheItemToRemove != null)
                 {
                     CachedValues.Value.Remove(cacheItemToRemove);  //Remove item
@@ -98,11 +104,11 @@ namespace Dell.CostAnalytics.Data.Sql
                 if (sql != null)
                     sql.Disconnect();
             }//end finally
-        } //End Update method
+        } //End update method
 
-        /** <summary> Deletes a record from the DB. </summary>
+        /** <summary> This method deletes a SKU DB record. </summary>
           * <param name="ID"> The record ID you want removed. </param>
-          * <param name="transaction"> The SQL transaction object. </param>
+          * <param name="transaction"> The SQL Transaction object. </param>
           **/
         public void Delete(int ID, SqlTransaction transaction = null)
         {
@@ -114,7 +120,7 @@ namespace Dell.CostAnalytics.Data.Sql
                 sql.ExecuteSP(""); //TODO: Pass in the Stored Procedure Name
 
                 // Update cached values
-                Cont.Measure cacheItemToRemove = CachedValues.Value.FirstOrDefault(x => x.ID == ID);
+                Cont.SKU cacheItemToRemove = CachedValues.Value.FirstOrDefault(x => x.ID == ID);
                 if (cacheItemToRemove != null)
                 {
                     CachedValues.Value.Remove(cacheItemToRemove);  //Remove item
@@ -131,13 +137,13 @@ namespace Dell.CostAnalytics.Data.Sql
             }//end finally
         } //End Delete method.
 
-        /** <summary> Get a Measure record by ID. </summary>
-          * <param name="ID"> The DB ID of the record you want retrieved. </param>
-          * <returns> A Measure object containing record information. </returns>
+        /** <summary> This method gets a SKU Record by ID. </summary>
+          * <param name="ID"> The DB ID of the record you want to retrieve. </param>
+          * <returns> The SKU record in Object-Oriented form. </returns>
           **/
-        public Cont.Measure GetByID(int ID)
+        public Cont.SKU GetByID(int ID)
         {
-            Cont.Measure toReturn = CachedValues.Value.FirstOrDefault(x => x.ID == ID);
+            Cont.SKU toReturn = CachedValues.Value.FirstOrDefault(x => x.ID == ID);
             if (toReturn == null)
             {
                 SqlService sql = null;
@@ -167,16 +173,16 @@ namespace Dell.CostAnalytics.Data.Sql
                     if (sql != null)
                         sql.Disconnect();
                 }//end finally
-            }
+            } //end if
             return toReturn;
         } //End method getByID
 
-        /** <summary> Gets all Measure records from DB. </summary>
-          * <returns> An array of Measure objects. </returns>
+        /** <summary> This method gets all SKU records from DB. </summary>
+          * <returns> A list of SKU records in Object-Oriented form. </returns>
           **/
-        public Cont.Measure[] GetAll()
+        public Cont.SKU[] GetAll()
         {
-            Cont.Measure[] toReturn = new Cont.Measure[0];
+            Cont.SKU[] toReturn = new Cont.SKU[0];
             SqlService sql = null;
             SqlDataReader reader = null;
             try
@@ -185,7 +191,7 @@ namespace Dell.CostAnalytics.Data.Sql
                 reader = sql.ExecuteSPReader(""); //TODO: Pass in the Stored Procedure Name
                 toReturn = ConvertToContainer(reader); //MARK: Make sure row IDs corresponds to Database fields
             }//end try
-            catch(Exception exc)
+            catch (Exception exc)
             {
                 throw exc;
             }//end catch
@@ -202,25 +208,25 @@ namespace Dell.CostAnalytics.Data.Sql
         #endregion
 
         #region Custom Methods
-        /** <summary> Converts Reader to array of Data Containers </summary>
-          * <param name="reader"> An SQL Reader object to fetch data from DB. </param>
-          * <returns></returns>
+        /** <summary> This method converts DB output to an Object-Oriented form. </summary>
+          * <param name="reader"> The SQL Data reader object. </param>
+          * <returns> An array of SKU objects. </returns>
           **/
-        private Cont.Measure[] ConvertToContainer(SqlDataReader reader)
+        private Cont.SKU[] ConvertToContainer(SqlDataReader reader)
         {
             var toReturn = (from row in reader.Cast<System.Data.Common.DbDataRecord>()
-                            select new Cont.Measure()
+                            select new Cont.SKU()
                             {
                                 ID = (int)Convert.ChangeType(!Convert.IsDBNull(row["ID"]) ? row["ID"] : 0, typeof(int)),
-                                Name = (string)Convert.ChangeType(!Convert.IsDBNull(row["Name"]) ? row["Name"] : null, typeof(string))
+                                Name = (string)Convert.ChangeType(!Convert.IsDBNull(row["Name"]) ? row["Name"] : null, typeof(string)),
+                                Description = (string)Convert.ChangeType(!Convert.IsDBNull(row["Description"]) ? row["Description"] : null, typeof(string)),
+                                Commodity = (string)Convert.ChangeType(!Convert.IsDBNull(row["Commodity"]) ? row["Commodity"] : null, typeof(string))
                             }).ToArray();
 
             return toReturn;
         }//end method
         #endregion
 
-        #region Members
-        static Lazy<List<Cont.Measure>> m_CachedValues = null;
-        #endregion
-    } //End class MeasureSql
-} //End namespace
+    } //end class
+
+} //end namespace
