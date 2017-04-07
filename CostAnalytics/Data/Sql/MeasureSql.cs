@@ -14,7 +14,9 @@ namespace Dell.CostAnalytics.Data.Sql
     {
 
         #region Properties
-        /// <summary> Property for CachedValues </summary>
+        /// <summary>
+        /// Property for m_CachedValues
+        /// </summary>
         public static Lazy<List<Cont.Measure>> CachedValues
         {
             get
@@ -32,11 +34,12 @@ namespace Dell.CostAnalytics.Data.Sql
         #endregion
 
         #region Standard Methods
-        /** <summary> Adds a Measure record to the DB. </summary>
-          * <param name="info"> The Measure object that needs adding. </param>
-          * <param name="transaction"> The SQL transaction object. </param>
-          * <returns> The DB record ID. </returns>
-          **/
+        /// <summary>
+        ///  Adds a Measure record to the DB. 
+        /// </summary>
+        /// <param name="info"> The Measure object that needs adding. </param>
+        /// <param name="transaction"> The SQL transaction object. </param>
+        /// <returns> The DB record ID. </returns>
         public int Add(Cont.Measure info, SqlTransaction transaction = null)
         {
             SqlService sql = null;
@@ -66,10 +69,11 @@ namespace Dell.CostAnalytics.Data.Sql
             return info.ID;
         } //End Add method
 
-        /** <summary> Updates a DB record with provided information. </summary>
-          * <param name="info"> The Measure record that needs updating. </param>
-          * <param name="transaction">The SQL Transaction object. </param>
-          **/
+        /// <summary>
+        ///  Updates a DB record with provided information. 
+        /// </summary>
+        /// <param name="info"> The Measure record that needs updating. </param>
+        /// <param name="transaction"> The SQL Transaction object. </param>
         public void Update(Cont.Measure info, SqlTransaction transaction = null)
         {
             SqlService sql = null;
@@ -99,11 +103,12 @@ namespace Dell.CostAnalytics.Data.Sql
                     sql.Disconnect();
             }//end finally
         } //End Update method
-
-        /** <summary> Deletes a record from the DB. </summary>
-          * <param name="ID"> The record ID you want removed. </param>
-          * <param name="transaction"> The SQL transaction object. </param>
-          **/
+        
+        /// <summary>
+        ///  Deletes a record from the DB. 
+        /// </summary>
+        /// <param name="ID"> The record ID you want removed. </param>
+        /// <param name="transaction"> The SQL transaction object. </param>
         public void Delete(int ID, SqlTransaction transaction = null)
         {
             SqlService sql = null;
@@ -130,11 +135,12 @@ namespace Dell.CostAnalytics.Data.Sql
                     sql.Disconnect();
             }//end finally
         } //End Delete method.
-
-        /** <summary> Get a Measure record by ID. </summary>
-          * <param name="ID"> The DB ID of the record you want retrieved. </param>
-          * <returns> A Measure object containing record information. </returns>
-          **/
+        
+        /// <summary>
+        ///  Get a Measure record by ID. 
+        /// </summary>
+        /// <param name="ID"> The DB ID of the record you want retrieved. </param>
+        /// <returns> A Measure object containing record information. </returns>
         public Cont.Measure GetByID(int ID)
         {
             Cont.Measure toReturn = CachedValues.Value.FirstOrDefault(x => x.ID == ID);
@@ -170,10 +176,11 @@ namespace Dell.CostAnalytics.Data.Sql
             }
             return toReturn;
         } //End method getByID
-
-        /** <summary> Gets all Measure records from DB. </summary>
-          * <returns> An array of Measure objects. </returns>
-          **/
+        
+        /// <summary>
+        ///  Gets all Measure records from DB. 
+        /// </summary>
+        /// <returns> An array of Measure objects. </returns>
         public Cont.Measure[] GetAll()
         {
             Cont.Measure[] toReturn = new Cont.Measure[0];
@@ -202,10 +209,11 @@ namespace Dell.CostAnalytics.Data.Sql
         #endregion
 
         #region Custom Methods
-        /** <summary> Converts Reader to array of Data Containers </summary>
-          * <param name="reader"> An SQL Reader object to fetch data from DB. </param>
-          * <returns></returns>
-          **/
+        /// <summary>
+        /// Converts Reader to array of Data Containers
+        /// </summary>
+        /// <param name="reader">The SQL Data reader object.</param>
+        /// <returns></returns>
         private Cont.Measure[] ConvertToContainer(SqlDataReader reader)
         {
             var toReturn = (from row in reader.Cast<System.Data.Common.DbDataRecord>()
@@ -220,7 +228,7 @@ namespace Dell.CostAnalytics.Data.Sql
         #endregion
 
         #region Members
-        static Lazy<List<Cont.Measure>> m_CachedValues = null;
+        private static Lazy<List<Cont.Measure>> m_CachedValues = null;
         #endregion
     } //End class MeasureSql
 } //End namespace

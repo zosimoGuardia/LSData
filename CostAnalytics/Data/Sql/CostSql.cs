@@ -10,14 +10,12 @@ using System.Threading.Tasks;
 
 namespace Dell.CostAnalytics.Data.Sql
 {
-    class CostSql
+    public class CostSql: BaseSql, Interfaces.ICostSql
     {
-        #region Members
-        static Lazy<List<Cont.Cost>> m_CachedValues = null;
-        #endregion
-
         #region Properties
-        // <summary> Property for m_CachedValues </summary>
+        /// <summary>
+        /// Property for m_CachedValues
+        /// </summary>
         public static Lazy<List<Cont.Cost>> CachedValues
         {
             get
@@ -34,11 +32,12 @@ namespace Dell.CostAnalytics.Data.Sql
         #endregion
 
         #region Standard Methods
-        /** <summary> Adds a Cost record to the database. </summary>
-          * <param name="info"> The Cost record that needs adding. </param>
-          * <param name="transaction"> The SQL transaction object. </param>
-          * <returns> The DB record ID. </returns>
-          **/
+        /// <summary>
+        ///  Adds a Cost record to the database. 
+        /// </summary>
+        /// <param name="info"> The Cost record that needs adding. </param>
+        /// <param name="transaction"> The SQL transaction object. </param>
+        /// <returns></returns>
         public int Add(Cont.Cost info, SqlTransaction transaction = null)
         {
             SqlService sql = null;
@@ -73,10 +72,11 @@ namespace Dell.CostAnalytics.Data.Sql
             return info.ID;
         } //End Add method
 
-        /** <summary> Updates an existing DB record with provided information. </summary>
-          * <param name="info"> The Cost record that needs updating. </param>
-          * <param name="transaction"> The SQL transaction object. </param>
-          **/
+        /// <summary>
+        ///  Updates an existing DB record with provided information. 
+        /// </summary>
+        /// <param name="info"> The Cost record that needs updating. </param>
+        /// <param name="transaction"> The SQL transaction object. </param>
         public void Update(Cont.Cost info, SqlTransaction transaction = null)
         {
             SqlService sql = null;
@@ -112,10 +112,11 @@ namespace Dell.CostAnalytics.Data.Sql
             }//end finally
         } //End update method
 
-        /** <summary> This method deletes a Cost DB record. </summary>
-          * <param name="ID"> The record ID you want removed. </param>
-          * <param name="transaction"> The SQL Transaction object. </param>
-          **/
+        /// <summary>
+        ///  This method deletes a Cost DB record. 
+        /// </summary>
+        /// <param name="ID"> The record ID you want removed. </param>
+        /// <param name="transaction"> The SQL Transaction object. </param>
         public void Delete(int ID, SqlTransaction transaction = null)
         {
             SqlService sql = null;
@@ -143,10 +144,11 @@ namespace Dell.CostAnalytics.Data.Sql
             }//end finally
         } //End Delete method.
 
-        /** <summary> This method gets a Cost Record by ID. </summary>
-          * <param name="ID"> The DB ID of the record you want to retrieve. </param>
-          * <returns> The Cost record in Object-Oriented form. </returns>
-          **/
+        /// <summary>
+        ///  This method gets a Cost Record by ID. 
+        /// </summary>
+        /// <param name="ID"> The DB ID of the record you want to retrieve. </param>
+        /// <returns> The Cost record in Object-Oriented form. </returns>
         public Cont.Cost GetByID(int ID)
         {
             Cont.Cost toReturn = CachedValues.Value.FirstOrDefault(x => x.ID == ID);
@@ -183,9 +185,10 @@ namespace Dell.CostAnalytics.Data.Sql
             return toReturn;
         } //End method getByID
 
-        /** <summary> This method gets all Cost records from DB. </summary>
-          * <returns> A list of Cost records in Object-Oriented form. </returns>
-          **/
+        /// <summary>
+        ///  This method gets all Cost records from DB.
+        /// </summary>
+        /// <returns> A list of Cost records in Object-Oriented form. </returns>
         public Cont.Cost[] GetAll()
         {
             Cont.Cost[] toReturn = new Cont.Cost[0];
@@ -214,10 +217,11 @@ namespace Dell.CostAnalytics.Data.Sql
         #endregion
 
         #region Custom Methods
-        /** <summary> This method converts DB output to an Object-Oriented form. </summary>
-          * <param name="reader"> The SQL Data reader object. </param>
-          * <returns> An array of Cost objects. </returns>
-          **/
+        /// <summary>
+        /// This method converts DB output to an Object-Oriented form.
+        /// </summary>
+        /// <param name="reader">The SQL Data reader object.</param>
+        /// <returns> An array of Cost objects. </returns>
         private Cont.Cost[] ConvertToContainer(SqlDataReader reader)
         {
             var toReturn = (from row in reader.Cast<System.Data.Common.DbDataRecord>()
@@ -236,6 +240,8 @@ namespace Dell.CostAnalytics.Data.Sql
         }//end method
         #endregion
 
+        #region Members
+        private static Lazy<List<Cont.Cost>> m_CachedValues = null;
+        #endregion
     } //end class
-
 } //end namespace
