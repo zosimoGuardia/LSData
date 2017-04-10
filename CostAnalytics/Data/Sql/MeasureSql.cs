@@ -10,7 +10,7 @@ using Cont = Dell.CostAnalytics.Data.Containers;
 
 namespace Dell.CostAnalytics.Data.Sql
 {
-    public class MeasureSql: BaseSql, Interfaces.IMeasureSql
+    public sealed class MeasureSql: BaseSql, Interfaces.IMeasureSql
     {
 
         #region Properties

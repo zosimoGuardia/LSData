@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Dell.CostAnalytics.Data.Sql
 {
-    public class ConfigurationSql: BaseSql, Interfaces.IConfigurationSql
+    public sealed class ConfigurationSql: BaseSql, Interfaces.IConfigurationSql
     {
         #region Properties
         /// <summary>

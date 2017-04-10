@@ -62,6 +62,7 @@
     <Compile Include="Containers\Product.cs" />
     <Compile Include="Containers\Region.cs" />
     <Compile Include="Containers\SKU.cs" />
+    <Compile Include="Handlers\Iteration.cs" />
     <Compile Include="Handlers\Measure.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

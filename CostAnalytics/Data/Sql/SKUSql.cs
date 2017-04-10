@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Dell.CostAnalytics.Data.Sql
 {
-    public class SKUSql: BaseSql, Interfaces.ISKUSql
+    public sealed class SKUSql: BaseSql, Interfaces.ISKUSql
     {
         #region Properties
         /// <summary>

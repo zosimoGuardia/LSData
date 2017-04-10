@@ -31,7 +31,13 @@ namespace Dell.CostAnalytics.Data.Sql.Common
         public static void FlushDataCache()
         {
             Data.Sql.MeasureSql.CachedValues = null;
-            //TODO: Flush All other Sql Cached Values too
+            Data.Sql.ConfigurationSql.CachedValues = null;
+            Data.Sql.CostSql.CachedValues = null;
+            Data.Sql.IterationSql.CachedValues = null;
+            Data.Sql.PhaseSql.CachedValues = null;
+            Data.Sql.ProductSql.CachedValues = null;
+            Data.Sql.RegionSql.CachedValues = null;
+            Data.Sql.SKUSql.CachedValues = null;
         }//end method
 
         /// <summary>
