@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Dell.CostAnalytics.Data.Sql
 {
-    public class PhaseSql: BaseSql, Interfaces.IPhaseSql
+    public sealed class PhaseSql: BaseSql, Interfaces.IPhaseSql
     {
         #region Properties
         /// <summary>
