@@ -10,14 +10,13 @@ using System.Threading.Tasks;
 
 namespace Dell.CostAnalytics.Data.Sql
 {
-    class RegionSql
+    public sealed class RegionSql: BaseSql, Interfaces.IRegionSql
     {
-        #region Members
-        static Lazy<List<Cont.Region>> m_CachedValues = null;
-        #endregion
 
         #region Properties
-        // <summary> Property for m_CachedValues </summary>
+        /// <summary>
+        /// Property for m_CachedValues
+        /// </summary>
         public static Lazy<List<Cont.Region>> CachedValues
         {
             get
@@ -34,11 +33,12 @@ namespace Dell.CostAnalytics.Data.Sql
         #endregion
 
         #region Standard Methods
-        /** <summary> Adds a Region record to the database. </summary>
-          * <param name="info"> The Region record that needs adding. </param>
-          * <param name="transaction"> The SQL transaction object. </param>
-          * <returns> The DB record ID. </returns>
-          **/
+        /// <summary>
+        ///  Adds a Region record to the database. 
+        /// </summary>
+        /// <param name="info"> The Region record that needs adding. </param>
+        /// <param name="transaction"> The SQL transaction object. </param>
+        /// <returns> The DB record ID. </returns>
         public int Add(Cont.Region info, SqlTransaction transaction = null)
         {
             SqlService sql = null;
@@ -69,11 +69,12 @@ namespace Dell.CostAnalytics.Data.Sql
 
             return info.ID;
         } //End Add method
-
-        /** <summary> Updates an existing DB record with provided information. </summary>
-          * <param name="info"> The Region record that needs updating. </param>
-          * <param name="transaction"> The SQL transaction object. </param>
-          **/
+        
+        /// <summary>
+        ///  Updates an existing DB record with provided information. 
+        /// </summary>
+        /// <param name="info"> The Region record that needs updating. </param>
+        /// <param name="transaction"> The SQL transaction object. </param>
         public void Update(Cont.Region info, SqlTransaction transaction = null)
         {
             SqlService sql = null;
@@ -105,11 +106,12 @@ namespace Dell.CostAnalytics.Data.Sql
                     sql.Disconnect();
             }//end finally
         } //End update method
-
-        /** <summary> This method deletes a Region DB record. </summary>
-          * <param name="ID"> The record ID you want removed. </param>
-          * <param name="transaction"> The SQL Transaction object. </param>
-          **/
+        
+        /// <summary>
+        ///  This method deletes a Region DB record. 
+        /// </summary>
+        /// <param name="ID"> The record ID you want removed. </param>
+        /// <param name="transaction"> The SQL Transaction object. </param>
         public void Delete(int ID, SqlTransaction transaction = null)
         {
             SqlService sql = null;
@@ -136,11 +138,12 @@ namespace Dell.CostAnalytics.Data.Sql
                     sql.Disconnect();
             }//end finally
         } //End Delete method.
-
-        /** <summary> This method gets a Region Record by ID. </summary>
-          * <param name="ID"> The DB ID of the record you want to retrieve. </param>
-          * <returns> The Region record in Object-Oriented form. </returns>
-          **/
+        
+        /// <summary>
+        ///  This method gets a Region Record by ID. 
+        /// </summary>
+        /// <param name="ID"> The DB ID of the record you want to retrieve. </param>
+        /// <returns> The Region record in Object-Oriented form. </returns>
         public Cont.Region GetByID(int ID)
         {
             Cont.Region toReturn = CachedValues.Value.FirstOrDefault(x => x.ID == ID);
@@ -176,10 +179,11 @@ namespace Dell.CostAnalytics.Data.Sql
             } //end if
             return toReturn;
         } //End method getByID
-
-        /** <summary> This method gets all Region records from DB. </summary>
-          * <returns> A list of Region records in Object-Oriented form. </returns>
-          **/
+        
+        /// <summary>
+        ///  This method gets all Region records from DB. 
+        /// </summary>
+        /// <returns> A list of Region records in Object-Oriented form. </returns>
         public Cont.Region[] GetAll()
         {
             Cont.Region[] toReturn = new Cont.Region[0];
@@ -208,10 +212,11 @@ namespace Dell.CostAnalytics.Data.Sql
         #endregion
 
         #region Custom Methods
-        /** <summary> This method converts DB output to an Object-Oriented form. </summary>
-          * <param name="reader"> The SQL Data reader object. </param>
-          * <returns> An array of Region objects. </returns>
-          **/
+        /// <summary>
+        ///  This method converts DB output to an Object-Oriented form. 
+        /// </summary>
+        /// <param name="reader"> The SQL Data reader object. </param>
+        /// <returns> An array of Region objects. </returns>
         private Cont.Region[] ConvertToContainer(SqlDataReader reader)
         {
             var toReturn = (from row in reader.Cast<System.Data.Common.DbDataRecord>()
@@ -227,6 +232,8 @@ namespace Dell.CostAnalytics.Data.Sql
         }//end method
         #endregion
 
+        #region Members
+        private static Lazy<List<Cont.Region>> m_CachedValues = null;
+        #endregion
     } //end class
-
 } //end namespace

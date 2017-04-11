@@ -60,6 +60,8 @@
     <Compile Include="Sql\Common\SqlConnectionInfo.cs" />
     <Compile Include="Sql\Common\SqlConnectionManager.cs" />
     <Compile Include="Sql\Common\SqlService.cs" />
+    <Compile Include="Sql\ConfigurationSql.cs" />
+    <Compile Include="Sql\CostSql.cs" />
     <Compile Include="Sql\Interfaces\IConfigurationSql.cs" />
     <Compile Include="Sql\Interfaces\ICostSql.cs" />
     <Compile Include="Sql\Interfaces\IIterationSql.cs" />
@@ -69,7 +71,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sql\Interfaces\IRegionSql.cs" />
     <Compile Include="Sql\Interfaces\ISKUSql.cs" />
+    <Compile Include="Sql\IterationSql.cs" />
     <Compile Include="Sql\MeasureSql.cs" />
+    <Compile Include="Sql\PhaseSql.cs" />
+    <Compile Include="Sql\ProductSql.cs" />
+    <Compile Include="Sql\RegionSql.cs" />
+    <Compile Include="Sql\SKUSql.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Global\Global.csproj">
