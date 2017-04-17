@@ -12,14 +12,14 @@ namespace Dell.CostAnalytics.Business.Handlers
     {
         #region Methods
         /// <summary>
-        /// Returns all instances for ID
+        /// Returns the Iteration ID instance that matches this ID
         /// </summary>
-        /// <param name="ID"></param>
-        /// <returns></returns>
+        /// <param name="ID">The ID of a Iteration object we want retrieved. </param>
+        /// <returns> A Iteration business container with Iteration ID record information. </returns>
         public static Biz.Containers.Iteration Get(int ID)
         {
-            Data.Sql.IterationSql iterationSql = new Data.Sql.IterationSql();
-            Data.Containers.Iteration data = iterationSql.GetByID(ID);
+            Data.Sql.IterationSql IterationSql = new Data.Sql.IterationSql();
+            Data.Containers.Iteration data = IterationSql.GetByID(ID);
 
             Biz.Containers.Iteration toReturn = ConvertFromDataContainer(data);
 
@@ -27,92 +27,93 @@ namespace Dell.CostAnalytics.Business.Handlers
         }//end method
 
         /// <summary>
-        /// Returns all items
+        /// Returns all Iteration items
         /// </summary>
-        /// <returns></returns>
+        /// <returns> An array of Iteration Business containers. </returns>
         public static Biz.Containers.Iteration[] GetAll()
         {
-            Data.Sql.IterationSql iterationSql = new Data.Sql.IterationSql();
-            Data.Containers.Iteration[] data = iterationSql.GetAll();
+            Data.Sql.IterationSql IterationSql = new Data.Sql.IterationSql();
+            Data.Containers.Iteration[] data = IterationSql.GetAll();
 
             List<Biz.Containers.Iteration> toReturn = new List<Biz.Containers.Iteration>();
-            foreach(var info in data)
+            foreach (var info in data)
             {
-                Biz.Containers.Iteration iteration = ConvertFromDataContainer(info);
-                toReturn.Add(iteration);
+                Biz.Containers.Iteration Iteration = ConvertFromDataContainer(info);
+                toReturn.Add(Iteration);
             }
             return toReturn.ToArray();
         }//end method
 
         /// <summary>
-        /// Returns the ID of the item added to the database
+        /// Adds a record to the database via a IterationSql container.
         /// </summary>
-        /// <param name="info"></param>
-        /// <returns></returns>
-        public static int Add(Biz.Containers.Iteration data)
+        /// <param name="info"> The Iteration business container that needs to be added. </param>
+        /// <returns> The Iteration ID of the item added to the database. </returns>
+        public static int Add(Biz.Containers.Iteration info)
         {
-            var info = ConvertToDataContainer(data);
-            Data.Sql.IterationSql iterationSql = new Data.Sql.IterationSql();
-            int toReturn = iterationSql.Add(info);
+            var data = ConvertToDataContainer(info);
+            Data.Sql.IterationSql IterationSql = new Data.Sql.IterationSql();
+            int toReturn = IterationSql.Add(data);
             return toReturn;
         }//end method
 
         /// <summary>
-        /// Updates item
+        /// Updates a record via the IterationSql container.
         /// </summary>
-        /// <param name="data"></param>
-        public static void Update(Biz.Containers.Iteration data)
+        /// <param name="info"> The Iteration container object we want to update. </param>
+        public static void Update(Biz.Containers.Iteration info)
         {
-            var info = ConvertToDataContainer(data);
-            Data.Sql.IterationSql iterationSql = new Data.Sql.IterationSql();
-            iterationSql.Update(info);
+            var data = ConvertToDataContainer(info);
+            Data.Sql.IterationSql IterationSql = new Data.Sql.IterationSql();
+            IterationSql.Update(data);
         }//end method
 
-        //Deletes an instance
+        /// <summary> Deletes an Iteration record via IterationSql container. </summary>
+        /// <param name="ID"> The ID of the Iteration record you want deleted. </param>
         public static void Delete(int ID)
         {
-            Data.Sql.IterationSql iterationSql = new Data.Sql.IterationSql();
-            iterationSql.Delete(ID);
+            Data.Sql.IterationSql IterationSql = new Data.Sql.IterationSql();
+            IterationSql.Delete(ID);
         }//end method
         #endregion
-        
+
         #region Conversion Methods
         /// <summary>
         /// Converts Data Container object to Business Container object
         /// </summary>
-        /// <param name="data"></param>
+        /// <param name="data"> The data container Iteration object. </param>
+        /// <returns> The business container Iteration object. </returns>
         internal static Biz.Containers.Iteration ConvertFromDataContainer(Data.Containers.Iteration data)
         {
             return new Biz.Containers.Iteration()
             {
                 ID = data.ID,
-                Configuration = null, //TODO
-                Measure =  Measure.ConvertFromDataContainer(Data.Sql.MeasureSql.CachedValues.Value.FirstOrDefault( x=>x.ID == data.MeasureID)),
-                Product = null, //TODO
-                Region = null, // TODO
-                SKU = null //TODO
-                //TODO: Complete conversion fo all other properties
+                Region = Region.ConvertFromDataContainer(Data.Sql.RegionSql.CachedValues.Value.FirstOrDefault(x => x.ID == data.RegionID)),
+                Product = Product.ConvertFromDataContainer(Data.Sql.ProductSql.CachedValues.Value.FirstOrDefault(x => x.ID == data.ProductID)),
+                Configuration = Configuration.ConvertFromDataContainer(Data.Sql.ConfigurationSql.CachedValues.Value.FirstOrDefault(x => x.ID == data.ConfigurationID)),
+                SKU = SKU.ConvertFromDataContainer(Data.Sql.SKUSql.CachedValues.Value.FirstOrDefault(x => x.ID == data.SKUID)),
+                Measure = Measure.ConvertFromDataContainer(Data.Sql.MeasureSql.CachedValues.Value.FirstOrDefault(x => x.ID == data.MeasureID))
             };
         }//end Method
 
         /// <summary>
         /// Converts Business Container object to Data Container object 
         /// </summary>
-        /// <param name="info"></param>
-        /// <returns></returns>
+        /// <param name="info">The business container Iteration object. </param>
+        /// <returns> The data container Iteration object. </returns>
         internal static Data.Containers.Iteration ConvertToDataContainer(Biz.Containers.Iteration info)
         {
             return new Data.Containers.Iteration()
             {
                 ID = info.ID,
-                ConfigurationID = info.Configuration.ID,
-                MeasureID = info.Measure.ID,
-                ProductID = info.Product.ID,
                 RegionID = info.Region.ID,
-                SKUID = info.SKU.ID
+                ProductID = info.Product.ID,
+                ConfigurationID = info.Configuration.ID,
+                SKUID = info.SKU.ID,
+                MeasureID = info.Measure.ID
             };
         }//end method
         #endregion
 
-    }
-}
+    } //End class Iteration
+} //End namespace
