@@ -4,7 +4,7 @@ using Factory = Dell.CostAnalytics.DataFactory;
 using System.Collections.Generic;
 using Dell.CostAnalytics.Global;
 
-namespace DataFactoryTest
+namespace Dell.CostAnalytics.UnitTest.DataFactoryTest
 {
     [TestClass]
     public class FLCExtractParserTest
