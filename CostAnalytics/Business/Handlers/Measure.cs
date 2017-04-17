@@ -12,10 +12,10 @@ namespace Dell.CostAnalytics.Business.Handlers
     {
         #region Methods
         /// <summary>
-        /// Returns all instances for ID
+        /// Returns the Measure ID instance that matches this ID
         /// </summary>
-        /// <param name="ID"></param>
-        /// <returns></returns>
+        /// <param name="ID"> The ID of the Measure object we want retrieved. </param>
+        /// <returns> A Measure business container with SKU ID record information. </returns>
         public static Biz.Containers.Measure Get(int ID)
         {
             Data.Sql.MeasureSql measureSql = new Data.Sql.MeasureSql();
@@ -27,9 +27,9 @@ namespace Dell.CostAnalytics.Business.Handlers
         }//end method
 
         /// <summary>
-        /// Returns all items
+        /// Returns all Measure items.
         /// </summary>
-        /// <returns></returns>
+        /// <returns> An array of Measure Business containers. </returns>
         public static Biz.Containers.Measure[] GetAll()
         {
             Data.Sql.MeasureSql measureSql = new Data.Sql.MeasureSql();
@@ -45,42 +45,44 @@ namespace Dell.CostAnalytics.Business.Handlers
         }//end method
 
         /// <summary>
-        /// Returns the ID of the item added to the database
+        /// Adds a record to the database via a MeasureSql container.
         /// </summary>
-        /// <param name="info"></param>
-        /// <returns></returns>
-        public static int Add(Biz.Containers.Measure data)
+        /// <param name="info">The Measure business container that needs to be added.</param>
+        /// <returns> The Measure ID of the item added to the database. </returns>
+        public static int Add(Biz.Containers.Measure info)
         {
-            var info = ConvertToDataContainer(data);
+            var data = ConvertToDataContainer(info);
             Data.Sql.MeasureSql measureSql = new Data.Sql.MeasureSql();
-            int toReturn = measureSql.Add(info);
+            int toReturn = measureSql.Add(data);
             return toReturn;
         }//end method
 
         /// <summary>
-        /// Updates item
+        /// Updates a record via the MeasureSql container.
         /// </summary>
-        /// <param name="data"></param>
-        public static void Update(Biz.Containers.Measure data)
+        /// <param name="info"> The Measure container object we want to update. </param>
+        public static void Update(Biz.Containers.Measure info)
         {
-            var info = ConvertToDataContainer(data);
+            var data = ConvertToDataContainer(info);
             Data.Sql.MeasureSql measureSql = new Data.Sql.MeasureSql();
-            measureSql.Update(info);
+            measureSql.Update(data);
         }//end method
 
-        //Deletes an instance
+        /// <summary> Deletes an Measure record via MeasureSql container. </summary>
+        /// <param name="ID"> The ID of the Measure record you want deleted. </param>
         public static void Delete(int ID)
         {
             Data.Sql.MeasureSql measureSql = new Data.Sql.MeasureSql();
             measureSql.Delete(ID);
         }//end method
         #endregion
-        
+
         #region Conversion Methods
         /// <summary>
         /// Converts Data Container object to Business Container object
         /// </summary>
-        /// <param name="data"></param>
+        /// <param name="data"> The data container Measure object. </param>
+        /// <returns> The business container Measure object. </returns>
         internal static Biz.Containers.Measure ConvertFromDataContainer(Data.Containers.Measure data)
         {
             return new Biz.Containers.Measure()
@@ -93,8 +95,8 @@ namespace Dell.CostAnalytics.Business.Handlers
         /// <summary>
         /// Converts Business Container object to Data Container object 
         /// </summary>
-        /// <param name="info"></param>
-        /// <returns></returns>
+        /// <param name="info">The business container Measure object. </param>
+        /// <returns> The data container Measure object. </returns>
         internal static Data.Containers.Measure ConvertToDataContainer(Biz.Containers.Measure info)
         {
             return new Data.Containers.Measure()
