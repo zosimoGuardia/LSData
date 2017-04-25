@@ -52,7 +52,7 @@ namespace Dell.CostAnalytics.Global {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string DBAccountName {
             get {
                 return ((string)(this["DBAccountName"]));
@@ -79,7 +79,7 @@ namespace Dell.CostAnalytics.Global {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool DBPersistentSecurity {
             get {
                 return ((bool)(this["DBPersistentSecurity"]));

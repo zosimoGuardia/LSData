@@ -52,6 +52,7 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
                                where validConfigurations.Contains(row["Config Name"])
                                select row;
 
+            var totalCosts = filteredRows.Where(x => (x["Measure Detail"]).Equals("Total Cost") && String.IsNullOrEmpty(x["MOD"]));
 
 
 
