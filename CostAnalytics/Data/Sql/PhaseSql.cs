@@ -48,7 +48,7 @@ namespace Dell.CostAnalytics.Data.Sql
                 sql.AddParameter("@Name", SqlDbType.VarChar, info.Name, 50, ParameterDirection.Input, true);
                 sql.AddParameter("@ProductID", SqlDbType.Int, info.ProductID, ParameterDirection.Input, true);
 
-                sql.ExecuteSP(""); //TODO: Pass in the Stored Procedure Name
+                sql.ExecuteSP("AddPhase");
                 SqlParameter param = sql.ResultParameters["@ID"];
                 info.ID = Convert.ToInt32(param.Value);
 
@@ -83,7 +83,7 @@ namespace Dell.CostAnalytics.Data.Sql
                 sql.AddParameter("@Name", SqlDbType.VarChar, info.Name, 50, ParameterDirection.Input, true);
                 sql.AddParameter("@ProductID", SqlDbType.Int, info.ProductID, ParameterDirection.Input, true);
 
-                sql.ExecuteSP(""); //TODO: Pass in the Stored Procedure Name
+                sql.ExecuteSP("UpdatePhase");
 
                 // Update cached values
                 Cont.Phase cacheItemToRemove = CachedValues.Value.FirstOrDefault(x => x.ID == info.ID && !x.Equals(info));
@@ -116,7 +116,7 @@ namespace Dell.CostAnalytics.Data.Sql
             {
                 sql = new SqlService(transaction);
                 sql.AddParameter("@ID", SqlDbType.Int, ID, ParameterDirection.Input, true);
-                sql.ExecuteSP(""); //TODO: Pass in the Stored Procedure Name
+                sql.ExecuteSP("DeletePhase");
 
                 // Update cached values
                 Cont.Phase cacheItemToRemove = CachedValues.Value.FirstOrDefault(x => x.ID == ID);
@@ -153,7 +153,7 @@ namespace Dell.CostAnalytics.Data.Sql
                     sql = new SqlService();
                     sql.AddParameter("@ID", SqlDbType.Int, ID, ParameterDirection.Input, true);
 
-                    reader = sql.ExecuteSPReader(""); //TODO: Pass in the Stored Procedure Name
+                    reader = sql.ExecuteSPReader("GetPhase");
                     toReturn = ConvertToContainer(reader).FirstOrDefault(); //MARK: Make sure row IDs corresponds to Database fields
 
                     //Append to cached values
@@ -189,7 +189,7 @@ namespace Dell.CostAnalytics.Data.Sql
             try
             {
                 sql = new SqlService();
-                reader = sql.ExecuteSPReader(""); //TODO: Pass in the Stored Procedure Name
+                reader = sql.ExecuteSPReader("GetPhaseAll");
                 toReturn = ConvertToContainer(reader); //MARK: Make sure row IDs corresponds to Database fields
             }//end try
             catch (Exception exc)

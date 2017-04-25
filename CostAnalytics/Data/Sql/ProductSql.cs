@@ -50,7 +50,7 @@ namespace Dell.CostAnalytics.Data.Sql
                 sql.AddParameter("@Model", SqlDbType.Int, info.Model, ParameterDirection.Input, true);
                 sql.AddParameter("@Variant", SqlDbType.VarChar, 50, ParameterDirection.Input, true);
 
-                sql.ExecuteSP(""); //TODO: Pass in the Stored Procedure Name
+                sql.ExecuteSP("AddProduct");
                 SqlParameter param = sql.ResultParameters["@ID"];
                 info.ID = Convert.ToInt32(param.Value);
 
@@ -87,7 +87,7 @@ namespace Dell.CostAnalytics.Data.Sql
                 sql.AddParameter("@Model", SqlDbType.Int, info.Model, ParameterDirection.Input, true);
                 sql.AddParameter("@Variant", SqlDbType.VarChar, 50, ParameterDirection.Input, true);
 
-                sql.ExecuteSP(""); //TODO: Pass in the Stored Procedure Name
+                sql.ExecuteSP("UpdateProduct");
 
                 // Update cached values
                 Cont.Product cacheItemToRemove = CachedValues.Value.FirstOrDefault(x => x.ID == info.ID && !x.Equals(info));
@@ -120,7 +120,7 @@ namespace Dell.CostAnalytics.Data.Sql
             {
                 sql = new SqlService(transaction);
                 sql.AddParameter("@ID", SqlDbType.Int, ID, ParameterDirection.Input, true);
-                sql.ExecuteSP(""); //TODO: Pass in the Stored Procedure Name
+                sql.ExecuteSP("DeleteProduct");
 
                 // Update cached values
                 Cont.Product cacheItemToRemove = CachedValues.Value.FirstOrDefault(x => x.ID == ID);
@@ -157,7 +157,7 @@ namespace Dell.CostAnalytics.Data.Sql
                     sql = new SqlService();
                     sql.AddParameter("@ID", SqlDbType.Int, ID, ParameterDirection.Input, true);
 
-                    reader = sql.ExecuteSPReader(""); //TODO: Pass in the Stored Procedure Name
+                    reader = sql.ExecuteSPReader("GetProduct");
                     toReturn = ConvertToContainer(reader).FirstOrDefault(); //MARK: Make sure row IDs corresponds to Database fields
 
                     //Append to cached values
@@ -193,7 +193,7 @@ namespace Dell.CostAnalytics.Data.Sql
             try
             {
                 sql = new SqlService();
-                reader = sql.ExecuteSPReader(""); //TODO: Pass in the Stored Procedure Name
+                reader = sql.ExecuteSPReader("GetProductAll");
                 toReturn = ConvertToContainer(reader); //MARK: Make sure row IDs corresponds to Database fields
             }//end try
             catch (Exception exc)
