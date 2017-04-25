@@ -4,17 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4ECB5D6D-0E4A-43FA-B6B0-BDF71F5CC54F}</ProjectGuid>
+    <ProjectGuid>{AF935E35-827C-498F-87DF-3A69DD83D36F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Dell.CostAnalytics.Business</RootNamespace>
-    <AssemblyName>Business</AssemblyName>
+    <RootNamespace>Dell.CostAnalytics.Global</RootNamespace>
+    <AssemblyName>Global</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,16 +22,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -46,41 +40,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Containers\Configuration.cs" />
-    <Compile Include="Containers\Cost.cs" />
-    <Compile Include="Containers\Iteration.cs" />
-    <Compile Include="Containers\Iterfaces\IConfiguration.cs" />
-    <Compile Include="Containers\Iterfaces\ICost.cs" />
-    <Compile Include="Containers\Iterfaces\IIteration.cs" />
-    <Compile Include="Containers\Iterfaces\IMeasure.cs" />
-    <Compile Include="Containers\Iterfaces\IPhase.cs" />
-    <Compile Include="Containers\Iterfaces\IProduct.cs" />
-    <Compile Include="Containers\Iterfaces\IRegion.cs" />
-    <Compile Include="Containers\Iterfaces\ISKU.cs" />
-    <Compile Include="Containers\Measure.cs" />
-    <Compile Include="Containers\Phase.cs" />
-    <Compile Include="Containers\Product.cs" />
-    <Compile Include="Containers\Region.cs" />
-    <Compile Include="Containers\SKU.cs" />
-    <Compile Include="Handlers\SKU.cs" />
-    <Compile Include="Handlers\Region.cs" />
-    <Compile Include="Handlers\Product.cs" />
-    <Compile Include="Handlers\Phase.cs" />
-    <Compile Include="Handlers\Cost.cs" />
-    <Compile Include="Handlers\Configuration.cs" />
-    <Compile Include="Handlers\Iteration.cs" />
-    <Compile Include="Handlers\Measure.cs" />
+    <Compile Include="AppSettings.cs" />
+    <Compile Include="Global.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Global.settings</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <ProjectReference Include="..\Data\Data.csproj">
-      <Project>{31b0eac9-d7e5-4039-b008-3bba35286b83}</Project>
-      <Name>Data</Name>
-    </ProjectReference>
+    <None Include="app.config" />
+    <None Include="Global.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Global.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

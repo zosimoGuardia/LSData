@@ -63,6 +63,10 @@
       <Project>{4ecb5d6d-0e4a-43fa-b6b0-bdf71f5cc54f}</Project>
       <Name>Business</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Global\Global.csproj">
+      <Project>{af935e35-827c-498f-87df-3a69dd83d36f}</Project>
+      <Name>Global</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -3,21 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IContainer = Dell.CostAnalytics.Business.Containers.Interfaces;
 
-namespace Dell.CostAnalytics.Business.Container
+namespace Dell.CostAnalytics.Business.Containers
 {
-    public class Product
+    public class Product : IContainer.IProduct
     {
         #region Constructors
-        /// <summary>
-        /// Default Constructor
-        /// </summary>
+        /// <summary> Default Constructor for the Product Class </summary>
         public Product()
         {
         } //end constructor
 
         /// <summary>
-        /// Costructor - Initializes all properties
+        /// Instantiates a Product Object with specified properties
         /// </summary>
         /// <param name="ID"></param>
         /// <param name="Name"></param>
@@ -35,37 +34,39 @@ namespace Dell.CostAnalytics.Business.Container
         #endregion
 
         #region Properties
-        /// <summary>
-        /// Property for Product ID
-        /// </summary>
+        /// <summary> Property for Product ID </summary>
         public int ID {
             get { return m_ID; }
             set { m_ID = value; }
         }//end property
 
-        /// <summary>
-        /// Property for Product Name
-        /// </summary>
+        //<summary> Property for Product Name </summary>
         public string Name {
             get { return m_Name; }
             set { m_Name = value; }
         }//end property
 
+        //<summary> Property for LOB </summary>
         public string LOB {
             get { return m_LOB; }
             set { m_LOB = value; }
-        }
+        } //End property LOB
+
+        //<summary> Property for Model </summary>
         public int Model {
             get { return m_Model; }
             set { m_Model = value; }
-        }
+        } //End property Model
+
+        //<summary> Property for Variant </summary>
         public string Variant {
             get { return m_Variant; }
             set { m_Variant = value; }
-        }
+        } //End property Variant
         #endregion
 
         #region Members
+        //<summary> Members of Product class </summary>
         private int m_ID;
         private string m_Name;
         private string m_LOB;

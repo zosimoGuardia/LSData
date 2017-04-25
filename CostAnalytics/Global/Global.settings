@@ -1,0 +1,45 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Dell.CostAnalytics.Global" GeneratedClassName="Global">
+  <Profiles />
+  <Settings>
+    <Setting Name="DBServer" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">MRKTOPS1</Value>
+    </Setting>
+    <Setting Name="DBName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Cost_Analytics</Value>
+    </Setting>
+    <Setting Name="DBPassword" Type="System.String" Scope="Application">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="DBAccountName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="DBPacketSize" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">4096</Value>
+    </Setting>
+    <Setting Name="DBDefaultTimeout" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">30</Value>
+    </Setting>
+    <Setting Name="DBPersistentSecurity" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="DBNumberOfRetries" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="ApplicationName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Cost Analytics</Value>
+    </Setting>
+    <Setting Name="ImpersonationAccountName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="ImpersonationPassword" Type="System.String" Scope="Application">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="FLCExtractPath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">C:\\Users\\Dominic_Bett\\Desktop\\Desktop Items\\PROJECTS\\Cost Analysis\\FLC_EXTRACT_EUC_PC_20161207051244.csv</Value>
+    </Setting>
+    <Setting Name="ConsolidatedFilePath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">C:\\Users\\Dominic_Bett\\Desktop\\Desktop Items\\PROJECTS\\Cost Analysis\\consolidated.txt</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

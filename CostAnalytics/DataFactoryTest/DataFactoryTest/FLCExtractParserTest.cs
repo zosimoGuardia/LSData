@@ -2,8 +2,9 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Factory = Dell.CostAnalytics.DataFactory;
 using System.Collections.Generic;
+using Dell.CostAnalytics.Global;
 
-namespace DataFactoryTest
+namespace Dell.CostAnalytics.UnitTest.DataFactoryTest
 {
     [TestClass]
     public class FLCExtractParserTest
@@ -12,8 +13,8 @@ namespace DataFactoryTest
         public void TestParseData()
         {
             System.Diagnostics.Debug.Write("Unit test TestParseData has started...\n");
-            const string flcExtractFileName = "C:\\Users\\Dominic_Bett\\Desktop\\Desktop Items\\PROJECTS\\Cost Analysis\\FLC_EXTRACT_EUC_PC_20161207051244.csv";
-            const string consolidatedFileName = "C:\\Users\\Dominic_Bett\\Desktop\\Desktop Items\\PROJECTS\\Cost Analysis\\consolidated.txt";
+            string flcExtractFileName = AppSettings.FLCExtractPath;
+            string consolidatedFileName = AppSettings.ConsolidatedFilePath;
 
             Factory.Parsers.ConsolidatedParser consolidatedParser = new  Factory.Parsers.ConsolidatedParser(consolidatedFileName);
             Factory.Parsers.FLCExtractParser flcExtractparser = new Factory.Parsers.FLCExtractParser(flcExtractFileName);

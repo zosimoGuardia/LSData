@@ -6,7 +6,7 @@
     <ProjectGuid>{484D1290-7B0D-43EE-A3A0-47B8518B87C5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DataFactoryTest</RootNamespace>
+    <RootNamespace>Dell.CostAnalytics.UnitTest</RootNamespace>
     <AssemblyName>DataFactoryTest</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -45,21 +45,32 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
+          <Private>False</Private>
+        </Reference>
       </ItemGroup>
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="FLCExtractParserTest.cs" />
+    <Compile Include="BusinessTest\BusinessTest.cs" />
+    <Compile Include="DataFactoryTest\FLCExtractParserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Business\Business.csproj">
+      <Project>{4ecb5d6d-0e4a-43fa-b6b0-bdf71f5cc54f}</Project>
+      <Name>Business</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DataFactory\DataFactory.csproj">
       <Project>{88b7a009-f173-4e4f-b02f-09335bbf7b3a}</Project>
       <Name>DataFactory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Global\Global.csproj">
+      <Project>{af935e35-827c-498f-87df-3a69dd83d36f}</Project>
+      <Name>Global</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>
