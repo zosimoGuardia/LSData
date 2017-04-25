@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Biz = Dell.CostAnalytics.Business.Handlers;
+using BizHandler = Dell.CostAnalytics.Business.Handlers;
+using BizContainer = Dell.CostAnalytics.Business.Containers;
 
 namespace Dell.CostAnalytics.UnitTest.BusinessTest
 {
@@ -8,11 +9,32 @@ namespace Dell.CostAnalytics.UnitTest.BusinessTest
     public class BusinessTest
     {
         [TestMethod]
+        public void AddObject()
+        {
+            System.Diagnostics.Debug.WriteLine("Unit test for object has started...");
+            
+            BizContainer.Measure measure = new BizContainer.Measure() { Name = "MeasureTest2" };
+
+            try
+            {
+                int ID = BizHandler.Measure.Add(measure);
+                measure.ID = ID;
+                System.Diagnostics.Debug.WriteLine(String.Format("Measure ID: {0} Name: {1}", measure.ID, measure.Name));
+            } catch (Exception exc)
+            {
+                System.Diagnostics.Debug.WriteLine(String.Format("ERROR: {0} \n {1}", exc.Message, exc.InnerException));
+                throw exc;
+            }
+
+            System.Diagnostics.Debug.WriteLine("Unit test for object has ended...");
+        }
+
+        [TestMethod]
         public void GetObject()
         {
             System.Diagnostics.Debug.WriteLine("Unit test for object has started...");
 
-            var configurations = Biz.Configuration.GetAll();
+            var configurations = BizHandler.Configuration.GetAll();
 
             if (configurations == null)
                 System.Diagnostics.Debug.WriteLine("ERROR: configuration is null");
