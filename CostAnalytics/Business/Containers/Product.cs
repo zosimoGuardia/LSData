@@ -65,6 +65,37 @@ namespace Dell.CostAnalytics.Business.Containers
         } //End property Variant
         #endregion
 
+        #region Methods
+        /// <summary> Compares two Biz.Container.Product objects for equality </summary>
+        /// <param name="obj">The Product object you want to compare </param>
+        /// <returns>True if objects are of the same class and hold the same attribute values; false otherwise. </returns>
+        public override bool Equals(object obj)
+        {
+            if (obj is Product)
+            {
+                Product Product = (Product)obj;
+                if (
+                    Name != Product.Name ||
+                    LOB != Product.LOB ||
+                    Model != Product.Model ||
+                    Variant != Product.Variant
+                    )
+                    return false;
+                else
+                    return true;
+            }//endif
+            else
+            {
+                return false;
+            }//end else
+        }//end method
+
+        /// <summary> Custom Get Hash Code method for Product </summary>
+        /// <returns> The object's hash code, per the default provider.</returns>
+        public override int GetHashCode()
+        { return base.GetHashCode(); } //End method
+        #endregion
+
         #region Members
         //<summary> Members of Product class </summary>
         private int m_ID;

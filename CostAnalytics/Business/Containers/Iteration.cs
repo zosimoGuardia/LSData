@@ -103,6 +103,38 @@ namespace Dell.CostAnalytics.Business.Containers
         } //End property Measure
         #endregion
 
+        #region Methods
+        /// <summary> Compares two Biz.Container.Iteration objects for equality </summary>
+        /// <param name="obj">The Iteration object you want to compare </param>
+        /// <returns>True if objects are of the same class and hold the same attribute values; false otherwise. </returns>
+        public override bool Equals(object obj)
+        {
+            if (obj is Iteration)
+            {
+                Iteration iteration = (Iteration)obj;
+                if (
+                    Region != iteration.Region ||
+                    Product != iteration.Product ||
+                    Configuration != iteration.Configuration ||
+                    SKU != iteration.SKU ||
+                    Measure != iteration.Measure
+                    )
+                    return false;
+                else
+                    return true;
+            }//endif
+            else
+            {
+                return false;
+            }//end else
+        }//end method
+
+        /// <summary> Custom Get Hash Code method for Iteration </summary>
+        /// <returns> The object's hash code, per the default provider.</returns>
+        public override int GetHashCode()
+        { return base.GetHashCode(); } //End method
+        #endregion
+
         #region Members
         private int m_ID;
         private Region m_Region;

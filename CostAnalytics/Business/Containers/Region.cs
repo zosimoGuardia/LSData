@@ -59,6 +59,36 @@ namespace Dell.CostAnalytics.Business.Containers
         } //End property countryCode
         #endregion
 
+        #region Methods
+        /// <summary> Compares two Biz.Container.Region objects for equality </summary>
+        /// <param name="obj">The Region object you want to compare </param>
+        /// <returns></returns>
+        public override bool Equals(object obj)
+        {
+            if (obj is Region)
+            {
+                Region Region = (Region)obj;
+                if (
+                    RegionName != Region.RegionName ||
+                    Country != Region.Country ||
+                    CountryCode != Region.CountryCode
+                    )
+                    return false;
+                else
+                    return true;
+            }//endif
+            else
+            {
+                return false;
+            }//end else
+        }//end method
+
+        /// <summary> Custom Get Hash Code method for Region </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        { return base.GetHashCode(); } //End method
+        #endregion
+
         #region Members
         private int m_ID;
         private string m_regionName;
