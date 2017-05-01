@@ -71,7 +71,7 @@ namespace Dell.CostAnalytics.Business.Containers
                 Phase Phase = (Phase)obj;
                 if (
                     Name != Phase.Name ||
-                    Product != Phase.Product
+                    Product.ID != Phase.Product.ID
                     )
                     return false;
                 else
