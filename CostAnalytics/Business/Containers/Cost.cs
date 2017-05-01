@@ -97,6 +97,39 @@ namespace Dell.CostAnalytics.Business.Containers
         } //End property CostPlus3
         #endregion
 
+        #region Methods
+        /// <summary> Compares two Biz.Container.Cost objects for equality </summary>
+        /// <param name="obj">The Cost object you want to compare </param>
+        /// <returns>True if objects are of the same class and hold the same attribute values; false otherwise. </returns>
+        public override bool Equals(object obj)
+        {
+            if (obj is Cost)
+            {
+                Cost Cost = (Cost)obj;
+                if (
+                    Iteration != Cost.Iteration ||
+                    Date != Cost.Date ||
+                    CurrentCost != Cost.CurrentCost ||
+                    CostNext1 != Cost.CostNext1 ||
+                    CostNext2 != Cost.CostNext2 ||
+                    CostNext3 != Cost.CostNext3
+                    )
+                    return false;
+                else
+                    return true;
+            }//endif
+            else
+            {
+                return false;
+            }//end else
+        }//end method
+
+        /// <summary> Custom Get Hash Code method for Cost </summary>
+        /// <returns> The object's hash code, per the default provider.</returns>
+        public override int GetHashCode()
+        { return base.GetHashCode(); } //End method
+        #endregion
+
         #region Members
         private int m_ID;
         private Iteration m_Iteration;

@@ -59,6 +59,38 @@ namespace Dell.CostAnalytics.Business.Containers
         } //End property Commodity
         #endregion
 
+        #region Methods
+        /// <summary> Compares two Biz.Container.SKU objects for equality </summary>
+        /// <param name="obj">The SKU object you want to compare </param>
+        /// <returns></returns>
+        public override bool Equals(object obj)
+        {
+            if (obj is SKU)
+            {
+                SKU sku = (SKU)obj;
+                if (
+                    Name != sku.Name ||
+                    Description != sku.Description ||
+                    Commodity != sku.Commodity
+                    )
+                    return false;
+                else
+                    return true;
+            }//endif
+            else
+            {
+                return false;
+            }//end else
+        }//end method
+
+        /// <summary>
+        /// Custom Get Hash Code method
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {   return base.GetHashCode();  } //End method
+        #endregion
+
         #region Members
         private int m_ID;
         private string m_Name;
