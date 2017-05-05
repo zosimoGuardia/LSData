@@ -12,6 +12,7 @@ Interface Between Database and Business Layer
 ### Business Layer
 Interface Between Data Layer and the Application Layers
 * Container Classes
+* Handlers
 ### Data Factory
 Parses Data from Datasources and Stores them in the Database
 * Parsers

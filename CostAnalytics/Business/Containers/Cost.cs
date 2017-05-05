@@ -107,7 +107,7 @@ namespace Dell.CostAnalytics.Business.Containers
             {
                 Cost Cost = (Cost)obj;
                 if (
-                    Iteration != Cost.Iteration ||
+                    Iteration.ID != Cost.Iteration.ID ||
                     Date != Cost.Date ||
                     CurrentCost != Cost.CurrentCost ||
                     CostNext1 != Cost.CostNext1 ||
