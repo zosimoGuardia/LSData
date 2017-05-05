@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Handlers\DataFactoryBusinessHandler.cs" />
     <Compile Include="Parsers\ConsolidatedParser.cs" />
     <Compile Include="Parsers\FLCExtractParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
