@@ -14,6 +14,7 @@ namespace Dell.CostAnalytics.DataFactory.Handlers
         /// <summary> Default constructor for the class. </summary>
         public DatabaseObject()
         {
+            // Initialize the members
             if (Configurations == null) { Configurations = Handler.Configuration.GetAll().ToList(); }
             if (Measures == null)       { Measures =  Handler.Measure.GetAll().ToList(); }
             if (Phases == null)         { Phases = Handler.Phase.GetAll().ToList(); }
@@ -140,5 +141,5 @@ namespace Dell.CostAnalytics.DataFactory.Handlers
         static List<Cont.Region> Regions = null;
         static List<Cont.SKU> SKUs = null;
         #endregion
-    }
-}
+    }//end class
+}//end namespace

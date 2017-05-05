@@ -69,6 +69,10 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
                 iteration.Product = product;
             }
 
+            this.ReadData(filteredRows.ToArray());
+
+
+            /*
             var configurationData = from row in filteredRows
                                     group row by new
                                     {
@@ -91,171 +95,52 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
             foreach (var prodLine in prodLines)
             {
                 Console.WriteLine(prodLine);
-            }
+            }*/
         }//end method
 
-        #region SubClasses
-        /// <summary>
-        /// Has Getter Methods that returns Database Objects
-        /// equivalent to the one passed in
-        /// </summary>
-        class DatabaseObject
+        private void ReadData(Row[] filteredRows)
         {
-            #region Constructors
-            /// <summary>
-            /// Comstructor: Initializes the database objects
-            /// </summary>
-            public DatabaseObject()
-            {
-                //TODO: Get data from DB
-                this.m_Configurations = null;
-                this.m_Measures = null;
-                this.m_Phases = null;
-                this.m_Products = null;
-                this.m_Regions = null;
-                this.m_SKUs = null;
-            }//end constructor
-            #endregion
+            Handlers.DatabaseObject dbo = new Handlers.DatabaseObject();
 
-            #region Methods
-            /// <summary>
-            /// Get Configuration
-            /// </summary>
-            /// <param name="configuration"></param>
-            /// <returns></returns>
-            public Cont.Configuration getConfiguration(Cont.Configuration configuration)
+            foreach (var row in filteredRows)
             {
-                Cont.Configuration toReturn = null;
-
-                toReturn = this.m_Configurations.FirstOrDefault(x => x.Name == configuration.Name && x.Type == configuration.Type);
-                if (toReturn == null)
+                // Region
+                Cont.Region regionInfo = new Cont.Region()
                 {
-                    //TODO: Add to DB
-                    //  -Returns ID
-                    //  -Add ID to configuration Object
-                    this.m_Configurations.Add(configuration);
-                    toReturn = configuration;
-                }//end if
-                return toReturn;
-            }// End Getter
+                    RegionName = row["Region"].Trim(),
+                    Country = row["Country"].Trim(),
+                    CountryCode = row["CCN"].Trim()
+                };
+                Cont.Region region = dbo.GetRegion(regionInfo);
 
-            /// <summary>
-            /// Get Measure
-            /// </summary>
-            /// <param name="measure"></param>
-            /// <returns></returns>
-            public Cont.Measure getMeasure(Cont.Measure measure)
-            {
-                Cont.Measure toReturn = null;
+                //TODO: Implement similar to above for prouct, configuration, measure, sku
 
-                toReturn = this.m_Measures.FirstOrDefault(x => x.Name == measure.Name);
-                if (toReturn == null)
+                // Product
+                Cont.Product productInfo = null;
+
+                // Configuration
+                Cont.Configuration configurationInfo = null;
+
+                // Measure
+                Cont.Measure measureInfo = null;
+
+                // SKU
+                Cont.SKU skuInfo = null;
+
+                // Iteration
+                Cont.Iteration iterationInfo = new Cont.Iteration()
                 {
-                    //TODO: Add to DB
-                    //  -Returns ID
-                    //  -Add ID to measure Object
-                    this.m_Measures.Add(measure);
-                    toReturn = measure;
-                }//end if
-                return toReturn;
-            }// End Getter
+                    Region = region,
+                    //TODO: Add all other properties
+                };
+                Business.Handlers.Iteration.Add(iterationInfo);
 
-            /// <summary>
-            /// Get Phase
-            /// </summary>
-            /// <param name="phase"></param>
-            /// <returns></returns>
-            public Cont.Phase getPhase(Cont.Phase phase)
-            {
-                Cont.Phase toReturn = null;
+                // Cost
+                Cont.Cost costInfo = null;
+                //TODO: Implement similar to above
+            }//end for
+        }//end method
 
-                toReturn = this.m_Phases.FirstOrDefault(x => x.Name == phase.Name && x.Product.ID == phase.Product.ID);
-                if (toReturn == null)
-                {
-                    //TODO: Add to DB
-                    //  -Returns ID
-                    //  -Add ID to phase Object
-                    this.m_Phases.Add(phase);
-                    toReturn = phase;
-                }//end if
-                return toReturn;
-            }// End Getter
-
-            /// <summary>
-            /// Get Product
-            /// </summary>
-            /// <param name="product"></param>
-            /// <returns></returns>
-            public Cont.Product getProduct(Cont.Product product)
-            {
-                Cont.Product toReturn = null;
-
-                toReturn = this.m_Products.FirstOrDefault(x => x.Name == product.Name && x.LOB == product.LOB && x.Model == product.Model && x.Variant == product.Variant);
-                if (toReturn == null)
-                {
-                    //TODO: Add to DB
-                    //  -Returns ID
-                    //  -Add ID to product Object
-                    this.m_Products.Add(product);
-                    toReturn = product;
-                }//end if
-                return toReturn;
-            }// End Getter
-
-            /// <summary>
-            /// Get Region
-            /// </summary>
-            /// <param name="region"></param>
-            /// <returns></returns>
-            public Cont.Region getRegion(Cont.Region region)
-            {
-                Cont.Region toReturn = null;
-
-                toReturn = this.m_Regions.FirstOrDefault(x => x.RegionName == region.RegionName && x.Country == region.Country && x.CountryCode == region.CountryCode);
-                if (toReturn == null)
-                {
-                    //TODO: Add to DB
-                    //  -Returns ID
-                    //  -Add ID to region Object
-                    this.m_Regions.Add(region);
-                    toReturn = region;
-                }//end if
-                return toReturn;
-            }// End Getter
-
-            /// <summary>
-            /// GetSKU
-            /// </summary>
-            /// <param name="sku"></param>
-            /// <returns></returns>
-            public Cont.SKU getSKU(Cont.SKU sku)
-            {
-                Cont.SKU toReturn = null;
-
-                toReturn = this.m_SKUs.FirstOrDefault(x => x.Name == sku.Name && x.Description == sku.Description && x.Commodity == sku.Commodity);
-                if (toReturn == null)
-                {
-                    //TODO: Add to DB
-                    //  -Returns ID
-                    //  -Add ID to sku Object
-                    this.m_SKUs.Add(sku);
-                    toReturn = sku;
-                }//end if
-                return toReturn;
-            }// End Getter
-            #endregion
-
-            #region Members
-            //Data from database
-            List<Cont.Configuration> m_Configurations;
-            List<Cont.Measure> m_Measures;
-            List<Cont.Phase> m_Phases;
-            List<Cont.Product> m_Products;
-            List<Cont.Region> m_Regions;
-            List<Cont.SKU> m_SKUs;
-            #endregion
-        }//end class
-        #endregion
         #endregion
 
         #region Members
