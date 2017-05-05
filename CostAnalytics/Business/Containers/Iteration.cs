@@ -113,11 +113,11 @@ namespace Dell.CostAnalytics.Business.Containers
             {
                 Iteration iteration = (Iteration)obj;
                 if (
-                    Region != iteration.Region ||
-                    Product != iteration.Product ||
-                    Configuration != iteration.Configuration ||
-                    SKU != iteration.SKU ||
-                    Measure != iteration.Measure
+                    Region.ID != iteration.Region.ID ||
+                    Product.ID != iteration.Product.ID ||
+                    Configuration.ID != iteration.Configuration.ID ||
+                    SKU.ID != iteration.SKU.ID ||
+                    Measure.ID != iteration.Measure.ID
                     )
                     return false;
                 else
