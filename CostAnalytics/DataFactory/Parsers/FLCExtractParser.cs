@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using DataAccess;
 using Cont = Dell.CostAnalytics.Business.Containers;
+using System.Text.RegularExpressions;
+using System.Globalization;
 
 namespace Dell.CostAnalytics.DataFactory.Parsers
 {
@@ -53,8 +55,6 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
                                select row;
 
             var totalCosts = filteredRows.Where(x => (x["Measure Detail"]).Equals("Total Cost") && String.IsNullOrEmpty(x["MOD"]));
-
-
 
 
 
@@ -111,7 +111,7 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
                     Country = row["Country"].Trim(),
                     CountryCode = row["CCN"].Trim()
                 };
-                Cont.Region region = dbo.GetRegion(regionInfo);
+                dbo.GetRegion(regionInfo);
 
                 //TODO: Implement similar to above for prouct, configuration, measure, sku
 
@@ -122,7 +122,12 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
                 Cont.Configuration configurationInfo = null;
 
                 // Measure
-                Cont.Measure measureInfo = null;
+                Cont.Measure measureInfo = new Business.Containers.Measure()
+                {
+                    Name = row["Measure Name"]
+                };
+                dbo.GetMeasure(measureInfo);
+
 
                 // SKU
                 Cont.SKU skuInfo = null;
@@ -130,14 +135,26 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
                 // Iteration
                 Cont.Iteration iterationInfo = new Cont.Iteration()
                 {
-                    Region = region,
-                    //TODO: Add all other properties
+                    Region = regionInfo,
+                    Measure = measureInfo,
+                    Configuration = configurationInfo,
+                    Product = productInfo,
+                    SKU = skuInfo
                 };
                 Business.Handlers.Iteration.Add(iterationInfo);
 
                 // Cost
-                Cont.Cost costInfo = null;
-                //TODO: Implement similar to above
+                string formatString = "yyyyMMddHHmmss";
+                var date = DateTime.ParseExact(m_FLCExtractFileName.Trim().Split('_').Last(), formatString, CultureInfo.InvariantCulture);
+                var currentCost = Convert.ToDouble(row[row.ColumnNames.First(x => x.Contains("Mth 1"))]);
+                Cont.Cost costInfo = new Business.Containers.Cost()
+                {
+                    Iteration = iterationInfo,
+                    CurrentCost = currentCost,
+                    Date = date,
+                    //TODO:  Add the rest of the fields
+                };
+                Business.Handlers.Cost.Add(costInfo);
             }//end for
         }//end method
 

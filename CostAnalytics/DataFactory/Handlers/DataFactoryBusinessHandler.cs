@@ -28,108 +28,107 @@ namespace Dell.CostAnalytics.DataFactory.Handlers
         /// <summary> This method returns the Configuration object that matches the one passed into the function. </summary>
         /// <param name="Configuration"> A Container Configuration object. </param>
         /// <returns> The matched object if found, otherwise adds it to the DB and return the object. </returns>
-        public Cont.Configuration GetConfiguration(Cont.Configuration Configuration)
+        public void GetConfiguration(Cont.Configuration Configuration)
         {
-            Cont.Configuration toReturn = null;
-
-            toReturn = Configurations.FirstOrDefault(x => x.Equals(Configuration));
-            if (toReturn == null)
+            var info = Configurations.FirstOrDefault(x => x.Equals(Configuration));
+            if (info == null)
             {
                 Configuration.ID = Handler.Configuration.Add(Configuration);
                 Configurations.Add(Configuration);
-                toReturn = Configuration;
             }
-            return toReturn;
+            else
+            {
+                Configuration.ID = info.ID;
+            }
         } //End method GetConfiguration
 
 
         /// <summary> This method returns the Measure object that matches the one passed into the function. </summary>
         /// <param name="measure"> A Container Measure object. </param>
         /// <returns> The matched object if found, otherwise adds it to the DB and return the object. </returns>
-        public Cont.Measure GetMeasure(Cont.Measure measure)
+        public void GetMeasure(Cont.Measure measure)
         {
-            Cont.Measure toReturn = null;
-
-            toReturn = Measures.FirstOrDefault(x => x.Equals(measure));
-            if (toReturn == null)
+            var info = Measures.FirstOrDefault(x => x.Equals(measure));
+            if (info == null)
             {
                 measure.ID = Handler.Measure.Add(measure);
                 Measures.Add(measure);
-                toReturn = measure;
             }
-            return toReturn;
+            else
+            {
+                measure.ID = info.ID;
+            }
         } //End method
         
 
         /// <summary> This method returns the Phase object that matches the one passed into the function. </summary>
         /// <param name="Phase"> A Container Phase object. </param>
         /// <returns> The matched object if found, otherwise adds it to the DB and return the object. </returns>
-        public Cont.Phase GetPhase(Cont.Phase Phase)
+        public void GetPhase(Cont.Phase Phase)
         {
-            Cont.Phase toReturn = null;
-
-            toReturn = Phases.FirstOrDefault(x => x.Equals(Phase));
-            if (toReturn == null)
+            var info = Phases.FirstOrDefault(x => x.Equals(Phase));
+            if (info == null)
             {
                 Phase.ID = Handler.Phase.Add(Phase);
                 Phases.Add(Phase);
-                toReturn = Phase;
             }
-            return toReturn;
+            else
+            {
+                Phase.ID = info.ID;
+            }
         } //End method
 
 
         /// <summary> This method returns the Product object that matches the one passed into the function. </summary>
         /// <param name="Product"> A Container Product object. </param>
         /// <returns> The matched object if found, otherwise adds it to the DB and return the object. </returns>
-        public Cont.Product GetProduct(Cont.Product Product)
+        public void GetProduct(Cont.Product Product)
         {
-            Cont.Product toReturn = null;
-
-            toReturn = Products.FirstOrDefault(x => x.Equals(Product));
-            if (toReturn == null)
+            var info = Products.FirstOrDefault(x => x.Equals(Product));
+            if (info == null)
             {
                 Product.ID = Handler.Product.Add(Product);
                 Products.Add(Product);
-                toReturn = Product;
             }
-            return toReturn;
+            else
+            {
+                Product.ID = info.ID;
+            }
         } //End method
 
 
         /// <summary> This method returns the Region object that matches the one passed into the function. </summary>
         /// <param name="Region"> A Container Region object. </param>
         /// <returns> The matched object if found, otherwise adds it to the DB and return the object. </returns>
-        public Cont.Region GetRegion(Cont.Region Region)
+        public void GetRegion(Cont.Region Region)
         {
-            Cont.Region toReturn = null;
-
-            toReturn = Regions.FirstOrDefault(x => x.Equals(Region));
-            if (toReturn == null)
+            var info = Regions.FirstOrDefault(x => x.Equals(Region));
+            if (info == null)
             {
                 Region.ID = Handler.Region.Add(Region);
                 Regions.Add(Region);
-                toReturn = Region;
+            } else
+            {
+                Region.ID = info.ID;
             }
-            return toReturn;
         } //End method
 
 
         /// <summary> This method returns the SKU object that matches the one passed into the function. </summary>
         /// <param name="SKU"> A Container SKU object. </param>
         /// <returns> The matched object if found, otherwise adds it to the DB and return the object. </returns>
-        public Cont.SKU GetSKU(Cont.SKU SKU)
+        public void GetSKU(Cont.SKU SKU)
         {
-            Cont.SKU toReturn = null;
-
-            toReturn = SKUs.FirstOrDefault(x => x.Equals(SKU));
-            if (toReturn == null)
+            var info = SKUs.FirstOrDefault(x => x.Equals(SKU));
+            if (info == null)
             {
                 SKU.ID = Handler.SKU.Add(SKU);
                 SKUs.Add(SKU);
-                toReturn = SKU;
             }
-            return toReturn;
+            else
+            {
+                SKU.ID = info.ID;
+            }
         } //End method
         #endregion
 
