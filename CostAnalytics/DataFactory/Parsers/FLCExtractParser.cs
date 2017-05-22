@@ -11,15 +11,11 @@ using System.Globalization;
 
 namespace Dell.CostAnalytics.DataFactory.Parsers
 {
-    /// <summary>
-    /// Class to extracts data from FLC_EXTRACT_EUC_PC_* File
-    /// </summary>
+    /// <summary> Class to extract data from FLC_EXTRACT_EUC_PC_* file </summary>
     public class FLCExtractParser
     {
         #region Constructors
-        /// <summary>
-        /// Constructor
-        /// </summary>
+        /// <summary> This constructor takes in the path to the FLC_Extract file and sets the property </summary>
         public FLCExtractParser(string flcExtractFileName)
         {
             this.m_FLCExtractFileName = flcExtractFileName;
@@ -27,10 +23,8 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
         #endregion
 
         #region Methods
-        /// <summary>
-        /// Method to Parse the CSV from the file
-        /// </summary>
-        /// <param name="fileName"></param>
+        /// <summary> Creates a data table from the CSV file and calls the ReadData. </summary>
+        /// <param name="fileName"> The list of ConsolidatedFilter objects extracted from Consolidated.txt </param>
         public void ParseData(List<ConsolidatedParser.ConsolidatedFilter> consolidatedFilter)
         {
             DataTable dt = DataTable.New.ReadCsv(m_FLCExtractFileName);
@@ -98,13 +92,15 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
             }*/
         }//end method
 
+        /// <summary> Reads the filtered rows from the data table and instantiates the respective container objects. </summary>
+        /// <param name="filteredRows"> A datatable containing the rows we care about per the specified filter criteria. </param>
         private void ReadData(Row[] filteredRows)
         {
             Handlers.DatabaseObject dbo = new Handlers.DatabaseObject();
 
             foreach (var row in filteredRows)
             {
-                // Region
+                /* Region */
                 Cont.Region regionInfo = new Cont.Region()
                 {
                     RegionName = row["Region"].Trim(),
@@ -113,26 +109,60 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
                 };
                 dbo.GetRegion(regionInfo);
 
-                //TODO: Implement similar to above for prouct, configuration, measure, sku
 
-                // Product
-                Cont.Product productInfo = null;
+                /* Product */
+                Cont.Product productInfo = new Cont.Product()
+                {
+                    Name = row["Platform"].Trim(),                                      // Shouldn't we translate the name here? This column will have a non-standard name
+                    LOB = row["LOB"].Trim(),
+                    Model = Convert.ToInt32("1000"),                                    // Model numbers are in consolidated.txt Not all filtered rows have a Model number (and struct is not uniform).
+                    Variant = ""                                                        // Still need to talk about this...
+                };
+                dbo.GetProduct(productInfo);
 
-                // Configuration
-                Cont.Configuration configurationInfo = null;
 
-                // Measure
+                /* Configuration */
+                String confType = "";
+                if (Regex.IsMatch(row["Config Name"], "_min_"))
+                { confType = "Min"; }
+                else if (Regex.IsMatch(row["Config Name"], "_avg_"))
+                { confType = "Avg"; }
+                Cont.Configuration configurationInfo = new Cont.Configuration()
+                {
+                    Name = row["Config Name"].Trim(),
+                    Type = confType                                                     // We also need to talk about naming scheme going forward.
+                };
+                dbo.GetConfiguration(configurationInfo);
+
+
+                /* Measure */
                 Cont.Measure measureInfo = new Business.Containers.Measure()
                 {
-                    Name = row["Measure Name"]
+                    Name = row["Measure Name"].Trim()
                 };
                 dbo.GetMeasure(measureInfo);
 
 
-                // SKU
-                Cont.SKU skuInfo = null;
+                /* SKU */
+                Cont.SKU skuInfo = new Business.Containers.SKU()
+                {
+                    Name = row["SKU"].Trim(),
+                    Description = row["SKU Description"].Trim(),
+                    Commodity = row["Commodity"].Trim()
+                };
+                dbo.GetSKU(skuInfo);
 
-                // Iteration
+/*
+                // Phase 
+                Cont.Phase phaseInfo = new Business.Containers.Phase()
+                {                                                                       //Does this belong here?
+                    Name = "Sustaining",                                                //If the config is in the FLC_Extracts, it is in the Sustaining phase of the OLP.
+                    Product = productInfo                                               
+                };
+                Business.Handlers.Phase.Add(phaseInfo);
+*/
+
+                /* Iteration */
                 Cont.Iteration iterationInfo = new Cont.Iteration()
                 {
                     Region = regionInfo,
@@ -143,16 +173,22 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
                 };
                 Business.Handlers.Iteration.Add(iterationInfo);
 
-                // Cost
+
+                /* Cost */
                 string formatString = "yyyyMMddHHmmss";
                 var date = DateTime.ParseExact(m_FLCExtractFileName.Trim().Split('_').Last(), formatString, CultureInfo.InvariantCulture);
                 var currentCost = Convert.ToDouble(row[row.ColumnNames.First(x => x.Contains("Mth 1"))]);
+                var Pred1Cost = Convert.ToDouble(row[row.ColumnNames.First(x => x.Contains("Mth 2"))]);
+                var Pred2Cost = Convert.ToDouble(row[row.ColumnNames.First(x => x.Contains("Mth 3"))]);
+                var Pred3Cost = Convert.ToDouble(row[row.ColumnNames.First(x => x.Contains("Mth 4"))]);
                 Cont.Cost costInfo = new Business.Containers.Cost()
                 {
                     Iteration = iterationInfo,
-                    CurrentCost = currentCost,
                     Date = date,
-                    //TODO:  Add the rest of the fields
+                    CurrentCost = currentCost,
+                    CostNext1 = Pred1Cost,
+                    CostNext2 = Pred2Cost,
+                    CostNext3 = Pred3Cost
                 };
                 Business.Handlers.Cost.Add(costInfo);
             }//end for
