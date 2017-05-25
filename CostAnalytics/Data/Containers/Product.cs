@@ -39,14 +39,20 @@ namespace Dell.CostAnalytics.Data.Containers
             get { return m_Variant; }
             set { m_Variant = value; }
         }
+
+        public string Phase
+        {
+            get { return m_Phase; }
+            set { m_Phase = value; }
+        }
         #endregion
 
         #region Methods
         /// <summary>
         /// Custom Equality comparer
         /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
+        /// <param name="obj">Product object we're comparing for equality. </param>
+        /// <returns>True if object attributes are equal; false otherwise. </returns>
         public override bool Equals(object obj)
         {
             if (obj is Product)
@@ -57,7 +63,8 @@ namespace Dell.CostAnalytics.Data.Containers
                     Name != product.Name ||
                     LOB != product.LOB ||
                     Model != product.Model ||
-                    Variant != product.Variant
+                    Variant != product.Variant ||
+                    Phase != product.Phase
                     )
                     return false;
                 else
@@ -85,6 +92,7 @@ namespace Dell.CostAnalytics.Data.Containers
         string m_LOB;
         int m_Model;
         string m_Variant;
+        string m_Phase;
         #endregion
     }//end class
 }// end namespace

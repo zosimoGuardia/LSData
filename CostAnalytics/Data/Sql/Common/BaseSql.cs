@@ -34,7 +34,6 @@ namespace Dell.CostAnalytics.Data.Sql.Common
             Data.Sql.ConfigurationSql.CachedValues = null;
             Data.Sql.CostSql.CachedValues = null;
             Data.Sql.IterationSql.CachedValues = null;
-            Data.Sql.PhaseSql.CachedValues = null;
             Data.Sql.ProductSql.CachedValues = null;
             Data.Sql.RegionSql.CachedValues = null;
             Data.Sql.SKUSql.CachedValues = null;

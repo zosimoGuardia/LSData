@@ -17,7 +17,6 @@ namespace Dell.CostAnalytics.DataFactory.Handlers
             // Initialize the members
             if (Configurations == null) { Configurations = Handler.Configuration.GetAll().ToList(); }
             if (Measures == null)       { Measures =  Handler.Measure.GetAll().ToList(); }
-            if (Phases == null)         { Phases = Handler.Phase.GetAll().ToList(); }
             if (Products == null)       { Products = Handler.Product.GetAll().ToList(); }
             if (Regions == null)        { Regions = Handler.Region.GetAll().ToList(); }
             if (SKUs == null)           { SKUs = Handler.SKU.GetAll().ToList(); }
@@ -60,24 +59,6 @@ namespace Dell.CostAnalytics.DataFactory.Handlers
             }
         } //End method
         
-
-        /// <summary> This method returns the Phase object that matches the one passed into the function. </summary>
-        /// <param name="Phase"> A Container Phase object. </param>
-        /// <returns> The matched object if found, otherwise adds it to the DB and return the object. </returns>
-        public void GetPhase(Cont.Phase Phase)
-        {
-            var info = Phases.FirstOrDefault(x => x.Equals(Phase));
-            if (info == null)
-            {
-                Phase.ID = Handler.Phase.Add(Phase);
-                Phases.Add(Phase);
-            }
-            else
-            {
-                Phase.ID = info.ID;
-            }
-        } //End method
-
 
         /// <summary> This method returns the Product object that matches the one passed into the function. </summary>
         /// <param name="Product"> A Container Product object. </param>
@@ -135,7 +116,6 @@ namespace Dell.CostAnalytics.DataFactory.Handlers
         #region Members
         static List<Cont.Configuration> Configurations = null;
         static List<Cont.Measure> Measures = null;
-        static List<Cont.Phase> Phases = null;
         static List<Cont.Product> Products = null;
         static List<Cont.Region> Regions = null;
         static List<Cont.SKU> SKUs = null;
