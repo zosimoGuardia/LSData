@@ -6,18 +6,16 @@ using System.Text;
 using System.Threading.Tasks;
 using DataAccess;
 using Cont = Dell.CostAnalytics.Business.Containers;
+using System.Text.RegularExpressions;
+using System.Globalization;
 
 namespace Dell.CostAnalytics.DataFactory.Parsers
 {
-    /// <summary>
-    /// Class to extracts data from FLC_EXTRACT_EUC_PC_* File
-    /// </summary>
+    /// <summary> Class to extract data from FLC_EXTRACT_EUC_PC_* file </summary>
     public class FLCExtractParser
     {
         #region Constructors
-        /// <summary>
-        /// Constructor
-        /// </summary>
+        /// <summary> This constructor takes in the path to the FLC_Extract file and sets the property </summary>
         public FLCExtractParser(string flcExtractFileName)
         {
             this.m_FLCExtractFileName = flcExtractFileName;
@@ -25,10 +23,8 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
         #endregion
 
         #region Methods
-        /// <summary>
-        /// Method to Parse the CSV from the file
-        /// </summary>
-        /// <param name="fileName"></param>
+        /// <summary> Creates a data table from the CSV file and calls the ReadData. </summary>
+        /// <param name="fileName"> The list of ConsolidatedFilter objects extracted from Consolidated.txt </param>
         public void ParseData(List<ConsolidatedParser.ConsolidatedFilter> consolidatedFilter)
         {
             DataTable dt = DataTable.New.ReadCsv(m_FLCExtractFileName);
@@ -56,8 +52,6 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
 
 
 
-
-
             foreach (var row in filteredRows)
             {
                 Cont.Iteration iteration = new Cont.Iteration();
@@ -69,6 +63,10 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
                 iteration.Product = product;
             }
 
+            this.ReadData(filteredRows.ToArray());
+
+
+            /*
             var configurationData = from row in filteredRows
                                     group row by new
                                     {
@@ -91,171 +89,111 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
             foreach (var prodLine in prodLines)
             {
                 Console.WriteLine(prodLine);
-            }
+            }*/
         }//end method
 
-        #region SubClasses
-        /// <summary>
-        /// Has Getter Methods that returns Database Objects
-        /// equivalent to the one passed in
-        /// </summary>
-        class DatabaseObject
+        /// <summary> Reads the filtered rows from the data table and instantiates the respective container objects. </summary>
+        /// <param name="filteredRows"> A datatable containing the rows we care about per the specified filter criteria. </param>
+        private void ReadData(Row[] filteredRows)
         {
-            #region Constructors
-            /// <summary>
-            /// Comstructor: Initializes the database objects
-            /// </summary>
-            public DatabaseObject()
-            {
-                //TODO: Get data from DB
-                this.m_Configurations = null;
-                this.m_Measures = null;
-                this.m_Phases = null;
-                this.m_Products = null;
-                this.m_Regions = null;
-                this.m_SKUs = null;
-            }//end constructor
-            #endregion
+            Handlers.DatabaseObject dbo = new Handlers.DatabaseObject();
 
-            #region Methods
-            /// <summary>
-            /// Get Configuration
-            /// </summary>
-            /// <param name="configuration"></param>
-            /// <returns></returns>
-            public Cont.Configuration getConfiguration(Cont.Configuration configuration)
+            foreach (var row in filteredRows)
             {
-                Cont.Configuration toReturn = null;
-
-                toReturn = this.m_Configurations.FirstOrDefault(x => x.Name == configuration.Name && x.Type == configuration.Type);
-                if (toReturn == null)
+                /* Region */
+                Cont.Region regionInfo = new Cont.Region()
                 {
-                    //TODO: Add to DB
-                    //  -Returns ID
-                    //  -Add ID to configuration Object
-                    this.m_Configurations.Add(configuration);
-                    toReturn = configuration;
-                }//end if
-                return toReturn;
-            }// End Getter
+                    RegionName = row["Region"].Trim(),
+                    Country = row["Country"].Trim(),
+                    CountryCode = row["CCN"].Trim()
+                };
+                dbo.GetRegion(regionInfo);
 
-            /// <summary>
-            /// Get Measure
-            /// </summary>
-            /// <param name="measure"></param>
-            /// <returns></returns>
-            public Cont.Measure getMeasure(Cont.Measure measure)
-            {
-                Cont.Measure toReturn = null;
 
-                toReturn = this.m_Measures.FirstOrDefault(x => x.Name == measure.Name);
-                if (toReturn == null)
+                /* Product */
+                Cont.Product productInfo = new Cont.Product()
                 {
-                    //TODO: Add to DB
-                    //  -Returns ID
-                    //  -Add ID to measure Object
-                    this.m_Measures.Add(measure);
-                    toReturn = measure;
-                }//end if
-                return toReturn;
-            }// End Getter
+                    Name = row["Platform"].Trim(),                                      // Shouldn't we translate the name here? This column will have a non-standard name
+                    LOB = row["LOB"].Trim(),
+                    Model = Convert.ToInt32("1000"),                                    // Model numbers are in consolidated.txt Not all filtered rows have a Model number (and struct is not uniform).
+                    Variant = ""                                                        // Still need to talk about this...
+                };
+                dbo.GetProduct(productInfo);
 
-            /// <summary>
-            /// Get Phase
-            /// </summary>
-            /// <param name="phase"></param>
-            /// <returns></returns>
-            public Cont.Phase getPhase(Cont.Phase phase)
-            {
-                Cont.Phase toReturn = null;
 
-                toReturn = this.m_Phases.FirstOrDefault(x => x.Name == phase.Name && x.Product.ID == phase.Product.ID);
-                if (toReturn == null)
+                /* Configuration */
+                String confType = "";
+                if (Regex.IsMatch(row["Config Name"], "_min_"))
+                { confType = "Min"; }
+                else if (Regex.IsMatch(row["Config Name"], "_avg_"))
+                { confType = "Avg"; }
+                Cont.Configuration configurationInfo = new Cont.Configuration()
                 {
-                    //TODO: Add to DB
-                    //  -Returns ID
-                    //  -Add ID to phase Object
-                    this.m_Phases.Add(phase);
-                    toReturn = phase;
-                }//end if
-                return toReturn;
-            }// End Getter
+                    Name = row["Config Name"].Trim(),
+                    Type = confType                                                     // We also need to talk about naming scheme going forward.
+                };
+                dbo.GetConfiguration(configurationInfo);
 
-            /// <summary>
-            /// Get Product
-            /// </summary>
-            /// <param name="product"></param>
-            /// <returns></returns>
-            public Cont.Product getProduct(Cont.Product product)
-            {
-                Cont.Product toReturn = null;
 
-                toReturn = this.m_Products.FirstOrDefault(x => x.Name == product.Name && x.LOB == product.LOB && x.Model == product.Model && x.Variant == product.Variant);
-                if (toReturn == null)
+                /* Measure */
+                Cont.Measure measureInfo = new Business.Containers.Measure()
                 {
-                    //TODO: Add to DB
-                    //  -Returns ID
-                    //  -Add ID to product Object
-                    this.m_Products.Add(product);
-                    toReturn = product;
-                }//end if
-                return toReturn;
-            }// End Getter
+                    Name = row["Measure Name"].Trim()
+                };
+                dbo.GetMeasure(measureInfo);
 
-            /// <summary>
-            /// Get Region
-            /// </summary>
-            /// <param name="region"></param>
-            /// <returns></returns>
-            public Cont.Region getRegion(Cont.Region region)
-            {
-                Cont.Region toReturn = null;
 
-                toReturn = this.m_Regions.FirstOrDefault(x => x.RegionName == region.RegionName && x.Country == region.Country && x.CountryCode == region.CountryCode);
-                if (toReturn == null)
+                /* SKU */
+                Cont.SKU skuInfo = new Business.Containers.SKU()
                 {
-                    //TODO: Add to DB
-                    //  -Returns ID
-                    //  -Add ID to region Object
-                    this.m_Regions.Add(region);
-                    toReturn = region;
-                }//end if
-                return toReturn;
-            }// End Getter
+                    Name = row["SKU"].Trim(),
+                    Description = row["SKU Description"].Trim(),
+                    Commodity = row["Commodity"].Trim()
+                };
+                dbo.GetSKU(skuInfo);
 
-            /// <summary>
-            /// GetSKU
-            /// </summary>
-            /// <param name="sku"></param>
-            /// <returns></returns>
-            public Cont.SKU getSKU(Cont.SKU sku)
-            {
-                Cont.SKU toReturn = null;
+/*
+                // Phase 
+                Cont.Phase phaseInfo = new Business.Containers.Phase()
+                {                                                                       //Does this belong here?
+                    Name = "Sustaining",                                                //If the config is in the FLC_Extracts, it is in the Sustaining phase of the OLP.
+                    Product = productInfo                                               
+                };
+                Business.Handlers.Phase.Add(phaseInfo);
+*/
 
-                toReturn = this.m_SKUs.FirstOrDefault(x => x.Name == sku.Name && x.Description == sku.Description && x.Commodity == sku.Commodity);
-                if (toReturn == null)
+                /* Iteration */
+                Cont.Iteration iterationInfo = new Cont.Iteration()
                 {
-                    //TODO: Add to DB
-                    //  -Returns ID
-                    //  -Add ID to sku Object
-                    this.m_SKUs.Add(sku);
-                    toReturn = sku;
-                }//end if
-                return toReturn;
-            }// End Getter
-            #endregion
+                    Region = regionInfo,
+                    Measure = measureInfo,
+                    Configuration = configurationInfo,
+                    Product = productInfo,
+                    SKU = skuInfo
+                };
+                Business.Handlers.Iteration.Add(iterationInfo);
 
-            #region Members
-            //Data from database
-            List<Cont.Configuration> m_Configurations;
-            List<Cont.Measure> m_Measures;
-            List<Cont.Phase> m_Phases;
-            List<Cont.Product> m_Products;
-            List<Cont.Region> m_Regions;
-            List<Cont.SKU> m_SKUs;
-            #endregion
-        }//end class
-        #endregion
+
+                /* Cost */
+                string formatString = "yyyyMMddHHmmss";
+                var date = DateTime.ParseExact(m_FLCExtractFileName.Trim().Split('_').Last(), formatString, CultureInfo.InvariantCulture);
+                var currentCost = Convert.ToDouble(row[row.ColumnNames.First(x => x.Contains("Mth 1"))]);
+                var Pred1Cost = Convert.ToDouble(row[row.ColumnNames.First(x => x.Contains("Mth 2"))]);
+                var Pred2Cost = Convert.ToDouble(row[row.ColumnNames.First(x => x.Contains("Mth 3"))]);
+                var Pred3Cost = Convert.ToDouble(row[row.ColumnNames.First(x => x.Contains("Mth 4"))]);
+                Cont.Cost costInfo = new Business.Containers.Cost()
+                {
+                    Iteration = iterationInfo,
+                    Date = date,
+                    CurrentCost = currentCost,
+                    CostNext1 = Pred1Cost,
+                    CostNext2 = Pred2Cost,
+                    CostNext3 = Pred3Cost
+                };
+                Business.Handlers.Cost.Add(costInfo);
+            }//end for
+        }//end method
+
         #endregion
 
         #region Members

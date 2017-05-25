@@ -49,6 +49,35 @@ namespace Dell.CostAnalytics.Business.Containers
         } //End property Type
         #endregion
 
+        #region Methods
+        /// <summary> Compares two Biz.Container.Configuration objects for equality </summary>
+        /// <param name="obj">The Configuration object you want to compare </param>
+        /// <returns>True if objects are of the same class and hold the same attribute values; false otherwise. </returns>
+        public override bool Equals(object obj)
+        {
+            if (obj is Configuration)
+            {
+                Configuration Configuration = (Configuration)obj;
+                if (
+                    Name != Configuration.Name ||
+                    Type != Configuration.Type
+                    )
+                    return false;
+                else
+                    return true;
+            }//endif
+            else
+            {
+                return false;
+            }//end else
+        }//end method
+
+        /// <summary> Custom Get Hash Code method for Configuration </summary>
+        /// <returns> The object's hash code, per the default provider.</returns>
+        public override int GetHashCode()
+        { return base.GetHashCode(); } //End method
+        #endregion
+
         #region Members
         private int m_ID;
         private string m_Name;
