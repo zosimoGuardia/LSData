@@ -24,15 +24,13 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
 
         #region Methods
         /// <summary> Creates a data table from the CSV file and calls the ReadData. </summary>
-        /// <param name="fileName"> The list of ConsolidatedFilter objects extracted from Consolidated.txt </param>
+        /// <param name="fileName"> The list of ConsolidatedFilter objects extracted from the configuration file. </param>
         public void ParseData(List<ConsolidatedParser.ConsolidatedFilter> consolidatedFilter)
         {
             DataTable dt = DataTable.New.ReadCsv(m_FLCExtractFileName);
 
-            var validPlatforms = from filter in consolidatedFilter
-                                 select filter.PlatformName;
-            //consolidatedFilter.Select(x => x.PlatformName).ToList();
-            var validConfigurations = consolidatedFilter.SelectMany(x => x.Configuration).ToList();
+            var validConfigurations = from filter in consolidatedFilter
+                                      select filter.Configuration;
 
             //Headers
             //"Region"; "Country"; "CCN"; "LOB"; "Product Line"; "Platform"; "SBU"; "Configuration Type"; "Config Name"; "Config Channel"; 
@@ -44,7 +42,6 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
 
 
             var filteredRows = from row in dt.Rows
-                               where validPlatforms.Contains(row["Platform"])
                                where validConfigurations.Contains(row["Config Name"])
                                select row;
 
@@ -56,41 +53,15 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
             {
                 Cont.Iteration iteration = new Cont.Iteration();
                 var platform = consolidatedFilter.First(x => x.PlatformName == row["Platform"]);
-                Cont.Product product = new Cont.Product(0, platform.Platform, row["LOB"], Convert.ToInt32(platform.Model), "");
-
+                Cont.Product product = new Cont.Product(0, platform.Platform, row["LOB"], Convert.ToInt32(platform.Model), platform.Variant);
 
                 iteration.ID = 0;
                 iteration.Product = product;
             }
 
             this.ReadData(filteredRows.ToArray());
-
-
-            /*
-            var configurationData = from row in filteredRows
-                                    group row by new
-                                    {
-                                        Configuration = row["Config Name"]
-                                    } into topSlice
-                                    select new
-                                    {
-                                        Configuration = topSlice.Select(x => x["Config Name"]),
-                                        Region = topSlice.Select(x => x["Region"]),
-                                        Country = topSlice.Select(x => x["Country"])
-                                    };
-
-            foreach (var config in configurationData)
-            {
-                Console.WriteLine(config.Configuration);
-            }
-
-            var prodLines = from row in filteredRows select row["Product Line"].ToString();
-
-            foreach (var prodLine in prodLines)
-            {
-                Console.WriteLine(prodLine);
-            }*/
         }//end method
+
 
         /// <summary> Reads the filtered rows from the data table and instantiates the respective container objects. </summary>
         /// <param name="filteredRows"> A datatable containing the rows we care about per the specified filter criteria. </param>
@@ -113,10 +84,7 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
                 /* Product */
                 Cont.Product productInfo = new Cont.Product()
                 {
-                    Name = row["Platform"].Trim(),                                      // Shouldn't we translate the name here? This column will have a non-standard name
                     LOB = row["LOB"].Trim(),
-                    Model = Convert.ToInt32("1000"),                                    // Model numbers are in consolidated.txt Not all filtered rows have a Model number (and struct is not uniform).
-                    Variant = ""                                                        // Still need to talk about this...
                 };
                 dbo.GetProduct(productInfo);
 
@@ -152,15 +120,6 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
                 };
                 dbo.GetSKU(skuInfo);
 
-/*
-                // Phase 
-                Cont.Phase phaseInfo = new Business.Containers.Phase()
-                {                                                                       //Does this belong here?
-                    Name = "Sustaining",                                                //If the config is in the FLC_Extracts, it is in the Sustaining phase of the OLP.
-                    Product = productInfo                                               
-                };
-                Business.Handlers.Phase.Add(phaseInfo);
-*/
 
                 /* Iteration */
                 Cont.Iteration iterationInfo = new Cont.Iteration()

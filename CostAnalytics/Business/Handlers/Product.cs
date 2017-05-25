@@ -26,9 +26,7 @@ namespace Dell.CostAnalytics.Business.Handlers
             return toReturn;
         }//end method
 
-        /// <summary>
-        /// Returns all Product items
-        /// </summary>
+        /// <summary> Returns all Product items </summary>
         /// <returns> An array of Product Business containers. </returns>
         public static Biz.Containers.Product[] GetAll()
         {
@@ -78,9 +76,7 @@ namespace Dell.CostAnalytics.Business.Handlers
         #endregion
 
         #region Conversion Methods
-        /// <summary>
-        /// Converts Data Container object to Business Container object
-        /// </summary>
+        /// <summary> Converts Data Container object to Business Container object </summary>
         /// <param name="data"> The data container Product object. </param>
         /// <returns> The business container Product object. </returns>
         internal static Biz.Containers.Product ConvertFromDataContainer(Data.Containers.Product data)
@@ -91,13 +87,12 @@ namespace Dell.CostAnalytics.Business.Handlers
                 Name = data.Name,
                 LOB = data.LOB,
                 Model = data.Model,
-                Variant = data.Variant
+                Variant = data.Variant,
+                Phase = data.Phase
             };
         }//end Method
 
-        /// <summary>
-        /// Converts Business Container object to Data Container object 
-        /// </summary>
+        /// <summary> Converts Business Container object to Data Container object </summary>
         /// <param name="info">The business container Product object. </param>
         /// <returns> The data container Product object. </returns>
         internal static Data.Containers.Product ConvertToDataContainer(Biz.Containers.Product info)
@@ -108,7 +103,8 @@ namespace Dell.CostAnalytics.Business.Handlers
                 Name = info.Name,
                 LOB = info.LOB,
                 Model = info.Model,
-                Variant = info.Variant
+                Variant = info.Variant,
+                Phase = info.Phase
             };
         }//end method
         #endregion
