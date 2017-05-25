@@ -15,14 +15,13 @@ namespace Dell.CostAnalytics.Business.Containers
         {
         } //end constructor
 
-        /// <summary>
-        /// Instantiates a Product Object with specified properties
-        /// </summary>
-        /// <param name="ID"></param>
-        /// <param name="Name"></param>
-        /// <param name="LOB"></param>
-        /// <param name="Model"></param>
-        /// <param name="Variant"></param>
+        /// <summary> Instantiates a Product Object with specified properties </summary>
+        /// <param name="ID"> Product ID </param>
+        /// <param name="Name"> Marketing Product Name (internal) </param>
+        /// <param name="LOB"> Product Family the platform belongs to. </param>
+        /// <param name="Model"> Client Product Name (external) </param>
+        /// <param name="Variant"> The product's form factor </param>
+        /// <param name="Phase"> Current stage of the product lifecycle. </param>
         public Product(int ID, string Name, string LOB, int Model, string Variant)
         {
             m_ID = ID;
@@ -30,6 +29,7 @@ namespace Dell.CostAnalytics.Business.Containers
             m_LOB = LOB;
             m_Model = Model;
             m_Variant = Variant;
+            m_Phase = Phase;
         }//end constructor
         #endregion
 
@@ -63,6 +63,12 @@ namespace Dell.CostAnalytics.Business.Containers
             get { return m_Variant; }
             set { m_Variant = value; }
         } //End property Variant
+
+        //<summary> Property for Phase </summary>
+        public string Phase {
+            get { return m_Phase; }
+            set { m_Phase = value; }
+        } //End property Phase
         #endregion
 
         #region Methods
@@ -78,7 +84,8 @@ namespace Dell.CostAnalytics.Business.Containers
                     Name != Product.Name ||
                     LOB != Product.LOB ||
                     Model != Product.Model ||
-                    Variant != Product.Variant
+                    Variant != Product.Variant ||
+                    Phase != Product.Phase
                     )
                     return false;
                 else
@@ -103,6 +110,7 @@ namespace Dell.CostAnalytics.Business.Containers
         private string m_LOB;
         private int m_Model;
         private string m_Variant;
+        private string m_Phase;
         #endregion
     }//end class
 }//end namespace
