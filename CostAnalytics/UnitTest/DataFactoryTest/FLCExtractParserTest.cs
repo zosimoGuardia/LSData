@@ -13,14 +13,14 @@ namespace Dell.CostAnalytics.UnitTest.DataFactoryTest
         public void TestParseData()
         {
             System.Diagnostics.Debug.Write("Unit test TestParseData has started...\n");
-            string flcExtractFileName = AppSettings.FLCExtractPath;
-            string consolidatedFileName = AppSettings.ConsolidatedFilePath;
+            string flcExtractFilePath = AppSettings.FLCExtractPath;
+            string platformConfigurationFilePath = AppSettings.ConsolidatedFilePath;
 
-            Factory.Parsers.ConsolidatedParser consolidatedParser = new  Factory.Parsers.ConsolidatedParser(consolidatedFileName);
-            Factory.Parsers.FLCExtractParser flcExtractparser = new Factory.Parsers.FLCExtractParser(flcExtractFileName);
+            Factory.Parsers.PlatformConfigurationParser platformConfigurationParser = new  Factory.Parsers.PlatformConfigurationParser(platformConfigurationFilePath);
+            Factory.Parsers.FLCExtractParser flcExtractparser = new Factory.Parsers.FLCExtractParser(flcExtractFilePath);
 
-            var consolidatedFilter = consolidatedParser.ParseFilters();
-            flcExtractparser.ParseData(consolidatedFilter);
+            var platformConfigurations = platformConfigurationParser.Parse();
+            flcExtractparser.Parse(platformConfigurations);
 
             System.Diagnostics.Debug.Write("Unit test TestParseData has ended...\n");
         }
