@@ -7,25 +7,25 @@ using System.Threading.Tasks;
 
 namespace Dell.CostAnalytics.DataFactory.Parsers
 {
-    public class ConsolidatedParser :IDisposable
+    public class PlatformConfigurationParser :IDisposable
     {
         #region Constructors
         /// <summary> This constructor takes the configuration file name and sets it as an attribute. </summary>
         /// <param name="consolidatedFileName"> File that contains the config-to-product mapping. </param>
-        public ConsolidatedParser(string consolidatedFileName)
+        public PlatformConfigurationParser(string platformConfigurationFilePath)
         {
-            this.consolidatedFileName = consolidatedFileName;
+            this.m_platformConfigurationFilePath = platformConfigurationFilePath;
         }//end constructor
         #endregion
 
         #region Methods
         /// <summary> Parse the configuration file. </summary>
         /// <param name="fileName"> The configuration file. </param>
-        /// <returns> List of ConsolidatedFilter objects. </returns>
-        public List<ConsolidatedFilter> ParseFilters()
+        /// <returns> List of Platform Config objects. </returns>
+        public List<PlatformConfiguration> Parse()
         {
-            List<ConsolidatedFilter> toReturn = new List<ConsolidatedFilter>();
-            using (FileStream fs = File.OpenRead(consolidatedFileName))
+            List<PlatformConfiguration> toReturn = new List<PlatformConfiguration>();
+            using (FileStream fs = File.OpenRead(m_platformConfigurationFilePath))
             {
                 using (BufferedStream bs = new BufferedStream(fs))
                 {
@@ -36,11 +36,11 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
                         {
                             try
                             {
-                                var raw = line.Split(':');
-                                toReturn.Add(new ConsolidatedFilter() {
-                                    Platform = raw[1],
-                                    Model = raw[2],
+                                string[] raw = line.Split(':');
+                                toReturn.Add(new PlatformConfiguration() {
                                     Configuration = raw[0],
+                                    Platform = raw[1],
+                                    Model = Convert.ToInt32(raw[2]),
                                     Variant = raw[3]
                                 });
                             } catch (Exception exc)
@@ -59,19 +59,18 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
         }//end method
         #endregion
         #region Subclasses
-        /// <summary> Sub-class Filter </summary>
-        public class ConsolidatedFilter
+        /// <summary> Sub-class Platform Configuration </summary>
+        public class PlatformConfiguration
         {
-            public string PlatformName { get; set; }
-            public string Platform { get; set; }
-            public string Model { get; set; }
             public string Configuration { get; set; }
+            public string Platform { get; set; }
+            public int Model { get; set; }
             public string Variant { get; set; }
         }//end subclass
         #endregion
 
         #region Members
-        private string consolidatedFileName;
+        private string m_platformConfigurationFilePath;
         #endregion
     }//end class
 }//end namespace
