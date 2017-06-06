@@ -28,7 +28,7 @@ namespace Dell.CostAnalytics.Data.Containers
             set { m_LOB = value; }
         }
 
-        public int Model
+        public string Model
         {
             get { return m_Model; }
             set { m_Model = value; }
@@ -90,7 +90,7 @@ namespace Dell.CostAnalytics.Data.Containers
         int m_ID;
         string m_Name;
         string m_LOB;
-        int m_Model;
+        string m_Model;
         string m_Variant;
         string m_Phase;
         #endregion

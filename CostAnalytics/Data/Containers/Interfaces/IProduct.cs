@@ -11,7 +11,7 @@ namespace Dell.CostAnalytics.Data.Containers.Interfaces
         int ID { get; set; }
         string Name { get; set; }
         string LOB { get; set; }
-        int Model { get; set; }
+        string Model { get; set; }
         string Variant { get; set; }
         string Phase { get; set; }
     }//end interface

@@ -22,7 +22,7 @@ namespace Dell.CostAnalytics.Business.Containers
         /// <param name="Model"> Client Product Name (external) </param>
         /// <param name="Variant"> The product's form factor </param>
         /// <param name="Phase"> Current stage of the product lifecycle. </param>
-        public Product(int ID, string Name, string LOB, int Model, string Variant)
+        public Product(int ID, string Name, string LOB, string Model, string Variant)
         {
             m_ID = ID;
             m_Name = Name;
@@ -53,7 +53,7 @@ namespace Dell.CostAnalytics.Business.Containers
         } //End property LOB
 
         //<summary> Property for Model </summary>
-        public int Model {
+        public string Model {
             get { return m_Model; }
             set { m_Model = value; }
         } //End property Model
@@ -108,7 +108,7 @@ namespace Dell.CostAnalytics.Business.Containers
         private int m_ID;
         private string m_Name;
         private string m_LOB;
-        private int m_Model;
+        private string m_Model;
         private string m_Variant;
         private string m_Phase;
         #endregion
