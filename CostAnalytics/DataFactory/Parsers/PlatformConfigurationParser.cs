@@ -40,7 +40,7 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
                                 toReturn.Add(new PlatformConfiguration() {
                                     Configuration = raw[0],
                                     Platform = raw[1],
-                                    Model = Convert.ToInt32(raw[2]),
+                                    Model = raw[2],
                                     Variant = raw[3]
                                 });
                             } catch (Exception exc)
@@ -58,13 +58,14 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
             this.Dispose();
         }//end method
         #endregion
+
         #region Subclasses
         /// <summary> Sub-class Platform Configuration </summary>
         public class PlatformConfiguration
         {
             public string Configuration { get; set; }
             public string Platform { get; set; }
-            public int Model { get; set; }
+            public string Model { get; set; }
             public string Variant { get; set; }
         }//end subclass
         #endregion

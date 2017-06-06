@@ -47,10 +47,10 @@ namespace Dell.CostAnalytics.Data.Sql
                 sql.AddParameter("@ID", SqlDbType.Int, info.ID, ParameterDirection.InputOutput, true);
                 sql.AddParameter("@IterationID", SqlDbType.Int, info.IterationID, ParameterDirection.Input, true);
                 sql.AddParameter("@Date", SqlDbType.Date, info.Date, ParameterDirection.Input, true);
-                sql.AddParameter("@CurrentCost", SqlDbType.Float, info.CurrentCost, ParameterDirection.Input, true);
-                sql.AddParameter("@CostNext1", SqlDbType.Float, info.CostNext1, ParameterDirection.Input, true);
-                sql.AddParameter("@CostNext2", SqlDbType.Float, info.CostNext2, ParameterDirection.Input, true);
-                sql.AddParameter("@CostNext3", SqlDbType.Float, info.CostNext3, ParameterDirection.Input, true);
+                sql.AddParameter("@CurrentCost", SqlDbType.Float, info.CurrentCost, ParameterDirection.Input, false);
+                sql.AddParameter("@CostNext1", SqlDbType.Float, info.CostNext1, ParameterDirection.Input, false);
+                sql.AddParameter("@CostNext2", SqlDbType.Float, info.CostNext2, ParameterDirection.Input, false);
+                sql.AddParameter("@CostNext3", SqlDbType.Float, info.CostNext3, ParameterDirection.Input, false);
 
                 sql.ExecuteSP("AddCost");
                 SqlParameter param = sql.ResultParameters["@ID"];
@@ -228,12 +228,12 @@ namespace Dell.CostAnalytics.Data.Sql
                             select new Cont.Cost()
                             {
                                 ID = (int)Convert.ChangeType(!Convert.IsDBNull(row["ID"]) ? row["ID"] : 0, typeof(int)),
-                                IterationID = (int)Convert.ChangeType(!Convert.IsDBNull(row["IterationID"]) ? row["IterationID"] : null, typeof(int)),
+                                IterationID = (int)Convert.ChangeType(!Convert.IsDBNull(row["IterationID"]) ? row["IterationID"] : 0, typeof(int)),
                                 Date = (DateTime)Convert.ChangeType(!Convert.IsDBNull(row["Date"]) ? row["Date"] : null, typeof(DateTime)),
-                                CurrentCost = (float)Convert.ChangeType(!Convert.IsDBNull(row["CurrentCost"]) ? row["CurrentCost"] : null, typeof(float)),
-                                CostNext1 = (float)Convert.ChangeType(!Convert.IsDBNull(row["CostNext1"]) ? row["CostNext1"] : null, typeof(float)),
-                                CostNext2 = (float)Convert.ChangeType(!Convert.IsDBNull(row["CostNext2"]) ? row["CostNext2"] : null, typeof(float)),
-                                CostNext3 = (float)Convert.ChangeType(!Convert.IsDBNull(row["CostNext3"]) ? row["CostNext3"] : null, typeof(float))
+                                CurrentCost = (float)Convert.ChangeType(!Convert.IsDBNull(row["CurrentCost"]) ? row["CurrentCost"] : 0, typeof(float)),
+                                CostNext1 = (float)Convert.ChangeType(!Convert.IsDBNull(row["CostNext1"]) ? row["CostNext1"] : 0, typeof(float)),
+                                CostNext2 = (float)Convert.ChangeType(!Convert.IsDBNull(row["CostNext2"]) ? row["CostNext2"] : 0, typeof(float)),
+                                CostNext3 = (float)Convert.ChangeType(!Convert.IsDBNull(row["CostNext3"]) ? row["CostNext3"] : 0, typeof(float))
                             }).ToArray();
 
             return toReturn;
