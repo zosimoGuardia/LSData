@@ -47,7 +47,7 @@ namespace Dell.CostAnalytics.Data.Sql
                 sql.AddParameter("@ID", SqlDbType.Int, info.ID, ParameterDirection.InputOutput, true);
                 sql.AddParameter("@Name", SqlDbType.VarChar, info.Name, 50, ParameterDirection.Input, true);
                 sql.AddParameter("@LOB", SqlDbType.VarChar, info.LOB, 50, ParameterDirection.Input, true);
-                sql.AddParameter("@Model", SqlDbType.Int, info.Model, ParameterDirection.Input, true);
+                sql.AddParameter("@Model", SqlDbType.VarChar, info.Model, ParameterDirection.Input, true);
                 sql.AddParameter("@Variant", SqlDbType.VarChar, 50, ParameterDirection.Input, true);
                 sql.AddParameter("@Phase", SqlDbType.VarChar, 50, ParameterDirection.Input, true);
 
@@ -85,7 +85,7 @@ namespace Dell.CostAnalytics.Data.Sql
                 sql.AddParameter("@ID", SqlDbType.Int, info.ID, ParameterDirection.Input, true);
                 sql.AddParameter("@Name", SqlDbType.VarChar, info.Name, 50, ParameterDirection.Input, true);
                 sql.AddParameter("@LOB", SqlDbType.VarChar, info.LOB, 50, ParameterDirection.Input, true);
-                sql.AddParameter("@Model", SqlDbType.Int, info.Model, ParameterDirection.Input, true);
+                sql.AddParameter("@Model", SqlDbType.VarChar, info.Model, ParameterDirection.Input, true);
                 sql.AddParameter("@Variant", SqlDbType.VarChar, 50, ParameterDirection.Input, true);
                 sql.AddParameter("@Phase", SqlDbType.VarChar, 50, ParameterDirection.Input, true);
 
@@ -228,7 +228,7 @@ namespace Dell.CostAnalytics.Data.Sql
                                 ID = (int)Convert.ChangeType(!Convert.IsDBNull(row["ID"]) ? row["ID"] : 0, typeof(int)),
                                 Name = (string)Convert.ChangeType(!Convert.IsDBNull(row["Name"]) ? row["Name"] : null, typeof(string)),
                                 LOB = (string)Convert.ChangeType(!Convert.IsDBNull(row["LOB"]) ? row["LOB"] : null, typeof(string)),
-                                Model = (int)Convert.ChangeType(!Convert.IsDBNull(row["Model"]) ? row["Model"] : 0, typeof(int)),
+                                Model = (string)Convert.ChangeType(!Convert.IsDBNull(row["Model"]) ? row["Model"] : 0, typeof(string)),
                                 Variant = (string)Convert.ChangeType(!Convert.IsDBNull(row["Variant"]) ? row["Variant"] : null, typeof(string)),
                                 Phase = (string)Convert.ChangeType(!Convert.IsDBNull(row["Phase"]) ? row["Variant"] : null, typeof(string))
                             }).ToArray();
