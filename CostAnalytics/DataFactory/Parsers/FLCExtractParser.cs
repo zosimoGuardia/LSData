@@ -16,23 +16,21 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
     {
         #region Constructors
         /// <summary> This constructor takes in the path to the FLC_Extract file and sets the property </summary>
-        public FLCExtractParser(string flcExtractFileName)
+        public FLCExtractParser(string FLCExtractFilePath)
         {
-            this.m_FLCExtractFileName = flcExtractFileName;
+            this.m_FLCExtractFilePath = FLCExtractFilePath;
         }//end constructor
         #endregion
 
         #region Methods
         /// <summary> Creates a data table from the CSV file and calls the ReadData. </summary>
-        /// <param name="fileName"> The list of ConsolidatedFilter objects extracted from Consolidated.txt </param>
-        public void ParseData(List<ConsolidatedParser.ConsolidatedFilter> consolidatedFilter)
+        /// <param name="fileName"> The list of ConsolidatedFilter objects extracted from the configuration file. </param>
+        public void Parse(List<PlatformConfigurationParser.PlatformConfiguration> platformConfigurations)
         {
-            DataTable dt = DataTable.New.ReadCsv(m_FLCExtractFileName);
+            DataTable dt = DataTable.New.ReadCsv(m_FLCExtractFilePath);
 
-            var validPlatforms = from filter in consolidatedFilter
-                                 select filter.PlatformName;
-            //consolidatedFilter.Select(x => x.PlatformName).ToList();
-            var validConfigurations = consolidatedFilter.SelectMany(x => x.Configuration).ToList();
+            var validConfigurations = from filter in platformConfigurations
+                                      select filter.Configuration;
 
             //Headers
             //"Region"; "Country"; "CCN"; "LOB"; "Product Line"; "Platform"; "SBU"; "Configuration Type"; "Config Name"; "Config Channel"; 
@@ -44,57 +42,15 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
 
 
             var filteredRows = from row in dt.Rows
-                               where validPlatforms.Contains(row["Platform"])
                                where validConfigurations.Contains(row["Config Name"])
                                select row;
-
-            var totalCosts = filteredRows.Where(x => (x["Measure Detail"]).Equals("Total Cost") && String.IsNullOrEmpty(x["MOD"]));
-
-
-
-            foreach (var row in filteredRows)
-            {
-                Cont.Iteration iteration = new Cont.Iteration();
-                var platform = consolidatedFilter.First(x => x.PlatformName == row["Platform"]);
-                Cont.Product product = new Cont.Product(0, platform.Platform, row["LOB"], Convert.ToInt32(platform.Model), "");
-
-
-                iteration.ID = 0;
-                iteration.Product = product;
-            }
-
-            this.ReadData(filteredRows.ToArray());
-
-
-            /*
-            var configurationData = from row in filteredRows
-                                    group row by new
-                                    {
-                                        Configuration = row["Config Name"]
-                                    } into topSlice
-                                    select new
-                                    {
-                                        Configuration = topSlice.Select(x => x["Config Name"]),
-                                        Region = topSlice.Select(x => x["Region"]),
-                                        Country = topSlice.Select(x => x["Country"])
-                                    };
-
-            foreach (var config in configurationData)
-            {
-                Console.WriteLine(config.Configuration);
-            }
-
-            var prodLines = from row in filteredRows select row["Product Line"].ToString();
-
-            foreach (var prodLine in prodLines)
-            {
-                Console.WriteLine(prodLine);
-            }*/
+            this.ReadData(filteredRows.ToArray(), platformConfigurations);
         }//end method
+
 
         /// <summary> Reads the filtered rows from the data table and instantiates the respective container objects. </summary>
         /// <param name="filteredRows"> A datatable containing the rows we care about per the specified filter criteria. </param>
-        private void ReadData(Row[] filteredRows)
+        private void ReadData(Row[] filteredRows, List<PlatformConfigurationParser.PlatformConfiguration> platformConfigurations)
         {
             Handlers.DatabaseObject dbo = new Handlers.DatabaseObject();
 
@@ -110,29 +66,32 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
                 dbo.GetRegion(regionInfo);
 
 
-                /* Product */
-                Cont.Product productInfo = new Cont.Product()
-                {
-                    Name = row["Platform"].Trim(),                                      // Shouldn't we translate the name here? This column will have a non-standard name
-                    LOB = row["LOB"].Trim(),
-                    Model = Convert.ToInt32("1000"),                                    // Model numbers are in consolidated.txt Not all filtered rows have a Model number (and struct is not uniform).
-                    Variant = ""                                                        // Still need to talk about this...
-                };
-                dbo.GetProduct(productInfo);
-
-
                 /* Configuration */
-                String confType = "";
-                if (Regex.IsMatch(row["Config Name"], "_min_"))
-                { confType = "Min"; }
-                else if (Regex.IsMatch(row["Config Name"], "_avg_"))
-                { confType = "Avg"; }
+                string confType = String.Empty;
+                string configName = row["Config Name"].Trim();
+                if (configName.Contains("_min_"))
+                    confType = "Min";
+                else if (configName.Contains("_avg_"))
+                    confType = "Avg";
                 Cont.Configuration configurationInfo = new Cont.Configuration()
                 {
-                    Name = row["Config Name"].Trim(),
+                    Name = configName,
                     Type = confType                                                     // We also need to talk about naming scheme going forward.
                 };
                 dbo.GetConfiguration(configurationInfo);
+
+
+                /* Product */
+                var product = platformConfigurations.FirstOrDefault(x => x.Configuration == configurationInfo.Name);
+                Cont.Product productInfo = new Cont.Product()
+                {
+                    Name = product.Platform,
+                    LOB = row["LOB"].Trim(),
+                    Model = product.Model,
+                    Variant = product.Variant,
+                    Phase = this.DEFAULT_PHASE
+                };
+                dbo.GetProduct(productInfo);
 
 
                 /* Measure */
@@ -152,15 +111,6 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
                 };
                 dbo.GetSKU(skuInfo);
 
-/*
-                // Phase 
-                Cont.Phase phaseInfo = new Business.Containers.Phase()
-                {                                                                       //Does this belong here?
-                    Name = "Sustaining",                                                //If the config is in the FLC_Extracts, it is in the Sustaining phase of the OLP.
-                    Product = productInfo                                               
-                };
-                Business.Handlers.Phase.Add(phaseInfo);
-*/
 
                 /* Iteration */
                 Cont.Iteration iterationInfo = new Cont.Iteration()
@@ -171,12 +121,13 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
                     Product = productInfo,
                     SKU = skuInfo
                 };
-                Business.Handlers.Iteration.Add(iterationInfo);
+                iterationInfo.ID = Business.Handlers.Iteration.Add(iterationInfo);
 
 
                 /* Cost */
                 string formatString = "yyyyMMddHHmmss";
-                var date = DateTime.ParseExact(m_FLCExtractFileName.Trim().Split('_').Last(), formatString, CultureInfo.InvariantCulture);
+                var fileName = Path.GetFileNameWithoutExtension(m_FLCExtractFilePath);
+                var date = DateTime.ParseExact(fileName.Split('_').Last(), formatString, CultureInfo.InvariantCulture);
                 var currentCost = Convert.ToDouble(row[row.ColumnNames.First(x => x.Contains("Mth 1"))]);
                 var Pred1Cost = Convert.ToDouble(row[row.ColumnNames.First(x => x.Contains("Mth 2"))]);
                 var Pred2Cost = Convert.ToDouble(row[row.ColumnNames.First(x => x.Contains("Mth 3"))]);
@@ -190,14 +141,18 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
                     CostNext2 = Pred2Cost,
                     CostNext3 = Pred3Cost
                 };
-                Business.Handlers.Cost.Add(costInfo);
+                costInfo.ID = Business.Handlers.Cost.Add(costInfo);
             }//end for
         }//end method
 
         #endregion
 
         #region Members
-        string m_FLCExtractFileName = String.Empty;
+        private string m_FLCExtractFilePath = String.Empty;
+        #endregion
+
+        #region Constants
+        protected string DEFAULT_PHASE = "Sustain";
         #endregion
     }//end class
 }//end namespace
