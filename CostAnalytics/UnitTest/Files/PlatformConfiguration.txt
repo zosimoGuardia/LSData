@@ -1,0 +1,41 @@
+scp_beaver creek 12_min_us:Beaver Creek:7270:Clamshell
+scp_beaver creek 14_min_us:Beaver Creek:7470:Clamshell
+scp_bold peak 2_min_us:Bold Peak 2:7275:Detachable
+flc_breckenridge 12_min_us:Breckenridge:5280:Clamshell
+flc_breckenridge 14u_min_us:Breckenridge:5480U:Clamshell
+flc_breckenridge 14h_min_us:Breckenridge:5480H:Clamshell
+flc_breckenridge 15u_min_us:Breckenridge:5580U:Clamshell
+flc_breckenridge 15h_min_us:Breckenridge:5580H:Clamshell
+scp_celtic_min_us:Celtic:7370:Clamshell
+scp_columbus ii_min_us:Columbus II:7214:
+flc_corinth (windows)_min_us:Corinth:3180W:Clamshell
+flc_corinth (chrome)_min_us:Corinth:3180C:Clamshell
+flc_keystone 11 c_min_us:Keystone:3189C:360
+flc_keystone 13 c_min_us:Keystone:3380C:Clamshell
+scp_eriksson_min_us:Eriksson:5404:Clamshell
+scp_eriksson ii_min_us:Eriksson II:5414:Clamshell
+flc_keystone 11 w_min_us:Keystone:3189W:360
+flc_keystone 13 w_min_us:Keystone:3380W:Clamshell
+scp_livingstone_min_us:Livingstone:7202:Detachable
+flc_kirkwood 12_min_us:Kirkwood:5289:360
+flc_pebble creek_min_us:Pebble Creek:5285:Detachable
+scp_jayton_min_us:Jayton:5175:Detachable
+scp_loveland 14 bdw_min_us:Loveland:3460:Clamshell
+scp_loveland 14 skl_min_us:Loveland:3470:Clamshell
+scp_loveland 15 bdw_min_us:Loveland:3560:Clamshell
+scp_loveland 15 skl_min_us:Loveland:3570:Clamshell
+scp_magellan ii_min_us:Magellan II:7414:Clamshell
+scp_magellan_min_us:Magellan:7404:Clamshell
+scp_park city 12 skl-u_min_us:Park City:5270:Clamshell
+scp_park city 14 skl-u_min_us:Park City:5470U:Clamshell
+scp_park city 14 skl-h_min_us:Park City:5470H:Clamshell
+scp_park city 15 skl-h_min_us:Park City:5570H:Clamshell
+scp_park city 15 skl-u_min_us:Park City:5570U:Clamshell
+scp_plano braswell_min_us:Plano:3160:Clamshell
+scp_plano byt m_min_us:Plano:3150:Clamshell
+scp_round rock mlk_min_us:Round Rock MLK:3350:Clamshell
+scp_starlord-l_min_us:Starlord L:3379:360
+flc_steamboat 12_min_us:Steamboat:7280:Clamshell
+flc_steamboat 14_min_us:Steamboat:7480:Clamshell
+flc_taos 14_min_us:Taos:3480:Clamshell
+flc_taos 15_min_us:Taos:3580:Clamshell
