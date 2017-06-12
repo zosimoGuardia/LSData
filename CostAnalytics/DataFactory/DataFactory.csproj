@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Handlers\DataFactoryBusinessHandler.cs" />
+    <Compile Include="Parsers\WarrantyInfoParser.cs" />
     <Compile Include="Parsers\PlatformConfigurationParser.cs" />
     <Compile Include="Parsers\FLCExtractParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
