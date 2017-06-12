@@ -25,7 +25,7 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
         #region Methods
         /// <summary> Creates a data table from the CSV file and calls the ReadData. </summary>
         /// <param name="fileName"> The list of ConsolidatedFilter objects extracted from the configuration file. </param>
-        public void Parse (List<PlatformConfigurationParser.PlatformConfiguration> platformConfigurations)
+        public void Parse(List<PlatformConfigurationParser.PlatformConfiguration> platformConfigurations)
         {
             DataTable dt = DataTable.New.ReadCsv(m_FLCExtractFilePath);
 
@@ -69,10 +69,10 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
                 /* Configuration */
                 string confType = String.Empty;
                 string configName = row["Config Name"].Trim();
-                if (Regex.IsMatch(configName, "_min_"))
-                { confType = "Min"; }
-                else if (Regex.IsMatch(configName, "_avg_"))
-                { confType = "Avg"; }
+                if (configName.Contains("_min_"))
+                    confType = "Min";
+                else if (configName.Contains("_avg_"))
+                    confType = "Avg";
                 Cont.Configuration configurationInfo = new Cont.Configuration()
                 {
                     Name = configName,
@@ -121,7 +121,7 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
                     Product = productInfo,
                     SKU = skuInfo
                 };
-                Business.Handlers.Iteration.Add(iterationInfo);
+                iterationInfo.ID = Business.Handlers.Iteration.Add(iterationInfo);
 
 
                 /* Cost */
@@ -141,7 +141,7 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
                     CostNext2 = Pred2Cost,
                     CostNext3 = Pred3Cost
                 };
-                Business.Handlers.Cost.Add(costInfo);
+                costInfo.ID = Business.Handlers.Cost.Add(costInfo);
             }//end for
         }//end method
 
