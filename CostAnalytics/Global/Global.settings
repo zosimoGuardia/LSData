@@ -41,5 +41,8 @@
     <Setting Name="ConsolidatedFilePath" Type="System.String" Scope="Application">
       <Value Profile="(Default)">C:\\Users\\Dominic_Bett\\Desktop\\Desktop Items\\PROJECTS\\Cost Analysis\\PlatformConfiguration.txt</Value>
     </Setting>
+    <Setting Name="WarrantyInfoFilePath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">C:\\Users\\Dominic_Bett\\Desktop\\Desktop Items\\PROJECTS\\Cost Analysis\\201706.xlsx</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

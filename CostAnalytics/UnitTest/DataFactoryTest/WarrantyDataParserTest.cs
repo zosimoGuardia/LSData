@@ -17,7 +17,7 @@ namespace Dell.CostAnalytics.UnitTest.DataFactoryTest
 
             Factory.Parsers.WarrantyInfoParser warrantyInfoParser = new Factory.Parsers.WarrantyInfoParser(warrantyInfoFilePath);
 
-            warrantyInfoParser.Parse();
+            var results = warrantyInfoParser.Parse();
 
             System.Diagnostics.Debug.Write("Unit test TestParseData has ended...\n");
         }

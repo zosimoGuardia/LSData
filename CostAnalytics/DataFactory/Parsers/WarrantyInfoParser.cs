@@ -27,105 +27,132 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
 
         #region Methods
         /// <summary> Parses through the Excel file, creates a data table with the information we care about, and calls ReadData. </summary>
-        public void Parse()
+        public System.Data.DataTable Parse()
         {
-            System.Data.DataTable dt = new System.Data.DataTable();
-            dt.Clear();
-            dt.Columns.AddRange(datacols);
+            System.Data.DataTable toReturn = new System.Data.DataTable();
+            //toReturn.Clear();
+
+            // Column Headers
+            toReturn.Columns.AddRange(new System.Data.DataColumn[]{
+                    new System.Data.DataColumn("Name"),
+                new System.Data.DataColumn("Region"),
+                new System.Data.DataColumn("Date"),
+                new System.Data.DataColumn("Type"),
+                new System.Data.DataColumn("Description"),
+                new System.Data.DataColumn("Cost")
+            });
             try
             {
-                using (SLDocument warrantyXL = new SLDocument(this.m_warrantyInfoFilePath, WARRANTY_WORKBOOK))
+                using (SLDocument slDocument = new SLDocument(this.m_warrantyInfoFilePath, WARRANTY_WORKBOOK))
                 {
                     //DateTime now = DateTime.Now;
                     //string currentMonth =  now.ToString("MMM") + "/" + now.ToString("yy");
-                    string currentMonth = "may/17";
-                    SLWorksheetStatistics xlProperties = warrantyXL.GetWorksheetStatistics();
+                    SLWorksheetStatistics slWorksheetStats = slDocument.GetWorksheetStatistics();
+                    //string currentMonth = "may/17";
+                    DateTime currentDate = DateTime.ParseExact(Path.GetFileNameWithoutExtension(this.m_warrantyInfoFilePath), "yyyyMM", null);
                     string currHeader = "";
                     int variantCol = 0;
                     int descriptionCol = 0;
                     int costCol = 0;
 
-                    for (int column = xlProperties.StartColumnIndex; column < xlProperties.EndColumnIndex - 1; column++)
+                    for (int column = slWorksheetStats.StartColumnIndex; column <= slWorksheetStats.EndColumnIndex; column++)
                     {
                         /* First row has merged cells for information types (Description vs. Monthly Costs)
                          * The getCellValueAsString starts at index 1 */
-                        if (warrantyXL.GetCellValueAsString(1, column) != "")
-                            currHeader = warrantyXL.GetCellValueAsString(1, column).Replace(" ", string.Empty).ToLower();
-
+                        if (!String.IsNullOrEmpty(slDocument.GetCellValueAsString(1, column).Trim()))
+                        {
+                            currHeader = slDocument.GetCellValueAsString(1, column).Trim().ToLower();
+                        }//end if
                         /* Second row is the actual header file. */
-                        if (warrantyXL.GetCellValueAsString(2, column).Trim().ToLower() == VARIANT)
+                        if (slDocument.GetCellValueAsString(2, column).Trim().ToLower() == VARIANT)
                         {
                             variantCol = column;
                             continue;
-                        }
+                        }//end if
                         if (currHeader == DESCRIPTION_HEADER &&
-                            warrantyXL.GetCellValueAsString(2, column).Trim().ToLower() == REGION)
+                            slDocument.GetCellValueAsString(2, column).Trim().ToLower() == REGION)
                         {
                             descriptionCol = column;
                             continue;
-                        }
+                        }//end if
+
                         try
                         {
-                            if (getDate(currHeader).ToString("MMM/yy").Replace(" ", string.Empty).ToLower() == currentMonth &&
-                                warrantyXL.GetCellValueAsString(2, column).ToLower().Trim() == REGION)
-                            {
+                            if(currentDate.Equals(GetDateFromMMM_FYyy(currHeader)) &&
+                                slDocument.GetCellValueAsString(2, column).Trim().ToLower().Equals(REGION)){
                                 costCol = column;
                                 break;
                             }
-                        }
+                            /*
+                            if (getDate(currHeader).ToString("MMM/yy").Replace(" ", string.Empty).ToLower() == currentMonth &&
+                                slDocument.GetCellValueAsString(2, column).Trim().ToLower() == REGION)
+                            {
+                                costCol = column;
+                                break;
+                            }*/
+                        }//end try
                         catch (FormatException fe)
                         {
                             System.Diagnostics.Debug.WriteLine("[" + currHeader + "]  " + fe.ToString());
-                        }
+                        }//end catch
                         catch (ArgumentOutOfRangeException aoore)
                         {
                             System.Diagnostics.Debug.WriteLine("[" + currHeader + "]  " + aoore.ToString());
-                        }
-                    }
-
-                    for (int row = xlProperties.StartRowIndex + 2; row < xlProperties.EndRowIndex; row++)
+                        }//end catch
+                    }//end for
+                    
+                    for (int row = slWorksheetStats.StartRowIndex + 2; row < slWorksheetStats.EndRowIndex; row++)
                     {
-                        if (warrantyXL.GetCellValueAsString(row, variantCol) != "")
+                        if (slDocument.GetCellValueAsString(row, variantCol) != "")
                         {
                             /* Schema -->  ||  Name  |  Region  |  Date  |  Type  |  Description  |  Cost ||  */
                             try
                             {
-                                string warrantyName = String.Format("scp_Lati_" + warrantyXL.GetCellValueAsString(row, variantCol).Split(',')[1] + "-min");
+                                string warrantyName = String.Format("scp_Lati_" + slDocument.GetCellValueAsString(row, variantCol).Split(',')[1] + "-min");
 
-                                dt.Rows.Add(warrantyName,
+                                var description = slDocument.GetCellValueAsString(row, descriptionCol);
+                                Double cost;
+                                Double.TryParse(slDocument.GetCellValueAsString(row, costCol).Replace("$", String.Empty).Replace(",", String.Empty).Trim(), out cost); // Return 0.0 if Cannot Parse Value
+                                toReturn.Rows.Add(warrantyName,
                                             REGION,
-                                            getDate(currentMonth),
+                                            currentDate.ToString("MM/yy"),
                                             TYPE,
-                                            warrantyXL.GetCellValueAsString(row, descriptionCol),
-                                            warrantyXL.GetCellValueAsString(row, costCol));
-                            }
+                                            description,
+                                            cost
+                                            );
+                            }//end try
                             catch (IndexOutOfRangeException)
                             {
-                                System.Diagnostics.Debug.WriteLine("Error parsing " + warrantyXL.GetCellValueAsString(row, variantCol) + ".");
-                            }
-                        }
+                                System.Diagnostics.Debug.WriteLine("Error parsing " + slDocument.GetCellValueAsString(row, variantCol) + ".");
+                            }//end catch
+                        }//end if
                     }
                 } //End using statement
             } //End try block
             catch (Exception e)
             {
                 throw e;
-            }
-            
+            }//end catch
 
+            /*
             //Now read filtered data
-            foreach (System.Data.DataRow record in dt.Rows)
+            foreach (System.Data.DataRow record in toReturn.Rows)
+            {
                 this.ReadData(record);
+            }//end for
+            */
+            return toReturn;
         }//end method
 
-
+        
+        /*
         /// <summary> This method reads the filtered rows from the data table and instantiates the respective container objects. </summary>
         /// <param name="record">A datatable row containing the columns rows we care about per the specified filter criteria. </param>
         private void ReadData(System.Data.DataRow record)
         {
             Handlers.DatabaseObject dbo = new Handlers.DatabaseObject();
 
-            /* Measure */
+            // Measure
             Cont.Measure measureInfo = new Business.Containers.Measure()
             {
                 Name = MEASURE_TYPE
@@ -133,7 +160,7 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
             dbo.GetMeasure(measureInfo);
 
 
-            /* SKU */
+            // SKU
             Cont.SKU skuInfo = new Business.Containers.SKU()
             {
                 Name = Convert.ToString(record["Name"]).Trim(),
@@ -143,7 +170,7 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
             dbo.GetSKU(skuInfo);
 
 
-            /* Iteration */
+            // Iteration
             Cont.Iteration iterationInfo = new Cont.Iteration()
             {
                 Measure = measureInfo,
@@ -152,7 +179,7 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
             iterationInfo.ID = Business.Handlers.Iteration.Add(iterationInfo);
 
 
-            /* Cost */
+            // Cost 
             Cont.Cost costInfo = new Business.Containers.Cost()
             {
                 Iteration = iterationInfo,
@@ -164,7 +191,28 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
             };
             costInfo.ID = Business.Handlers.Cost.Add(costInfo);
         }//end method
+    */
 
+        /// <summary>
+        /// Returns DateTime format from input string of format MMM FYyy
+        /// Example: Jul FY18 return 07/2017
+        /// </summary>
+        /// <param name="MMMM_FYyy"></param>
+        /// <returns></returns>
+        public DateTime GetDateFromMMM_FYyy(string MMM_FYyy)
+        {
+            DateTime toReturn;
+            string MMMyy = MMM_FYyy.Replace(" fy", String.Empty);
+            string[] formats = { "MMMMyy", "MMMyy" };
+            if (DateTime.TryParseExact(MMMyy, formats, null, System.Globalization.DateTimeStyles.NoCurrentDateDefault, out toReturn)) // Returns  1/1/1 of canot parse string to date
+            {
+                if(toReturn.Month > 1) // New Fiscal year starts in February
+                    toReturn = toReturn.AddYears(-1);
+            }// end if
+            return toReturn;
+        }//end method
+     
+        /*
         /// <summary> This method converts a column header to a Datetime object. </summary>
         /// <param name="text"> The date in the following format: [mmm] FY[yy] (Ex. May FY18) </param>
         /// <returns> The calendar-year datetime object that corresponds to the param date. </returns>
@@ -200,7 +248,7 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
 
             return new DateTime(year, month, 1);
         } //End method
-
+        */
 
         /// <summary> Disposes object </summary>
         public void Dispose()
@@ -222,27 +270,19 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
         //}
         //#endregion
 
-        #region Properties
+        #region Members
         private string m_warrantyInfoFilePath;
         #endregion
 
         #region Constants
-        private System.Data.DataColumn[] datacols =
-        {
-            new System.Data.DataColumn("Name"),
-            new System.Data.DataColumn("Region"),
-            new System.Data.DataColumn("Date"),
-            new System.Data.DataColumn("Type"),
-            new System.Data.DataColumn("Description"),
-            new System.Data.DataColumn("Cost")
-        };
-        protected string WARRANTY_WORKBOOK = "Summary- EUC";
-        protected string VARIANT = "variant";
-        protected string DESCRIPTION_HEADER = "term";
-        protected string REGION = "dao";
-        protected string TYPE = "Warranty";
-        protected string MEASURE_TYPE = "Services";
+        private const string WARRANTY_WORKBOOK = "Summary- EUC";
+        private const string VARIANT = "variant";
+        private const string DESCRIPTION_HEADER = "term";
+        private const string REGION = "dao";
+        private const string TYPE = "Warranty";
+        private const string MEASURE_TYPE = "Services";
         #endregion
+
     } //End WarrantyInfoParser class
 
 } //End Namespace
