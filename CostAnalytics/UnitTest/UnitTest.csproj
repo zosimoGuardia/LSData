@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="BusinessTest\BusinessTest.cs" />
     <Compile Include="DataFactoryTest\FLCExtractParserTest.cs" />
+    <Compile Include="DataFactoryTest\WarrantyDataParserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
