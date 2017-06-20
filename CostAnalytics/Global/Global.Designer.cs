@@ -124,10 +124,8 @@ namespace Dell.CostAnalytics.Global {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        //[global::System.Configuration.DefaultSettingValueAttribute("C:\\\\Users\\\\Dominic_Bett\\\\Desktop\\\\Desktop Items\\\\PROJECTS\\\\Cost Analysis\\\\FLC_EXT" +
-        //    "RACT_EUC_PC_20161207051244.csv")]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\\\Users\\\\zosimo_guardia\\\\Documents\\\\Dell\\\\Project Draco\\\\Cost Analytics\\\\FLC" +
-            "\\\\FLC_EXTRACT_EUC_SC_20170508190518.csv")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\\\Users\\\\Dominic_Bett\\\\Desktop\\\\Desktop Items\\\\PROJECTS\\\\Cost Analysis\\\\FLC_EXT" +
+            "RACT_EUC_PC_20161207051244.csv")]
         public string FLCExtractPath {
             get {
                 return ((string)(this["FLCExtractPath"]));
@@ -136,24 +134,20 @@ namespace Dell.CostAnalytics.Global {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        //[global::System.Configuration.DefaultSettingValueAttribute("C:\\\\Users\\\\Dominic_Bett\\\\Desktop\\\\Desktop Items\\\\PROJECTS\\\\Cost Analysis\\\\Platfor" +
-        //    "mConfiguration.txt")]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\\\Users\\\\zosimo_guardia\\\\Documents\\\\Dell\\\\Project Draco\\\\Cost Analytics\\\\costAnalytics" +
-            "\\\\PlatformConfiguration.txt")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\\\Users\\\\Dominic_Bett\\\\Desktop\\\\Desktop Items\\\\PROJECTS\\\\Cost Analysis\\\\Platfor" +
+            "mConfiguration.txt")]
         public string ConsolidatedFilePath {
             get {
                 return ((string)(this["ConsolidatedFilePath"]));
             }
         }
-
+        
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\\\Users\\\\zosimo_guardia\\\\Documents\\\\Dell\\\\Project Draco\\\\Cost Analytics\\\\Warranty" +
-            "\\\\201705.xlsx")]
-        public string WarrantyInfoFilePath
-        {
-            get
-            {
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\\\Users\\\\Dominic_Bett\\\\Desktop\\\\Desktop Items\\\\PROJECTS\\\\Cost Analysis\\\\201706." +
+            "xlsx")]
+        public string WarrantyInfoFilePath {
+            get {
                 return ((string)(this["WarrantyInfoFilePath"]));
             }
         }
