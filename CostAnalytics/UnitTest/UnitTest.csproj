@@ -79,7 +79,9 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Files\FLCExtracts\FLC_EXTRACT_EUC_PC_20161207181238.csv" />
+    <None Include="Files\WarrantyInfo\201706.xlsx" />
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
