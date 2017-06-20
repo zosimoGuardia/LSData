@@ -50,6 +50,7 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
 
         /// <summary> Reads the filtered rows from the data table and instantiates the respective container objects. </summary>
         /// <param name="filteredRows"> A datatable containing the rows we care about per the specified filter criteria. </param>
+        /// <param name="platformConfigurations"> The list of platform configurations we're interested in. </param>
         private void ReadData(Row[] filteredRows, List<PlatformConfigurationParser.PlatformConfiguration> platformConfigurations)
         {
             Handlers.DatabaseObject dbo = new Handlers.DatabaseObject();

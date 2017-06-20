@@ -145,5 +145,17 @@ namespace Dell.CostAnalytics.Global {
                 return ((string)(this["ConsolidatedFilePath"]));
             }
         }
+
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\\\Users\\\\zosimo_guardia\\\\Documents\\\\Dell\\\\Project Draco\\\\Cost Analytics\\\\Warranty" +
+            "\\\\201705.xlsx")]
+        public string WarrantyInfoFilePath
+        {
+            get
+            {
+                return ((string)(this["WarrantyInfoFilePath"]));
+            }
+        }
     }
 }

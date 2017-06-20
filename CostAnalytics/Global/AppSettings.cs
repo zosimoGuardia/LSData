@@ -58,6 +58,11 @@ namespace Dell.CostAnalytics.Global
         {
             get { return Global.Default.ConsolidatedFilePath; }
         }
+
+        public static string WarrantyInfoFilePath
+        {
+            get { return Global.Default.WarrantyInfoFilePath; }
+        }
         #endregion
     }
 }

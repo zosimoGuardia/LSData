@@ -10,7 +10,7 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
     public class PlatformConfigurationParser :IDisposable
     {
         #region Constructors
-        /// <summary> This constructor takes the configuration file name and sets it as an attribute. </summary>
+        /// <summary> This constructor takes the configuration file path and sets it as an attribute. </summary>
         /// <param name="consolidatedFileName"> File that contains the config-to-product mapping. </param>
         public PlatformConfigurationParser(string platformConfigurationFilePath)
         {
