@@ -30,7 +30,6 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
         public System.Data.DataTable Parse()
         {
             System.Data.DataTable toReturn = new System.Data.DataTable();
-            //toReturn.Clear();
 
             // Column Headers
             toReturn.Columns.AddRange(new System.Data.DataColumn[]{

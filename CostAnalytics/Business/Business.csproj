@@ -46,6 +46,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Containers\WarrantyCost.cs" />
+    <Compile Include="Containers\Iterfaces\IWarrantyCost.cs" />
+    <Compile Include="Containers\Warranty.cs" />
     <Compile Include="Containers\Configuration.cs" />
     <Compile Include="Containers\Cost.cs" />
     <Compile Include="Containers\Iteration.cs" />
@@ -53,6 +56,7 @@
     <Compile Include="Containers\Iterfaces\ICost.cs" />
     <Compile Include="Containers\Iterfaces\IIteration.cs" />
     <Compile Include="Containers\Iterfaces\IMeasure.cs" />
+    <Compile Include="Containers\Iterfaces\IWarranty.cs" />
     <Compile Include="Containers\Iterfaces\IProduct.cs" />
     <Compile Include="Containers\Iterfaces\IRegion.cs" />
     <Compile Include="Containers\Iterfaces\ISKU.cs" />
@@ -60,6 +64,8 @@
     <Compile Include="Containers\Product.cs" />
     <Compile Include="Containers\Region.cs" />
     <Compile Include="Containers\SKU.cs" />
+    <Compile Include="Handlers\Warranty.cs" />
+    <Compile Include="Handlers\WarrantyCost.cs" />
     <Compile Include="Handlers\SKU.cs" />
     <Compile Include="Handlers\Region.cs" />
     <Compile Include="Handlers\Product.cs" />
