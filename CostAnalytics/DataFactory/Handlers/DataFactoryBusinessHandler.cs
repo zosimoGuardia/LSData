@@ -20,8 +20,8 @@ namespace Dell.CostAnalytics.DataFactory.Handlers
             if (Products == null)       { Products = Handler.Product.GetAll().ToList(); }
             if (Regions == null)        { Regions = Handler.Region.GetAll().ToList(); }
             if (SKUs == null)           { SKUs = Handler.SKU.GetAll().ToList(); }
-            if(Warranties == null) { Warranties = Handler.Warranty.GetAll().ToList(); }
-            if(WarrantyCosts == null) { WarrantyCosts = Handler.WarrantyCost.GetAll().ToList(); }
+            if (Warranties == null)     { Warranties = Handler.Warranty.GetAll().ToList(); }
+            if (WarrantyCosts == null)  { WarrantyCosts = Handler.WarrantyCost.GetAll().ToList(); }
         }
         #endregion
 
