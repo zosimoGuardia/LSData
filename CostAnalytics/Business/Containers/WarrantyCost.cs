@@ -87,7 +87,6 @@ namespace Dell.CostAnalytics.Business.Containers
             {
                 WarrantyCost WarrantyCost = (WarrantyCost)obj;
                 if (
-                    ID != WarrantyCost.ID ||
                     Date != WarrantyCost.Date ||
                     Cost != WarrantyCost.Cost ||
                     Warranty.ID != WarrantyCost.Warranty.ID ||

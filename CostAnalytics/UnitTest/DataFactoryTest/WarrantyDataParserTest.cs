@@ -13,11 +13,11 @@ namespace Dell.CostAnalytics.UnitTest.DataFactoryTest
         public void TestParseData()
         {
             System.Diagnostics.Debug.Write("Unit test TestParseData has started...\n");
-            string warrantyInfoFilePath = AppSettings.WarrantyInfoFilePath;
+            string warrantyInfoFilePath = @"..\..\Files\WarrantyInfo\201706.xlsx";
 
             Factory.Parsers.WarrantyInfoParser warrantyInfoParser = new Factory.Parsers.WarrantyInfoParser(warrantyInfoFilePath);
 
-            var results = warrantyInfoParser.Parse();
+            warrantyInfoParser.Parse();
 
             System.Diagnostics.Debug.Write("Unit test TestParseData has ended...\n");
         }

@@ -20,6 +20,8 @@ namespace Dell.CostAnalytics.DataFactory.Handlers
             if (Products == null)       { Products = Handler.Product.GetAll().ToList(); }
             if (Regions == null)        { Regions = Handler.Region.GetAll().ToList(); }
             if (SKUs == null)           { SKUs = Handler.SKU.GetAll().ToList(); }
+            if(Warranties == null) { Warranties = Handler.Warranty.GetAll().ToList(); }
+            if(WarrantyCosts == null) { WarrantyCosts = Handler.WarrantyCost.GetAll().ToList(); }
         }
         #endregion
 
@@ -111,6 +113,42 @@ namespace Dell.CostAnalytics.DataFactory.Handlers
                 SKU.ID = info.ID;
             }
         } //End method
+
+
+        /// <summary> This method returns the Warranty object that matches the one passed into the function. </summary>
+        /// <param name="Warranty"> A Container Warranty object. </param>
+        /// <returns> The matched object if found, otherwise adds it to the DB and return the object. </returns>
+        public void GetWarranty(Cont.Warranty Warranty)
+        {
+            var info = Warranties.FirstOrDefault(x => x.Equals(Warranty));
+            if (info == null)
+            {
+                Warranty.ID = Handler.Warranty.Add(Warranty);
+                Warranties.Add(Warranty);
+            }
+            else
+            {
+                Warranty.ID = info.ID;
+            }
+        } //End method
+
+
+        /// <summary> This method returns the WarrantyCost object that matches the one passed into the function. </summary>
+        /// <param name="WarrantyCost"> A Container WarrantyCost object. </param>
+        /// <returns> The matched object if found, otherwise adds it to the DB and return the object. </returns>
+        public void GetWarrantyCost(Cont.WarrantyCost WarrantyCost)
+        {
+            var info = WarrantyCosts.FirstOrDefault(x => x.Equals(WarrantyCost));
+            if (info == null)
+            {
+                WarrantyCost.ID = Handler.WarrantyCost.Add(WarrantyCost);
+                WarrantyCosts.Add(WarrantyCost);
+            }
+            else
+            {
+                WarrantyCost.ID = info.ID;
+            }
+        } //End method
         #endregion
 
         #region Members
@@ -119,6 +157,8 @@ namespace Dell.CostAnalytics.DataFactory.Handlers
         static List<Cont.Product> Products = null;
         static List<Cont.Region> Regions = null;
         static List<Cont.SKU> SKUs = null;
+        static List<Cont.WarrantyCost> WarrantyCosts = null;
+        static List<Cont.Warranty> Warranties = null;
         #endregion
     }//end class
 }//end namespace

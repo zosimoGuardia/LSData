@@ -27,7 +27,7 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
 
         #region Methods
         /// <summary> Parses through the Excel file, creates a data table with the information we care about, and calls ReadData. </summary>
-        public System.Data.DataTable Parse()
+        public void Parse()
         {
             System.Data.DataTable toReturn = new System.Data.DataTable();
 
@@ -77,8 +77,9 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
 
                         try
                         {
-                            if(currentDate.Equals(GetDateFromMMM_FYyy(currHeader)) &&
-                                slDocument.GetCellValueAsString(2, column).Trim().ToLower().Equals(REGION)){
+                            if (currentDate.Equals(GetDateFromMMM_FYyy(currHeader)) &&
+                                slDocument.GetCellValueAsString(2, column).Trim().ToLower().Equals(REGION))
+                            {
                                 costCol = column;
                                 break;
                             }
@@ -99,7 +100,7 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
                             System.Diagnostics.Debug.WriteLine("[" + currHeader + "]  " + aoore.ToString());
                         }//end catch
                     }//end for
-                    
+
                     for (int row = slWorksheetStats.StartRowIndex + 2; row < slWorksheetStats.EndRowIndex; row++)
                     {
                         if (slDocument.GetCellValueAsString(row, variantCol) != "")
@@ -133,64 +134,42 @@ namespace Dell.CostAnalytics.DataFactory.Parsers
                 throw e;
             }//end catch
 
-            /*
-            //Now read filtered data
-            foreach (System.Data.DataRow record in toReturn.Rows)
-            {
-                this.ReadData(record);
-            }//end for
-            */
-            return toReturn;
+
+            this.ReadData(toReturn);
         }//end method
 
         
-        /*
+        
         /// <summary> This method reads the filtered rows from the data table and instantiates the respective container objects. </summary>
         /// <param name="record">A datatable row containing the columns rows we care about per the specified filter criteria. </param>
-        private void ReadData(System.Data.DataRow record)
+        private void ReadData(System.Data.DataTable dtWarrantyData)
         {
             Handlers.DatabaseObject dbo = new Handlers.DatabaseObject();
 
-            // Measure
-            Cont.Measure measureInfo = new Business.Containers.Measure()
+            foreach (System.Data.DataRow record in dtWarrantyData.Rows)
             {
-                Name = MEASURE_TYPE
-            };
-            dbo.GetMeasure(measureInfo);
+                // Warranty
+                Cont.Warranty warrantyInfo = new Business.Containers.Warranty()
+                {
+                    Name = record["Name"].ToString(),
+                    Description = record["Description"].ToString()
+                };
+                dbo.GetWarranty(warrantyInfo);
 
+                //WarrantyCost
 
-            // SKU
-            Cont.SKU skuInfo = new Business.Containers.SKU()
-            {
-                Name = Convert.ToString(record["Name"]).Trim(),
-                Description = Convert.ToString(record["Description"]),
-                Commodity = Convert.ToString(record["Type"]).Trim()
-            };
-            dbo.GetSKU(skuInfo);
+                Cont.WarrantyCost warrantyCostInfo = new Business.Containers.WarrantyCost()
+                {
+                    Date = Convert.ToDateTime(record["Date"]),
+                    Cost = Convert.ToDouble(record["Cost"]),
+                    Warranty = warrantyInfo,
+                    Configuration = null //TODO: Extract Config info from PlatfornConfig File and pass in here
+                };
+                dbo.GetWarrantyCost(warrantyCostInfo);
 
-
-            // Iteration
-            Cont.Iteration iterationInfo = new Cont.Iteration()
-            {
-                Measure = measureInfo,
-                SKU = skuInfo
-            };
-            iterationInfo.ID = Business.Handlers.Iteration.Add(iterationInfo);
-
-
-            // Cost 
-            Cont.Cost costInfo = new Business.Containers.Cost()
-            {
-                Iteration = iterationInfo,
-                Date = Convert.ToDateTime(record["Date"]),
-                CurrentCost = Convert.ToDouble(record["Cost"]),
-                CostNext1 = Convert.ToDouble(record["Cost"]),
-                CostNext2 = Convert.ToDouble(record["Cost"]),
-                CostNext3 = Convert.ToDouble(record["Cost"])
-            };
-            costInfo.ID = Business.Handlers.Cost.Add(costInfo);
+            }//end for
         }//end method
-    */
+    
 
         /// <summary>
         /// Returns DateTime format from input string of format MMM FYyy

@@ -60,7 +60,6 @@ namespace Dell.CostAnalytics.Business.Containers
             {
                 Warranty Warranty = (Warranty)obj;
                 if (
-                    ID != Warranty.ID ||
                     Name != Warranty.Name ||
                     Description != Warranty.Description
                     )
